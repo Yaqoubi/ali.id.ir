@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حدس کلمه</title>
+    <style>
+        @font-face {
+            font-family: 'iy';
+            font-weight: normal;
+            src: url('fonts/Shabnam.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'iy';
+            font-weight: 900;
+            src: url('fonts/Shabnam-Bold.ttf') format('truetype');
+        }
+
+        /* استایل صفحه به صورت راست چین */
+        body {
+            font-family: iy,serif;
+            direction: rtl;
+            text-align: right;
+            font-size: large;
+
+
+            background: linear-gradient(270deg, #c2d5b0, #f0efc7, #d2eaee, #e3d2f2, #eec1c1);
+            background-size: 1000% 1000%;
+
+            -webkit-animation: AnimationName 19s ease infinite;
+            -moz-animation: AnimationName 19s ease infinite;
+            animation: AnimationName 19s ease infinite;        }
+
+        /* استایل جای خالی */
+        #word {
+            text-align: center;
+            font-size: 50px;
+        }
+
+        /* استایل کیبورد */
+        .keyboard {
+            max-width: 800px;
+            gap: 5px;
+            text-align: center;
+        }
+
+        .keyboard button {
+            margin: 2px;
+            display: inline-block;
+            min-width: 65px;
+            padding: 10px;
+            font-size: 30px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            font-family: iy, serif;
+            font-weight: bold;
+        }
+
+        /* استایل راهنما */
+        #guide {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: center;
+            background-color: #fff2f2;
+            max-width: 750px;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        /*استایل حرف های کلمات*/
+        .wordLetter {
+            color: #fff2f2;
+            padding: 0 20px 0 20px;
+            margin: 5px;
+            background-color: #40505e;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 60px;
+            min-height: 60px;
+            display: inline-block;
+        }
+
+        /*بک گراند گرادینت*/
+        @-webkit-keyframes AnimationName {
+            0%{background-position:0% 48%}
+            50%{background-position:100% 53%}
+            100%{background-position:0% 48%}
+        }
+        @-moz-keyframes AnimationName {
+            0%{background-position:0% 48%}
+            50%{background-position:100% 53%}
+            100%{background-position:0% 48%}
+        }
+        @keyframes AnimationName {
+            0%{background-position:0% 48%}
+            50%{background-position:100% 53%}
+            100%{background-position:0% 48%}
+        }
+
+        /*هدر*/
+        header {
+            padding: 20px;
+            text-align: center;
+            font-size: 50px;
+            font-weight: 900;
+            background-color: rgba(0, 0, 0, 0);
+        }
+        /*فوتر*/
+        footer {
+            background-color: rgba(147, 127, 124, 0.17);
+            color: #000000;
+            position: absolute;
+            width: 98%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            max-width: 750px;
+            border-radius: 10px;
+            padding: 5px;
+            margin-top: 100px;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        /*محتوای اصلی صفحه*/
+        .content{
+            margin-bottom: 50px;
+        }
+
+        /*نمایش تمام صفحه*/
+        #fullscreen-btn {
+            padding: 10px;
+            font-size: 18px;
+            font-family: iy, serif;
+        }
+    </style>
+</head>
+<body>
+<header>
+    بازی حدس کلمه
+</header>
+<div class="content">
+    <audio id="background" autoplay loop>
+        <source src="sounds/bg.mp3" type="audio/mpeg">
+        مرورگر شما از موزیک پس زمینه پشتیبانی نمی‌کند.
+    </audio>
+    <p id="word"></p>
+    <center>
+        <div class="keyboard" id="keyboard"></div>
+        <div id="guide"></div><br>
+        <button id="fullscreen-btn">نمایش تمام صفحه</button>
+    </center>
+    <div id="wrong"></div>
+</div>
+<footer>
+    &copy;۱۴۰۲. طراحی شده توسط علی یعقوبی؛ برای دانلود نسخه‌ی آفلاین
+    <a href="https://github.com/Yaqoubi/Guess-the-Word/archive/refs/heads/main.zip">اینجا</a>
+    کلیک کنید.
+</footer>
+<script>
+    // تعریف آرایه کلمات و راهنماها
+    var wordsWithGuides = [
+        {word: "یزدان", guide: "به معنای آفریدگار، خدا و پروردگار است."},
+        {word: "هیمه", guide: "با آن آتش درست می‌کنند."},
+        {word: "نیرنگ", guide: "یعنی حیله کردن و فریب دادن."},
+        {word: "ملل", guide: "جمع ملت‌هاست."},
+        {word: "محاصره", guide: "احاطه کردن اطراف کسی یا جایی را گویند."},
+        {word: "متدین", guide: "به کسی که دین‌دار است می‌گویند."},
+        {word: "گذشتگان", guide: "کسانی که از دنیا رفته‌اند و درگذشته‌اند."},
+        {word: "کلبه", guide: "خانه‌ای کوچک و تنگ و باریک"},
+        {word: "یعقوبی", guide: "بهترین مدیر و معلم دنیا"},
+        {word: "کتب", guide: "جمع کتاب‌ها"},
+        {word: "شبروان", guide: "کسانی که شب را برای عبادت و راز و نیاز بیدار هستند."},
+        {word: "سهراب", guide: "نام پسر رستم در شاهنامه"},
+        {word: "کشتی", guide: "وسیله‌ای برای حمل و نقل دریایی است."},
+        {word: "سیکاپل", guide: "نام یک پل قدیمی در جویبار است."},
+        {word: "زرافه", guide: "حیوانی وحشی که روی پوستش لکه‌های متعدد دارد."},
+        {word: "تمساح", guide: "یک حیوان دو زیست که در برکه و رودخانه‌ها زندگی می‌کند."},
+        {word: "محبت", guide: "از ......... خارها گل می‌شود."},
+        {word: "خزر", guide: "بزرگترین دریاچه‌ی جهان"},
+        {word: "خاویار", guide: "از محصولات صادراتی مهم مازندران است."},
+        {word: "نفت", guide: "به طلای سیاه معروف است."}
+    ];
+
+    // تعریف متغیر برای نگهداری کلماتی که قبلاً نمایش داده شده‌اند
+    var displayedWords = [];
+    var randomWordWithGuide; // متغیر جهانی برای نگهداری کلمه و راهنمای متناظر
+
+    // تابع برای انتخاب یک کلمه تصادفی از آرایه که قبلاً نمایش داده نشده باشد
+    function getRandomWordWithGuide(wordsArray) {
+        var availableWords = wordsArray.filter(function(wordObj) {
+            return !displayedWords.includes(wordObj.word);
+        });
+        if (availableWords.length === 0) {
+            // اگر تمام کلمات نمایش داده شده باشند، لیست را بازنشانی کنید
+            displayedWords = [];
+            availableWords = wordsArray;
+        }
+        var randomIndex = Math.floor(Math.random() * availableWords.length);
+        return availableWords[randomIndex];
+    }
+
+    // تابع برای نمایش کلمه با جای خالی ها
+    function displayWordWithBlanks(word) {
+        var wordContainer = document.getElementById("word");
+        var wordWithBlanks = "";
+        for (var i = 0; i < word.length; i++) {
+            wordWithBlanks += "<span class='wordLetter'>&#8202;</span>";
+        }
+        wordContainer.innerHTML = wordWithBlanks;
+    }
+
+    // انتخاب کلمه تصادفی و نمایش آن
+    function chooseRandomWordAndDisplay() {
+        randomWordWithGuide = getRandomWordWithGuide(wordsWithGuides);
+        var randomWord = randomWordWithGuide.word;
+        var wordGuide = randomWordWithGuide.guide;
+
+        displayWordWithBlanks(randomWord);
+
+        // نمایش راهنما
+        var guideContainer = document.getElementById("guide");
+        guideContainer.textContent = "راهنما: " + wordGuide;
+
+        // نمایش یک کیبورد جدید
+        displayKeyboard();
+
+        // پخش موسیقی پس زمینه
+        document.getElementById('background').play();
+
+        // اضافه کردن کلمه جاری به لیست کلمات نمایش داده شده
+        displayedWords.push(randomWord);
+    }
+
+    // ایجاد کیبورد حروف الفبا
+    function displayKeyboard() {
+        var alphabet = 'ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی'.split('');
+        var keyboardContainer = document.getElementById("keyboard");
+        keyboardContainer.innerHTML = '';
+
+        alphabet.forEach(function (letter) {
+            var button = document.createElement("button");
+            button.textContent = letter;
+            button.id = letter;
+            button.addEventListener("click", function () {
+                checkLetter(letter);
+            });
+            keyboardContainer.appendChild(button);
+        });
+    }
+
+    // تابع بررسی حرف انتخاب شده
+    function checkLetter(letter) {
+        var wordContainer = document.getElementById("word");
+        var word = wordContainer.textContent.split("");
+        var guessedWord = randomWordWithGuide.word.split("");
+        var letterFound = false;
+
+        guessedWord.forEach(function(char, index) {
+            if (char === letter) {
+                word[index] = letter;
+                letterFound = true;
+            }
+        });
+
+        button = document.getElementById(letter);
+        if (letterFound) {
+            wordContainer.innerHTML = '';
+            word.forEach(function(char, index) {
+                wordContainer.innerHTML += "<span class=\"wordLetter\">"+char+"</span>";
+            });
+            button.style.backgroundColor = "#c0efc1";
+            playSound('correct');
+        } else {
+            // alert("حرف مورد نظر در کلمه وجود ندارد");
+            button.style.backgroundColor = "#ffb0b0";
+            playSound('wrong');
+        }
+        button.disabled = true;
+
+        // بررسی تکمیل شدن کلمه
+        if (word.join("") === randomWordWithGuide.word) {
+            // انتخاب کلمه جدید و نمایش آن
+            playSound('finalCheers');
+            setTimeout(chooseRandomWordAndDisplay, 12000);
+        }
+    }
+
+    // صدای تشویق یا اشتباه
+    function playSound(name) {
+        var audio = new Audio();
+        if(name === 'finalCheers') {
+            document.getElementById('background').pause();
+            audio.src = 'sounds/final-cheers.mp3';
+        } else if (name === 'correct') {
+            audio.src = 'sounds/correct.mp3';
+        } else if (name === 'wrong') {
+            audio.src = 'sounds/wrong.mp3';
+        }
+        audio.play();
+    }
+    // انتخاب کلمه اول و شروع بازی
+    chooseRandomWordAndDisplay();
+
+
+
+
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+    fullscreenBtn.addEventListener('click', () => {
+        if (document.fullscreenElement) {
+            exitFullscreen();
+            document.getElementById('fullscreen-btn').textContent = "نمایش تمام صفحه";
+
+        } else {
+            enterFullscreen();
+            document.getElementById('fullscreen-btn').textContent = "خروج از تمام صفحه";
+        }
+    });
+
+    function enterFullscreen() {
+        const element = document.documentElement;
+
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) { /* Firefox */
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) { /* IE/Edge */
+            element.msRequestFullscreen();
+        }
+    }
+
+    function exitFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari & Opera */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
+        }
+    }
+
+</script>
+
+</body>
+</html>
