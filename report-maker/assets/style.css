@@ -1,0 +1,244 @@
+@import url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css");
+@font-face {
+    font-family: 'mikhac';
+    src: url('mikh.ttf') format("truetype-variations");
+    font-weight: 1 999;
+}
+* {
+    direction: rtl;
+    text-align: right;
+    font-family: "mikhac","Roboto","Tahoma","Helvetica","Arial",sans-serif;
+    font-weight: 500;
+}
+#reports {
+    table, tr, th {
+        border: 1px black solid;
+        border-collapse: collapse;
+    }
+    th {
+        padding: 5px;
+    }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    .no-right-border {
+        border-right: none;
+    }
+    .no-left-border {
+        border-left: none;
+    }
+    width: 100%;
+}
+.margin-top-30 {
+    margin-top: 30px;
+}
+.report-table {
+    width: 100%;
+}
+.signature {
+    tr:nth-child(1) {
+        th {
+            /*padding: 10px !important;*/
+        }
+        th:before {
+            content: '⚠️';
+            font-size: 25px;
+        }
+    }
+    tr:nth-child(2) {
+        text-align: center;
+        height: 150px;
+    }
+}
+.text-align-center {
+    text-align: center;
+}
+.right-border-radius {
+    margin: 1px;
+    background-color: #ffffff;
+    padding: 7px;
+    border-radius: 0 10px 10px 0;
+}
+.no-border-radius {
+    margin: 1px;
+    background-color: #ffffff;
+    padding: 7px;
+}
+.left-border-radius {
+    white-space: nowrap;
+    margin: 1px;
+    background-color: #ffffff;
+    padding: 7px;
+    border-radius: 10px 0 0 10px;
+}
+.smallest-width {
+    padding: 10px;
+    white-space: nowrap;
+    width: 1%;
+}
+.report-nav {
+    background-color: #e0e0e0;
+}
+.report-header {
+    background-color: #a6a6a6;
+    td {
+        padding: 10px;
+        font-weight: bold;
+        border-top: black solid 2px;
+        text-align: center;
+    }
+}
+.report-body {
+    tr {
+        td {
+            padding: 5px 10px 5px 10px;
+            text-align: center;
+        }
+        td:last-child {
+            text-align: justify;
+        }
+        td:nth-child(1) {
+            width: 1px;
+        }
+        td:nth-child(2) {
+            white-space: nowrap;
+            width: 1px;
+        }
+        /*td:nth-child(3) {*/
+        /*    white-space: nowrap;*/
+        /*    width: 135px;*/
+        /*}*/
+        /*td:nth-child(4) {*/
+        /*    width: 50px;*/
+        /*}*/
+        td:nth-child(3) {
+                white-space: nowrap;
+                width: 135px;
+        }
+    }
+}
+.progress-emoji {
+    /*font-size: 0.5cm;*/
+}
+.selection-cursor {
+    cursor: default;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.islamic-republic-cell {
+    width: 90px;
+}
+.islamic-republic {
+    width: 100%;
+    padding: 0 10px 0 10px;
+}
+
+.weight-900 {
+    font-weight: 900;
+}
+
+.container {
+    padding: 20px;
+}
+.content {
+    h2 {
+        margin-top: 30px;
+        margin-bottom: -5px ;
+        margin-right: -12px;
+        span {
+            border-radius: 20px 20px 0 0 ;
+            padding: 20px;
+            background-color: #f2f6eb;
+            font-weight: 600;
+            color: #000;
+        }
+    }
+    h2 span::before {
+        color: #ff4848;
+        content: '# ';
+    }
+    text-align: center;
+}
+
+.select-grade {
+    width: 100%;
+}
+
+.form-div {
+    padding: 20px !important;
+    background-color: #f2f6eb;
+    table {
+        tr {
+            td {
+                padding-bottom: 5px;
+            }
+            td:nth-child(1) {
+                white-space: nowrap;
+                padding-left: 20px;
+            }
+
+            td:nth-child(2) {
+                width: 100%;
+                input, textarea {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+.row-div {
+    padding-top: 20px
+}
+.ten-padding {
+    padding: 10px;
+}
+.p-text-justify {
+    text-align: justify;
+}
+.instruction-text {
+    padding: 20px !important;
+
+    background-color: #f6f6ea;
+}
+
+#loading {
+    position: fixed;
+    top: 0; left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    z-index: 9999;
+    background: rgba(238, 238, 238, 0.9);
+}
+.loader {
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    background: linear-gradient(135deg,#0000 calc(50% - 0.5em), #d00000 0 calc(50% + 0.5em),#0000 0) right/300% 100%;
+    animation: l22 2s infinite;
+}
+.loader::before {
+    font-family: "mikhac","Roboto","Tahoma","Helvetica","Arial",sans-serif;
+    content: "لطفا کمی صبر کنید ...";
+    color: #0000;
+    padding: 0 5px;
+    background: inherit;
+    background-image: linear-gradient(135deg,#000 calc(50% - 0.5em), #ffffff 0 calc(50% + 0.5em),#000 0);
+    -webkit-background-clip:text;
+    background-clip:text;
+}
+
+@keyframes l22{
+    100%{background-position: left}
+}
+
+.student-info{
+    line-height: 45px;
+}
+.report-lable {
+    padding-top: 15px;
+}
