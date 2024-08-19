@@ -166,3 +166,76 @@ function download_json(){
         URL.revokeObjectURL(url);
         document.body.removeChild(link);    }
 }
+
+function downloadSampleJson() {
+    const jsonData = [
+        {
+            "code": "0",
+            "name": "علی عظیمی",
+            "grade": "اول"
+        },
+        {
+            "code": "0",
+            "name": "امیر آرام",
+            "grade": "اول"
+        },
+        {
+            "code": "0",
+            "name": "ابراهیم حامدی",
+            "grade": "دوم"
+        },
+        {
+            "code": "0",
+            "name": "محمد اصفهانی",
+            "grade": "دوم"
+        },
+        {
+            "code": "0",
+            "name": "داریوش اقبالی",
+            "grade": "سوم"
+        },
+        {
+            "code": "0",
+            "name": "امید سلطانی",
+            "grade": "سوم"
+        },
+        {
+            "code": "0",
+            "name": "پویا پورجلیل",
+            "grade": "چهارم"
+        },
+        {
+            "code": "0",
+            "name": "جمشید مقدم",
+            "grade": "چهارم"
+        },
+        {
+            "code": "0",
+            "name": "حمید حامی",
+            "grade": "پنجم"
+        },
+        {
+            "code": "0",
+            "name": "حبیب محبیان",
+            "grade": "پنجم"
+        },
+        {
+            "code": "0",
+            "name": "ناصر عبداللهی",
+            "grade": "ششم"
+        },
+        {
+            "code": "0",
+            "name": "محمد معتمدی",
+            "grade": "ششم"
+        }
+    ];
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const link = document.createElement("a");
+    link.download = "student-sample.json";
+    link.href = URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
