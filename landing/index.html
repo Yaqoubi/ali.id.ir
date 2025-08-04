@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>علی یعقوبی - تولید محتوا و طراحی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', 'Tahoma', sans-serif;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            animation: backgroundMove 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            width: 100%;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes backgroundMove {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(-30px, -50px) rotate(120deg);
+            }
+            66% {
+                transform: translate(30px, -30px) rotate(240deg);
+            }
+        }
+
+        .intro-text {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            line-height: 2;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .contact-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .phone-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(45deg, #25D366, #128C7E);
+        }
+
+        .telegram-btn {
+            background: linear-gradient(45deg, #0088cc, #006bb3);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            position: relative;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+        }
+
+        .play-button:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 25px solid #667eea;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            margin-right: -5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .intro-text {
+                font-size: 16px;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .video-placeholder {
+                height: 200px;
+                font-size: 16px;
+            }
+
+            .play-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .play-button::after {
+                border-left: 20px solid #667eea;
+                border-top: 12px solid transparent;
+                border-bottom: 12px solid transparent;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px;
+            }
+
+            .intro-text {
+                font-size: 14px;
+            }
+
+            .contact-btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <p class="intro-text">
+                سلام، من علی یعقوبی هستم و می‌توانم در حوزه‌های تولید محتوای الکترونیکی، طراحی سایت و ربات‌های مختلف و همچنین طراحی و اجرای کمپین‌های تبلیغاتی با شما همکاری کنم. برای مشاوره رایگان کافیه با من در تماس باشید.
+            </p>
+
+            <div class="contact-buttons">
+                <a href="tel:+989123456789" class="contact-btn phone-btn">
+                    📞 تماس مستقیم
+                </a>
+                <a href="https://wa.me/989123456789" class="contact-btn whatsapp-btn" target="_blank">
+                    📱 واتس‌اپ
+                </a>
+                <a href="https://t.me/aliyaghoubi" class="contact-btn telegram-btn" target="_blank">
+                    ✈️ تلگرام
+                </a>
+            </div>
+
+            <div class="video-container">
+                <div class="video-placeholder">
+                    <div class="play-button" onclick="playVideo()"></div>
+                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); opacity: 0.8;">
+                        تیزر معرفی خدمات
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function playVideo() {
+            // اینجا می‌توانید لینک ویدیو واقعی خود را قرار دهید
+            const videoUrl = "YOUR_VIDEO_URL_HERE";
+            
+            // برای نمایش نمونه، یک alert نشان می‌دهیم
+            alert("لطفاً لینک ویدیو خود را در کد جاوااسکریپت قرار دهید");
+            
+            // کد زیر را برای پخش ویدیو واقعی استفاده کنید:
+            // window.open(videoUrl, '_blank');
+            
+            // یا برای پخش در همین صفحه:
+            // const videoContainer = document.querySelector('.video-placeholder');
+            // videoContainer.innerHTML = `<video controls autoplay style="width: 100%; height: 100%;"><source src="${videoUrl}" type="video/mp4"></video>`;
+        }
+    </script>
+</body>
+</html>
