@@ -272,16 +272,11 @@
 
     <script>
         function playVideo() {
-            // اینجا می‌توانید لینک ویدیو واقعی خود را قرار دهید
-            const videoUrl = "https://ali.id.ir/landing/teaser.mp4";
+            const videoUrl = "https://github.com/Yaqoubi/ali.id.ir/raw/refs/heads/main/landing/teaser.mp4";
             
-            // برای نمایش نمونه، یک alert نشان می‌دهیم
             // alert("لطفاً لینک ویدیو خود را در کد جاوااسکریپت قرار دهید");
-            
-            // کد زیر را برای پخش ویدیو واقعی استفاده کنید:
             // window.open(videoUrl, '_blank');
             
-            // یا برای پخش در همین صفحه:
             const videoContainer = document.querySelector('.video-placeholder');
             videoContainer.innerHTML = `<video controls autoplay style="width: 100%; height: 100%;"><source src="${videoUrl}" type="video/mp4"></video>`;
         }
