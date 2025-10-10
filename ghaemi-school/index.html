@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لینک‌های کاربردی</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔰</text></svg>">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazir', sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+        
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .link-item {
+            background: white;
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .link-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #3498db;
+        }
+        
+        .link-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .link-arrow {
+            color: #95a5a6;
+            font-size: 1.2rem;
+        }
+        
+        .link-item:hover .link-arrow {
+            color: #3498db;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>لینک‌های کاربردی</h1>
+            <p class="subtitle">دبستان شهید قائمی پائین‌رودپشت</p>
+        </header>
+        
+        <main>
+            <div class="links-list">
+                <div class="link-item" data-url="https://ali.id.ir/ghaemi-school/lottery">
+                    <span class="link-name">گردونه‌ی شانس</span>
+                    <span class="link-arrow">←</span>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>کلیک روی هر لینک، در تب جدید باز می‌شود</p>
+        </footer>
+    </div>
+
+    <script>
+        // اضافه کردن event listener برای کلیک روی لینک‌ها
+        document.querySelectorAll('.link-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                window.open(url, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
