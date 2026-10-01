@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>هزار، میلیون، میلیارد — مکعب‌های سه‌بعدی</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50%' x='50%' text-anchor='middle' dominant-baseline='middle' font-size='54'>📄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#2a7fd4;
+    --ink:#12314f;
+    --ink2:#5b7d9c;
+    --card:rgba(255,255,255,.80);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;overflow:hidden;}
+  body{
+    font-family:'Vazirmatn',Tahoma,system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:linear-gradient(160deg,#eaf4ff 0%,#f8fcff 45%,#edf5ff 100%);
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  #app{display:flex;flex-direction:column;height:100vh;height:100dvh;}
+
+  /* ---------- نوار پیشرفت ---------- */
+  .topbar{
+    flex:0 0 auto;padding:10px 14px 6px;
+    background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,0));
+    z-index:5;
+  }
+  .progress{display:flex;gap:8px;width:100%;max-width:660px;margin:0 auto;}
+  .seg{flex:1;display:flex;flex-direction:column;gap:5px;align-items:center;}
+  .seg .bar{
+    width:100%;height:8px;border-radius:99px;
+    background:rgba(42,127,212,.14);overflow:hidden;
+  }
+  .seg .bar i{
+    display:block;height:100%;width:0;border-radius:99px;
+    background:var(--accent);transition:width .35s ease, background .4s;
+  }
+  .seg span{font-size:12px;font-weight:700;color:var(--ink2);transition:color .3s;}
+  .seg.active span{color:var(--accent);}
+  .seg.done span{color:#1f9c68;}
+
+  /* ---------- صحنه ---------- */
+  #stage{position:relative;flex:1 1 auto;min-height:0;overflow:hidden;}
+  #c{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;touch-action:none;}
+  #cornerBox{
+    position:absolute;left:12px;bottom:12px;width:120px;height:120px;
+    border-radius:18px;background:rgba(255,255,255,.72);
+    border:2px solid rgba(42,127,212,.20);z-index:0;
+  }
+  #cornerBox b{
+    position:absolute;top:5px;left:0;right:0;text-align:center;
+    font-size:11px;font-weight:700;color:var(--ink2);
+  }
+
+  /* ---------- برچسب‌های روی صفحه ---------- */
+  #hud{
+    position:absolute;top:0;left:0;right:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    padding:10px 12px;pointer-events:none;
+  }
+  #value{
+    font-size:clamp(26px,6.4vw,54px);font-weight:900;line-height:1.05;
+    color:var(--accent);background:var(--card);
+    padding:.12em .55em;border-radius:18px;
+    box-shadow:0 6px 22px rgba(30,80,140,.13);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    transition:color .45s;
+    direction:rtl;
+  }
+  #desc{
+    max-width:min(680px,94%);text-align:center;
+    font-size:clamp(12.5px,3.2vw,17px);font-weight:600;
+    background:var(--card);padding:.5em .95em;border-radius:14px;
+    box-shadow:0 4px 16px rgba(30,80,140,.10);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    line-height:1.75;
+  }
+  #finale{
+    position:absolute;inset:0;z-index:3;
+    display:flex;align-items:center;justify-content:center;
+    font-size:clamp(28px,8vw,64px);font-weight:900;color:#ef9c00;
+    text-shadow:0 6px 26px rgba(255,190,0,.55);
+    opacity:0;pointer-events:none;transition:opacity .45s;
+  }
+  #finale.show{opacity:1;animation:pop .7s cubic-bezier(.2,1.6,.4,1);}
+  @keyframes pop{0%{transform:scale(.5);}60%{transform:scale(1.1);}100%{transform:scale(1);}}
+
+  /* ---------- کنترل‌ها ---------- */
+  .controls{
+    flex:0 0 auto;display:flex;flex-wrap:wrap;gap:8px;
+    justify-content:center;align-items:center;
+    padding:10px 12px 6px;
+    background:linear-gradient(0deg,rgba(255,255,255,.95),rgba(255,255,255,.35));
+    z-index:5;
+  }
+  button{
+    font-family:inherit;font-size:14px;font-weight:700;
+    color:#fff;background:var(--accent);
+    border:none;border-radius:12px;padding:10px 16px;cursor:pointer;
+    box-shadow:0 4px 12px rgba(42,127,212,.28);
+    transition:transform .12s ease, filter .2s ease, background .35s;
+    white-space:nowrap;
+  }
+  button:hover{filter:brightness(1.08);}
+  button:active{transform:scale(.95);}
+  button.ghost{background:rgba(42,127,212,.13);color:var(--accent);box-shadow:none;}
+  button:disabled{opacity:.4;cursor:default;filter:none;}
+  button.icon-btn{padding:10px 12px;font-size:16px;min-width:44px;}
+  .speed{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--ink2);}
+  input[type=range]{accent-color:var(--accent);width:110px;cursor:pointer;}
+
+  /* ---------- کپی‌رایت ---------- */
+  .copyright{
+    flex:0 0 auto;
+    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;
+    padding:6px 10px calc(8px + env(safe-area-inset-bottom));
+    font-size:10.5px;line-height:1.6;
+    color:#7a95ad;
+    background:rgba(255,255,255,.65);
+    border-top:1px solid rgba(42,127,212,.08);
+    text-align:center;
+    user-select:text;-webkit-user-select:text;
+  }
+  .copyright b{color:#3a6a96;font-weight:700;}
+  .copyright .sep{color:rgba(42,127,212,.35);}
+  .copyright a{
+    color:var(--accent);text-decoration:none;font-weight:700;
+    border-bottom:1px dashed rgba(42,127,212,.4);
+  }
+  .copyright a:hover{border-bottom-style:solid;}
+
+  @media (max-width:520px){
+    .controls{gap:6px;padding:8px 8px 4px;}
+    button{padding:9px 12px;font-size:13px;border-radius:11px;}
+    button.icon-btn{padding:9px 10px;min-width:40px;font-size:15px;}
+    .speed input[type=range]{width:76px;}
+    .speed{font-size:12px;gap:6px;}
+    #cornerBox{width:96px;height:96px;left:8px;bottom:8px;}
+    .copyright{font-size:9.5px;gap:4px;padding:5px 8px calc(6px + env(safe-area-inset-bottom));}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- نوار پیشرفت سه دور -->
+  <header class="topbar">
+    <div class="progress" id="progress">
+      <div class="seg"><div class="bar"><i></i></div><span>هزار</span></div>
+      <div class="seg"><div class="bar"><i></i></div><span>میلیون</span></div>
+      <div class="seg"><div class="bar"><i></i></div><span>میلیارد</span></div>
+    </div>
+  </header>
+
+  <!-- صحنه سه‌بعدی -->
+  <main id="stage">
+    <div id="cornerBox"><b>مکعب واحد</b></div>
+    <canvas id="c"></canvas>
+    <div id="hud">
+      <div id="value">۱</div>
+      <div id="desc">یک مکعب کوچک؛ یعنی عدد یک.</div>
+    </div>
+    <div id="finale">🎉 یک میلیارد!</div>
+  </main>
+
+  <!-- کنترل‌ها -->
+  <footer class="controls">
+    <button id="btnPrev" class="ghost">قبلی</button>
+    <button id="btnPlay">پخش</button>
+    <button id="btnNext" class="ghost">بعدی</button>
+    <button id="btnReset" class="ghost">شروع از اول</button>
+    <label class="speed">سرعت
+      <input id="rngSpeed" type="range" min="0.4" max="2.5" step="0.1" value="1">
+    </label>
+    <button id="btnMute" class="ghost icon-btn" title="قطع/وصل صدا" aria-label="قطع یا وصل صدا">🔊</button>
+  </footer>
+
+  <!-- کپی‌رایت -->
+  <div class="copyright">
+    <b>معاونت آموزشی آموزش و پرورش شهرستان جویبار</b>
+    <span class="sep">·</span>
+    <span>ایده: خانم فاطمه قربانی</span>
+    <span class="sep">·</span>
+    <span>طراحی: علی یعقوبی</span>
+    <span class="sep">·</span>
+    <a href="https://ali.id.ir" target="_blank" rel="noopener">ali.id.ir</a>
+  </div>
+</div>
+
+<!-- ================= کتابخانه three.js ================= -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ==========================================================
+   ۱) ابزارهای عمومی
+   ========================================================== */
+const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
+
+/** تبدیل عدد به رشتهٔ فارسی با جداکنندهٔ هزارگان */
+function faNum(n){
+  const s = String(Math.round(n));
+  return s
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '٬')
+    .replace(/\d/g, d => FA_DIGITS[+d]);
+}
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const lerp  = (a,b,t) => a + (b - a) * t;
+const easeInOutCubic = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+const easeOutCubic   = t => 1 - Math.pow(1 - t, 3);
+const easeOutBack    = t => { const c1 = 1.70158, c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+
+/* ---------- سیستم سادهٔ Tween ---------- */
+const tweens = [];
+function tween(opts){
+  tweens.push({
+    t: -(opts.delay || 0),
+    duration: Math.max(0.0001, opts.duration ?? 0.5),
+    ease: opts.ease || easeInOutCubic,
+    onUpdate: opts.onUpdate || null,
+    onComplete: opts.onComplete || null
+  });
+}
+function updateTweens(dt){
+  for (let i = tweens.length - 1; i >= 0; i--){
+    const tw = tweens[i];
+    tw.t += dt;
+    if (tw.t < 0) continue;
+    const raw = clamp(tw.t / tw.duration, 0, 1);
+    const e = tw.ease(raw);
+    if (tw.onUpdate) tw.onUpdate(e, raw);
+    if (raw >= 1){
+      tweens.splice(i, 1);
+      if (tw.onComplete) tw.onComplete();
+    }
+  }
+}
+const cancelTweens = () => { tweens.length = 0; };
+const isAnimating  = () => tweens.length > 0;
+
+/* ==========================================================
+   ۲) صدا (Web Audio API — بدون فایل خارجی)
+   ========================================================== */
+let audioCtx = null;
+let muted = false;
+
+/** ساخت/فعال‌سازی AudioContext — با اولین تعامل کاربر */
+function setupAudio(){
+  if (!audioCtx){
+    try{
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      audioCtx = new AC();
+    }catch(e){ return; }
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+/** پخش یک نُت ساده */
+function playTone(freq, dur, type = 'sine', vol = 0.12, when = 0){
+  if (!audioCtx || muted) return;
+  const t0 = audioCtx.currentTime + when;
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, t0);
+  gain.gain.setValueAtTime(0.0001, t0);
+  gain.gain.linearRampToValueAtTime(vol, t0 + 0.012);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(t0);
+  osc.stop(t0 + dur + 0.05);
+}
+
+/** کلیک نرم برای دکمه‌ها */
+function sfxClick(){
+  playTone(1400, 0.05, 'square', 0.035);
+  playTone(2100, 0.04, 'square', 0.02, 0.02);
+}
+
+/** صدای ظاهر شدن مکعب واحد (شروع هر دور) */
+function sfxUnit(){
+  if (!audioCtx || muted) return;
+  playTone(523.25, 0.45, 'sine',     0.10);
+  playTone(659.25, 0.45, 'sine',     0.06, 0.04);
+  playTone(783.99, 0.55, 'triangle', 0.05, 0.08);
+}
+
+/** صدای ساخت نوار/صفحه/مکعب — با هم‌زمانیِ پایان انیمیشن */
+function sfxBuild(duration){
+  if (!audioCtx || muted) return;
+  const d = Math.max(0.35, duration);
+  const t0 = audioCtx.currentTime;
+
+  // جاروی صعودی
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(240, t0);
+  osc.frequency.exponentialRampToValueAtTime(760, t0 + d * 0.82);
+  gain.gain.setValueAtTime(0.0001, t0);
+  gain.gain.linearRampToValueAtTime(0.085, t0 + d * 0.10);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + d * 1.02);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(t0);
+  osc.stop(t0 + d + 0.08);
+
+  // زنگ پایان
+  playTone(880,  Math.min(0.34, d * 0.5), 'sine', 0.085, d * 0.90);
+  playTone(1320, Math.min(0.42, d * 0.6), 'sine', 0.055, d * 0.93);
+}
+
+/** صدای فشرده‌سازی — جاروی نزولی + ضربهٔ پایانی */
+function sfxCompress(duration){
+  if (!audioCtx || muted) return;
+  const d = Math.max(0.6, duration);
+  const t0 = audioCtx.currentTime;
+
+  // جاروی نزولی (مثل باد)
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(720, t0);
+  osc.frequency.exponentialRampToValueAtTime(90, t0 + d * 0.72);
+  gain.gain.setValueAtTime(0.0001, t0);
+  gain.gain.linearRampToValueAtTime(0.075, t0 + d * 0.12);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + d * 0.90);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(t0);
+  osc.stop(t0 + d);
+
+  // ضربهٔ پایانی (بم + جرقه)
+  const hit = d * 0.72;
+  playTone(58,   0.60, 'sine',     0.20, hit);
+  playTone(110,  0.50, 'sine',     0.13, hit + 0.01);
+  playTone(1760, 0.45, 'triangle', 0.050, hit + 0.03);
+}
+
+/** صدای جشن پایانی */
+function sfxCelebrate(){
+  if (!audioCtx || muted) return;
+  const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+  notes.forEach((f, i) => {
+    playTone(f,     0.42, 'sine',     0.11, i * 0.13);
+    playTone(f * 2, 0.30, 'triangle', 0.035, i * 0.13 + 0.01);
+  });
+  // آکورد پایانی
+  [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+    playTone(f, 1.3, 'sine', 0.07, 0.72 + i * 0.04);
+  });
+  // جرقه‌های ریز
+  for (let i = 0; i < 8; i++){
+    playTone(1600 + Math.random() * 900, 0.18, 'triangle', 0.035, 0.75 + i * 0.09);
+  }
+}
+
+/* راه‌اندازی صدا با اولین تعامل کاربر */
+window.addEventListener('pointerdown', setupAudio, { passive: true });
+window.addEventListener('keydown',     setupAudio, { passive: true });
+window.addEventListener('touchstart',  setupAudio, { passive: true });
+
+/* ==========================================================
+   ۳) دادهٔ آموزشی
+   ========================================================== */
+// هر دور: رنگ (hue)، ارزش واحد پایه، و نام هدف
+const ROUNDS = [
+  { hue: 212, unit: 1,       name: 'هزار'    }, // آبی
+  { hue: 150, unit: 1000,    name: 'میلیون'  }, // سبز
+  { hue: 38,  unit: 1000000, name: 'میلیارد' }  // نارنجی/طلایی
+];
+
+// شرح هر مرحله در هر دور
+const DESCS = [
+  [ 'یک مکعب کوچک؛ یعنی عدد «یک».',
+    '۱۰ تا «یک» را کنار هم می‌گذاریم؛ یک نوار ده‌تایی می‌شود.',
+    '۱۰ نوار ده‌تایی را کنار هم می‌چینیم؛ یک صفحهٔ صَدتایی داریم.',
+    '۱۰ صفحه را روی هم می‌گذاریم؛ مکعب بزرگ ۱۰×۱۰×۱۰ ساخته می‌شود.',
+    'مکعب را مثل اسفنج فشرده می‌کنیم... هزار!' ],
+
+  [ 'این مکعب فشرده‌شده «هزار» است؛ واحد پایهٔ این دور.',
+    '۱۰ تا هزار کنار هم؛ یک نوار ده‌هزاری.',
+    '۱۰ نوار ده‌هزاری کنار هم؛ یک صفحهٔ صَد‌هزاری.',
+    '۱۰ صفحه روی هم؛ مکعب بزرگ ۱۰×۱۰×۱۰ از هزارها.',
+    'فشرده‌سازی... یک میلیون!' ],
+
+  [ 'این مکعب فشرده‌شده «یک میلیون» است؛ واحد پایهٔ این دور.',
+    '۱۰ تا میلیون کنار هم؛ یک نوار ده‌میلیونی.',
+    '۱۰ نوار ده‌میلیونی؛ یک صفحهٔ صَد‌میلیونی.',
+    '۱۰ صفحه روی هم؛ مکعب بزرگ ۱۰×۱۰×۱۰ از میلیون‌ها.',
+    'فشرده‌سازی نهایی... یک میلیارد!' ]
+];
+
+/** رنگ در هر مرحله: مرحلهٔ فشرده‌سازی، رنگ دور بعد را می‌گیرد */
+function hueForStage(r, s){
+  if (s === 4) return ROUNDS[Math.min(r + 1, 2)].hue;
+  return ROUNDS[r].hue;
+}
+/** ارزش عددی هر مرحله */
+function valueForStage(r, s){
+  const mult = [1, 10, 100, 1000, 1000][s];
+  return ROUNDS[r].unit * mult;
+}
+
+/* ==========================================================
+   ۴) صحنهٔ اصلی
+   ========================================================== */
+const stageEl = document.getElementById('stage');
+const canvas  = document.getElementById('c');
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.autoClear = false;
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.5, 600);
+camera.position.set(1, 0.85, 1.3).normalize().multiplyScalar(6);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping  = true;
+controls.dampingFactor  = 0.08;
+controls.enablePan      = false;
+controls.minDistance    = 1.2;
+controls.maxDistance    = 200;
+controls.minPolarAngle  = 0.12;
+controls.maxPolarAngle  = Math.PI - 0.12;
+controls.target.set(0, 0, 0);
+
+let lastInteract = -9999;
+controls.addEventListener('start', () => { lastInteract = performance.now(); });
+
+/* ---------- نورپردازی ---------- */
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+scene.add(new THREE.HemisphereLight(0xffffff, 0xcfe3f7, 0.70));
+
+const sun = new THREE.DirectionalLight(0xffffff, 1.85);
+sun.position.set(12, 18, 10);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far  = 80;
+const SH = 12;
+sun.shadow.camera.left   = -SH;
+sun.shadow.camera.right  =  SH;
+sun.shadow.camera.top    =  SH;
+sun.shadow.camera.bottom = -SH;
+sun.shadow.bias = -0.0008;
+sun.shadow.normalBias = 0.02;
+sun.shadow.camera.updateProjectionMatrix();
+scene.add(sun);
+
+const fill = new THREE.DirectionalLight(0xffffff, 0.35);
+fill.position.set(-14, 7, -11);
+scene.add(fill);
+
+/* ---------- هندسهٔ مکعب‌ها ---------- */
+const MAX_INST = 1000;   // حداکثر نمونه در هر دور
+const CUBE_SIZE = 0.92;  // اندازهٔ مکعب (کمی کوچک‌تر از سلول ۱×۱×۱ تا درزها دیده شوند)
+const CELL = 1.0;        // فاصلهٔ مرکز تا مرکز
+
+const boxGeo = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
+
+const cubeMat = new THREE.MeshStandardMaterial({
+  color: 0xffffff,
+  roughness: 0.42,
+  metalness: 0.06,
+  emissive: new THREE.Color(0xffd98a),
+  emissiveIntensity: 0
+});
+
+const shapeMesh = new THREE.InstancedMesh(boxGeo, cubeMat, MAX_INST);
+shapeMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+shapeMesh.castShadow = true;
+shapeMesh.receiveShadow = true;
+shapeMesh.frustumCulled = false;
+shapeMesh.count = 1;
+
+// لایهٔ دور (outline): همان مکعب‌ها کمی بزرگ‌تر با رندر پشت‌رو، برای واضح شدن لبه‌ها
+const outlineMat = new THREE.MeshBasicMaterial({ color: 0x14304d, side: THREE.BackSide });
+const outlineMesh = new THREE.InstancedMesh(boxGeo, outlineMat, MAX_INST);
+outlineMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+outlineMesh.frustumCulled = false;
+outlineMesh.count = 1;
+
+const shapeGroup = new THREE.Group();
+shapeGroup.add(shapeMesh, outlineMesh);
+scene.add(shapeGroup);
+
+// بافر رنگ نمونه‌ها
+const tmpColor = new THREE.Color();
+for (let i = 0; i < MAX_INST; i++) shapeMesh.setColorAt(i, tmpColor.set(0x4a90d9));
+shapeMesh.instanceColor.needsUpdate = true;
+
+const dummy = new THREE.Object3D();
+
+/** نوشتن ماتریس یک نمونه در هر دو مش (اصلی + دور) */
+function setInstanceTransform(idx, x, y, z, s){
+  dummy.position.set(x, y, z);
+  dummy.rotation.set(0, 0, 0);
+  dummy.scale.setScalar(s);
+  dummy.updateMatrix();
+  shapeMesh.setMatrixAt(idx, dummy.matrix);
+
+  dummy.scale.setScalar(s * 1.06);
+  dummy.updateMatrix();
+  outlineMesh.setMatrixAt(idx, dummy.matrix);
+}
+
+/* ---------- چیدمان‌های مکانی ---------- */
+const LAYOUT = {
+  // یک مکعب در مرکز
+  single: (i) => [0, 0, 0],
+  // نوار ۱۰تایی در راستای X
+  bar: (i) => [ (i - 4.5) * CELL, 0, 0 ],
+  // صفحهٔ ۱۰×۱۰ در صفحهٔ XZ
+  plane: (i) => {
+    const x = i % 10, z = (i / 10) | 0;
+    return [ (x - 4.5) * CELL, 0, (z - 4.5) * CELL ];
+  },
+  // مکعب ۱۰×۱۰×۱۰
+  cube: (i) => {
+    const x = i % 10, y = ((i / 10) | 0) % 10, z = (i / 100) | 0;
+    return [ (x - 4.5) * CELL, (y - 4.5) * CELL, (z - 4.5) * CELL ];
+  }
+};
+
+/** روشنایی هر نمونه، برای تفکیک بصری نوارها/صفحه‌ها/لایه‌ها */
+function instanceLightness(i, stage){
+  if (stage === 2){ const b = (i / 10) | 0;      return 0.46 + 0.16 * (b / 9); }
+  if (stage === 3){ const y = ((i / 10) | 0) % 10; return 0.42 + 0.22 * (y / 9); }
+  return 0.55;
+}
+
+/** ساخت/بازسازی شکل با تعداد و رنگ مشخص */
+function buildShape(hue, stage, count){
+  shapeMesh.count = count;
+  outlineMesh.count = count;
+
+  const layoutFn = stage === 0 ? LAYOUT.single
+                 : [LAYOUT.bar, LAYOUT.plane, LAYOUT.cube][stage - 1];
+
+  for (let i = 0; i < count; i++){
+    const p = layoutFn(i);
+    setInstanceTransform(i, p[0], p[1], p[2], 1);
+    tmpColor.setHSL(hue / 360, 0.70, instanceLightness(i, stage));
+    shapeMesh.setColorAt(i, tmpColor);
+  }
+  shapeMesh.instanceMatrix.needsUpdate = true;
+  outlineMesh.instanceMatrix.needsUpdate = true;
+  shapeMesh.instanceColor.needsUpdate = true;
+}
+
+/* ==========================================================
+   ۵) صحنهٔ گوشه (مکعب واحد مرجع)
+   ========================================================== */
+const CORNER_SIZE = 120, CORNER_MARGIN = 12;
+
+const cornerScene = new THREE.Scene();
+const cornerCam = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+cornerCam.position.set(2.7, 2.15, 3.3);
+cornerCam.lookAt(0, 0, 0);
+
+const cornerCube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshStandardMaterial({ color: 0x6f9fd8, roughness: 0.45, metalness: 0.06 })
+);
+cornerCube.add(new THREE.LineSegments(
+  new THREE.EdgesGeometry(new THREE.BoxGeometry(1.004, 1.004, 1.004)),
+  new THREE.LineBasicMaterial({ color: 0x1b3a5c })
+));
+cornerScene.add(cornerCube);
+cornerScene.add(new THREE.AmbientLight(0xffffff, 0.95));
+const cLight1 = new THREE.DirectionalLight(0xffffff, 1.5); cLight1.position.set(3, 5, 4);
+const cLight2 = new THREE.DirectionalLight(0xffffff, 0.55); cLight2.position.set(-4, -2, -3);
+cornerScene.add(cLight1, cLight2);
+
+/* ==========================================================
+   ۶) کاغذرنگی جشن
+   ========================================================== */
+const CONF_N = 240;
+const confMesh = new THREE.InstancedMesh(
+  new THREE.BoxGeometry(0.16, 0.16, 0.16),
+  new THREE.MeshLambertMaterial({}),
+  CONF_N
+);
+confMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+confMesh.frustumCulled = false;
+confMesh.visible = false;
+scene.add(confMesh);
+
+const confParts = [];
+for (let i = 0; i < CONF_N; i++){
+  confParts.push({
+    p: new THREE.Vector3(), v: new THREE.Vector3(),
+    r: new THREE.Euler(), rv: new THREE.Vector3()
+  });
+}
+let confTime = 0;
+const dummy2 = new THREE.Object3D();
+
+function celebrate(){
+  confMesh.visible = true;
+  confTime = 7;
+  for (let i = 0; i < CONF_N; i++){
+    const pt = confParts[i];
+    const a = Math.random() * Math.PI * 2, rad = Math.random() * 2.4;
+    pt.p.set(Math.cos(a) * rad, Math.random() * 1.2, Math.sin(a) * rad);
+    const d = Math.random() * Math.PI * 2, sp = 2 + Math.random() * 4.5;
+    pt.v.set(Math.cos(d) * sp, 3.5 + Math.random() * 5.5, Math.sin(d) * sp);
+    pt.r.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+    pt.rv.set((Math.random() - 0.5) * 9, (Math.random() - 0.5) * 9, (Math.random() - 0.5) * 9);
+    tmpColor.setHSL(Math.random(), 0.85, 0.58);
+    confMesh.setColorAt(i, tmpColor);
+  }
+  confMesh.instanceColor.needsUpdate = true;
+
+  const fin = document.getElementById('finale');
+  fin.classList.add('show');
+  clearTimeout(celebrate._t);
+  celebrate._t = setTimeout(() => fin.classList.remove('show'), 4200);
+
+  // 🎵 صدای جشن
+  sfxCelebrate();
+}
+
+function updateConfetti(dt){
+  if (!confMesh.visible) return;
+  confTime -= dt;
+  if (confTime <= 0){ confMesh.visible = false; return; }
+  for (let i = 0; i < CONF_N; i++){
+    const pt = confParts[i];
+    pt.v.y -= 11 * dt;
+    pt.p.addScaledVector(pt.v, dt);
+    pt.r.x += pt.rv.x * dt; pt.r.y += pt.rv.y * dt; pt.r.z += pt.rv.z * dt;
+    dummy2.position.copy(pt.p);
+    dummy2.rotation.copy(pt.r);
+    dummy2.scale.setScalar(1);
+    dummy2.updateMatrix();
+    confMesh.setMatrixAt(i, dummy2.matrix);
+  }
+  confMesh.instanceMatrix.needsUpdate = true;
+}
+
+/* ==========================================================
+   ۷) ماشین حالت آموزشی
+   ========================================================== */
+const TOTAL_STEPS = 15;                       // ۳ دور × ۵ مرحله
+const STAGE_RADIUS = [1.3, 5.2, 7.2, 8.5, 1.3]; // شعاع کادربندی هر مرحله
+const COMPRESS_TO = 0.1;                      // مکعب ۱۰ واحدی → ۱ واحد
+
+let currentStep  = -1;
+let playing      = false;
+let speed        = 1;
+let autoTimer    = 0;
+let targetRadius = STAGE_RADIUS[0];
+let currentRadius = STAGE_RADIUS[0];
+
+const valueEl  = document.getElementById('value');
+const descEl   = document.getElementById('desc');
+const segEls   = [...document.querySelectorAll('#progress .seg')];
+const btnPlay  = document.getElementById('btnPlay');
+const btnPrev  = document.getElementById('btnPrev');
+const btnNext  = document.getElementById('btnNext');
+const btnMute  = document.getElementById('btnMute');
+
+/* ---------- به‌روزرسانی رابط ---------- */
+function updateHUD(step){
+  const r = (step / 5) | 0, s = step % 5;
+  const hue = hueForStage(r, s);
+  document.documentElement.style.setProperty('--accent', `hsl(${hue}, 68%, 42%)`);
+  valueEl.textContent = faNum(valueForStage(r, s));
+  descEl.textContent  = DESCS[r][s];
+}
+
+function updateProgress(step){
+  const r = (step / 5) | 0, s = step % 5;
+  segEls.forEach((el, i) => {
+    el.classList.toggle('active', i === r);
+    el.classList.toggle('done', i < r);
+    let p = 0;
+    if (i < r) p = 1;
+    else if (i === r) p = (s + 1) / 5;
+    el.querySelector('i').style.width = (p * 100) + '%';
+  });
+  btnPrev.disabled = step <= 0;
+  btnNext.disabled = step >= TOTAL_STEPS - 1;
+}
+
+/* ---------- حالت ایستا (بدون انیمیشن) ---------- */
+function renderStatic(r, s){
+  cancelTweens();
+  shapeGroup.scale.set(1, 1, 1);
+  cubeMat.emissiveIntensity = 0;
+
+  const hue = hueForStage(r, s);
+  if (s === 4){
+    buildShape(hue, 0, 1);
+    targetRadius = currentRadius = STAGE_RADIUS[0];
+  } else {
+    const count = Math.pow(10, s);
+    buildShape(hue, s, count);
+    targetRadius = currentRadius = STAGE_RADIUS[s];
+  }
+}
+
+/* ---------- انیمیشن هر مرحله ---------- */
+function animateStep(r, s){
+  const hue = ROUNDS[r].hue;
+  shapeGroup.scale.set(1, 1, 1);
+  cubeMat.emissiveIntensity = 0;
+
+  /* --- مرحله ۰: مکعب واحد (همان مکعب فشرده‌شدهٔ دور قبل) --- */
+  if (s === 0){
+    buildShape(hue, 0, 1);
+    targetRadius = STAGE_RADIUS[0];
+    return;
+  }
+
+  /* --- مراحل ۱ تا ۳: ۱۰ → نوار، ۱۰ نوار → صفحه، ۱۰ صفحه → مکعب --- */
+  if (s >= 1 && s <= 3){
+    const count = Math.pow(10, s);
+    const fromFn = [ null,
+      (i) => LAYOUT.single(i),
+      (i) => LAYOUT.bar(i % 10),
+      (i) => LAYOUT.plane(i % 100)
+    ][s];
+    const toFn = [ null, LAYOUT.bar, LAYOUT.plane, LAYOUT.cube ][s];
+
+    shapeMesh.count = count;
+    outlineMesh.count = count;
+
+    for (let i = 0; i < count; i++){
+      tmpColor.setHSL(hue / 360, 0.70, instanceLightness(i, s));
+      shapeMesh.setColorAt(i, tmpColor);
+    }
+    shapeMesh.instanceColor.needsUpdate = true;
+
+    const r0 = STAGE_RADIUS[s - 1], r1 = STAGE_RADIUS[s];
+
+    // 🎵 صدای ساخت (هم‌زمان با شروع انیمیشن، با پایان‌بندی هماهنگ)
+    const animDur = 1.3 / speed;
+    sfxBuild(animDur);
+
+    tween({
+      duration: 1.3,
+      ease: easeInOutCubic,
+      onUpdate: (e) => {
+        for (let i = 0; i < count; i++){
+          const a = fromFn(i), b = toFn(i);
+          setInstanceTransform(
+            i,
+            lerp(a[0], b[0], e),
+            lerp(a[1], b[1], e),
+            lerp(a[2], b[2], e),
+            1
+          );
+        }
+        shapeMesh.instanceMatrix.needsUpdate = true;
+        outlineMesh.instanceMatrix.needsUpdate = true;
+        targetRadius = lerp(r0, r1, e);
+      }
+    });
+    return;
+  }
+
+  /* --- مرحله ۴: فشرده‌سازی --- */
+  const hue0 = ROUNDS[r].hue;
+  const hue1 = ROUNDS[Math.min(r + 1, 2)].hue;
+
+  // 🎵 صدای فشرده‌سازی
+  const compDur = 2.1 / speed;
+  sfxCompress(compDur);
+
+  tween({
+    duration: 2.1,
+    ease: easeInOutCubic,
+    onUpdate: (e, raw) => {
+      const pulse = Math.sin(Math.PI * raw);          // ۰ → ۱ → ۰
+      const base  = lerp(1, COMPRESS_TO, e);          // مقیاس کلی
+
+      // squash & stretch
+      shapeGroup.scale.set(
+        base * (1 + 0.10 * pulse),
+        base * (1 - 0.18 * pulse),
+        base * (1 + 0.10 * pulse)
+      );
+
+      // تغییر تدریجی رنگ به رنگ دور بعد + درخشش
+      const hueNow = lerp(hue0, hue1, e);
+      for (let i = 0; i < 1000; i++){
+        const y = ((i / 10) | 0) % 10;
+        const l = clamp((0.42 + 0.22 * (y / 9)) * (1 + 0.60 * pulse), 0, 0.95);
+        tmpColor.setHSL(hueNow / 360, 0.70, l);
+        shapeMesh.setColorAt(i, tmpColor);
+      }
+      shapeMesh.instanceColor.needsUpdate = true;
+
+      cubeMat.emissiveIntensity = pulse * 0.55;
+      targetRadius = lerp(STAGE_RADIUS[3], STAGE_RADIUS[4], e);
+    },
+    onComplete: () => {
+      shapeGroup.scale.set(1, 1, 1);
+      cubeMat.emissiveIntensity = 0;
+
+      // تبدیل به یک مکعب تک با رنگ جدید
+      buildShape(hue1, 0, 1);
+      targetRadius = STAGE_RADIUS[0];
+
+      // پاپ + فلش
+      tween({
+        duration: 0.6,
+        ease: easeOutBack,
+        onUpdate: (e) => shapeGroup.scale.setScalar(0.75 + 0.25 * e),
+        onComplete: () => shapeGroup.scale.setScalar(1)
+      });
+      tween({
+        duration: 0.55,
+        ease: easeOutCubic,
+        onUpdate: (e) => { cubeMat.emissiveIntensity = (1 - e) * 0.85; },
+        onComplete: () => { cubeMat.emissiveIntensity = 0; }
+      });
+
+      if (r === 2) celebrate();
+    }
+  });
+}
+
+/* ---------- رفتن به یک گام ---------- */
+function goTo(step, animate = true){
+  step = clamp(step, 0, TOTAL_STEPS - 1);
+  if (step === currentStep) return;
+
+  const prev = currentStep;
+  currentStep = step;
+
+  const r = (step / 5) | 0, s = step % 5;
+  const canAnimate = animate && prev >= 0 && step === prev + 1;
+
+  cancelTweens();
+  if (canAnimate) {
+    // 🎵 صدای شروع دور (مکعب واحد) — قبل از انیمیشن ساخت
+    if (s === 0) sfxUnit();
+    animateStep(r, s);
+  } else {
+    renderStatic(r, s);
+  }
+
+  updateHUD(step);
+  updateProgress(step);
+  autoTimer = 1.35;
+}
+
+/* ---------- پخش خودکار ---------- */
+function updateAutoPlay(dt){
+  if (!playing) return;
+  if (isAnimating()) return;
+  autoTimer -= dt;
+  if (autoTimer > 0) return;
+
+  if (currentStep >= TOTAL_STEPS - 1){
+    playing = false;
+    btnPlay.textContent = 'پخش';
+    return;
+  }
+  goTo(currentStep + 1, true);
+}
+
+/* ==========================================================
+   ۸) دوربین خودکار
+   ========================================================== */
+function updateCamera(dt){
+  currentRadius += (targetRadius - currentRadius) * Math.min(1, dt * 6);
+
+  // کادربندی متناسب با نسبت تصویر
+  const vFov = camera.fov * Math.PI / 180;
+  const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+  const fov  = Math.min(vFov, hFov);
+  const dist = (currentRadius / Math.sin(fov / 2)) * 1.15;
+
+  // اگر کاربر در حال چرخاندن/زوم است، دخالت نکن
+  if (performance.now() - lastInteract < 2500) return;
+
+  const dir = camera.position.clone().sub(controls.target);
+  const cur = dir.length();
+  if (cur < 0.001) return;
+  dir.divideScalar(cur);
+
+  const nd = cur + (dist - cur) * Math.min(1, dt * 3.5);
+  camera.position.copy(controls.target).addScaledVector(dir, nd);
+}
+
+/* ==========================================================
+   ۹) رندر
+   ========================================================== */
+let VW = 1, VH = 1;
+
+function resize(){
+  const w = stageEl.clientWidth  || 1;
+  const h = stageEl.clientHeight || 1;
+  VW = w; VH = h;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+
+function render(){
+  // --- صحنهٔ اصلی ---
+  renderer.setScissorTest(false);
+  renderer.setViewport(0, 0, VW, VH);
+  renderer.setClearColor(0x000000, 0);   // شفاف تا پس‌زمینهٔ CSS دیده شود
+  renderer.clear(true, true, true);
+  renderer.render(scene, camera);
+
+  // --- مکعب مرجع در گوشه ---
+  const S = window.innerWidth <= 520 ? 96 : CORNER_SIZE;
+  const M = window.innerWidth <= 520 ? 8  : CORNER_MARGIN;
+  renderer.setScissorTest(true);
+  renderer.setScissor(M, M, S, S);
+  renderer.setViewport(M, M, S, S);
+  renderer.clear(true, true, true);
+  renderer.render(cornerScene, cornerCam);
+  renderer.setScissorTest(false);
+  renderer.setViewport(0, 0, VW, VH);
+}
+
+/* ==========================================================
+   ۱۰) حلقهٔ اصلی
+   ========================================================== */
+let prevTime = performance.now();
+
+function loop(now){
+  requestAnimationFrame(loop);
+
+  const dtReal = Math.min(0.05, (now - prevTime) / 1000);
+  prevTime = now;
+  const dt = dtReal * speed;
+
+  updateTweens(dt);
+  updateCamera(dtReal);
+  updateConfetti(dt);
+  updateAutoPlay(dt);
+
+  controls.update();
+  cornerCube.rotation.y += dtReal * 0.6;
+
+  render();
+}
+
+/* ==========================================================
+   ۱۱) اتصال کنترل‌های کاربر
+   ========================================================== */
+btnNext.addEventListener('click', () => {
+  setupAudio(); sfxClick();
+  playing = false; btnPlay.textContent = 'پخش';
+  goTo(currentStep + 1, true);
+});
+
+btnPrev.addEventListener('click', () => {
+  setupAudio(); sfxClick();
+  playing = false; btnPlay.textContent = 'پخش';
+  goTo(currentStep - 1, false);
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  setupAudio(); sfxClick();
+  playing = false; btnPlay.textContent = 'پخش';
+  confMesh.visible = false;
+  document.getElementById('finale').classList.remove('show');
+  goTo(0, false);
+});
+
+btnPlay.addEventListener('click', () => {
+  setupAudio(); sfxClick();
+  if (!playing && currentStep >= TOTAL_STEPS - 1) goTo(0, false);
+  playing = !playing;
+  btnPlay.textContent = playing ? 'توقف' : 'پخش';
+  autoTimer = 0.35;
+});
+
+document.getElementById('rngSpeed').addEventListener('input', (e) => {
+  speed = parseFloat(e.target.value) || 1;
+});
+
+// کلید قطع/وصل صدا
+btnMute.addEventListener('click', () => {
+  setupAudio();
+  muted = !muted;
+  btnMute.textContent = muted ? '🔇' : '🔊';
+  if (!muted) sfxClick();
+});
+
+window.addEventListener('resize', resize);
+if (window.ResizeObserver) new ResizeObserver(resize).observe(stageEl);
+
+/* ==========================================================
+   ۱۲) شروع
+   ========================================================== */
+resize();
+goTo(0, false);
+currentRadius = targetRadius;
+requestAnimationFrame(loop);
+
+/* ----------------------------------------------------------
+   بازبینی منطق اعداد:
+   دور ۱ (واحد = ۱)      : ۱  →  ۱۰  →  ۱۰۰  →  ۱٬۰۰۰   → فشرده = ۱٬۰۰۰
+   دور ۲ (واحد = ۱٬۰۰۰)  : ۱٬۰۰۰ → ۱۰٬۰۰۰ → ۱۰۰٬۰۰۰ → ۱٬۰۰۰٬۰۰۰ → فشرده = ۱٬۰۰۰٬۰۰۰
+   دور ۳ (واحد = ۱٬۰۰۰٬۰۰۰): ۱٬۰۰۰٬۰۰۰ → ۱۰٬۰۰۰٬۰۰۰ → ۱۰۰٬۰۰۰٬۰۰۰ → ۱٬۰۰۰٬۰۰۰٬۰۰۰ → فشرده = ۱٬۰۰۰٬۰۰۰٬۰۰۰
+   ✔ در همهٔ مراحل، هر مرحله ۱۰ برابر مرحلهٔ قبل است.
+   ---------------------------------------------------------- */
+</script>
+</body>
+</html>
