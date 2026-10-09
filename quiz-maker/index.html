@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>آزمونک | سامانه هوشمند آزمون‌ساز و کاربرگ مدارس</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50%' x='50%' text-anchor='middle' dominant-baseline='middle' font-size='54'>📝</text></svg>">
+  <meta name="description"
+    content="سامانه طراحی خودکار و چاپ آزمون‌های پایه‌های چهارم و ششم ابتدایی با قابلیت انتخاب دروس، چاپ در فرمت‌های A4 و A5 و تعویض تکی سوالات">
+
+  <!-- استایل فونت پینار و استایل اصلی -->
+  <link rel="stylesheet" href="css/fonts.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=3">
+</head>
+
+<body class="print-a4">
+
+  <!-- ================= نوار بالایی سامانه ================= -->
+  <header class="app-header no-print">
+    <div class="logo-area">
+      <div class="logo-icon">📝</div>
+      <div class="logo-text">
+        <h1>آزمونک‌ساز <small>توسط</small><a style="color: inherit; text-decoration: none;" href="https://ali.id.ir">علی
+            یعقوبی</a> <span class="logo-badge">نسخه
+            مدارس</span></h1>
+        <p>طراح هوشمند آزمونک و کاربرگ‌های استاندارد ابتدایی</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button class="btn btn-secondary btn-sm" id="btn-regenerate-exam" title="تولید مجدد تصادفی تمامی سوالات">
+        🎲 تولید مجدد آزمونک
+      </button>
+      <button class="btn btn-success" id="btn-print-exam" title="چاپ آزمونک یا خروجی PDF (Ctrl+P)">
+        🖨️ چاپ / ذخیره PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= کانتینر اصلی برنامه ================= -->
+  <div class="app-container">
+
+    <!-- ستون تنظیمات و کنترل‌ها (سایدبار) -->
+    <aside class="sidebar no-print">
+
+      <!-- ۱. انتخاب کتاب -->
+      <section class="panel-section">
+        <div class="panel-title">
+          <span>📚 انتخاب کتاب و درس</span>
+        </div>
+        <div class="book-selector-grid" id="book-selector-grid">
+          <!-- با جاوااسکریپت پر می‌شود -->
+        </div>
+      </section>
+
+      <!-- ۲. انتخاب دروس -->
+      <section class="panel-section">
+        <div class="panel-title">
+          <span>📑 فهرست دروس</span>
+          <span class="badge" id="pool-count-badge">۰ سوال موجود</span>
+        </div>
+
+        <div class="lessons-toolbar">
+          <button class="btn btn-outline btn-sm" id="btn-select-all-lessons">انتخاب همه</button>
+          <button class="btn btn-outline btn-sm" id="btn-deselect-all-lessons">لغو انتخاب</button>
+        </div>
+
+        <div class="lessons-list" id="lessons-list">
+          <!-- با جاوااسکریپت پر می‌شود -->
+        </div>
+      </section>
+
+      <!-- ۳. پیکربندی آزمون -->
+      <section class="panel-section">
+        <div class="panel-title">
+          <span>⚙️ ساختار آزمونک و چاپ</span>
+        </div>
+
+        <!-- تعداد سوالات -->
+        <div class="form-group">
+          <label class="form-label" for="question-count-input">
+            <span>تعداد سوالات برگه:</span>
+          </label>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button class="btn btn-outline btn-sm" id="btn-decrease-q"
+              style="width: 38px; height: 38px; font-size: 1.1rem;">−</button>
+            <input type="number" id="question-count-input" class="form-control"
+              style="text-align: center; font-weight: 700; font-size: 1.1rem;" value="10" min="1" max="100">
+            <button class="btn btn-outline btn-sm" id="btn-increase-q"
+              style="width: 38px; height: 38px; font-size: 1.1rem;">+</button>
+          </div>
+        </div>
+
+        <!-- قطع برگه (A4 / A5) -->
+        <div class="form-group">
+          <label class="form-label">قطع کاغذ آزمونک:</label>
+          <div class="format-toggle-group">
+            <button type="button" class="format-btn active" id="btn-format-a4">کاغذ A4 (کامل)</button>
+            <button type="button" class="format-btn" id="btn-format-a5">کاغذ A5 (نیم‌برگ)</button>
+          </div>
+        </div>
+
+        <!-- گزینه پاسخ‌نامه -->
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="chk-include-answer-key" checked>
+            <span>همراه با پاسخ‌نامه تشریحی (صفحه مجزا)</span>
+          </label>
+        </div>
+
+        <!-- فضای خط‌دار پاسخ‌نویسی -->
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="chk-answer-space" checked>
+            <span>ایجاد فضای پاسخ‌نویسی (خط‌دار)</span>
+          </label>
+        </div>
+
+        <div class="form-group" id="answer-lines-row"
+          style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 0.82rem; color: var(--text-muted);">تعداد خطوط برای هر سوال:</span>
+          <select id="select-lines-count" class="form-control" style="width: 80px; padding: 0.3rem 0.5rem;">
+            <option value="1">۱ خط</option>
+            <option value="2" selected>۲ خط</option>
+            <option value="3">۳ خط</option>
+            <option value="4">۴ خط</option>
+          </select>
+        </div>
+
+        <!-- کنترل صفحه‌بندی -->
+        <div class="form-group" style="margin-top: 0.75rem;">
+          <label class="form-label" for="select-pagination-mode">صفحه‌بندی برگه آزمون:</label>
+          <select id="select-pagination-mode" class="form-control">
+            <option value="auto" selected>خودکار (پر کردن بهینه و کامل صفحه اول)</option>
+            <option value="all">تمام سوالات در ۱ صفحه (فشرده)</option>
+            <option value="5">۵ سوال در هر صفحه</option>
+            <option value="6">۶ سوال در هر صفحه</option>
+            <option value="7">۷ سوال در هر صفحه</option>
+            <option value="8">۸ سوال در هر صفحه</option>
+            <option value="10">۱۰ سوال در هر صفحه</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- ۴. تنظیمات سربرگ آزمون -->
+      <section class="panel-section">
+        <div class="settings-accordion">
+          <div class="accordion-header" id="header-settings-toggle">
+            <span>✏️ ویرایش مشخصات سربرگ برگه</span>
+            <span class="acc-icon">▼</span>
+          </div>
+          <div class="accordion-body" id="header-settings-body">
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-bismillah">متن طلیعه:</label>
+              <input type="text" id="hdr-bismillah" class="form-control" value="به نام خدا">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-dept">نام اداره آموزش و پرورش:</label>
+              <input type="text" id="hdr-dept" class="form-control" value="آموزش و پرورش شهرستان جویبار">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-school">نام دبستان / آموزشگاه:</label>
+              <input type="text" id="hdr-school" class="form-control" value="دبستان شهید قائمی">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-title">عنوان ارزشیابی:</label>
+              <input type="text" id="hdr-title" class="form-control" value="آزمونک ارزشیابی کلاسی">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-grade">پایه تحصیلی:</label>
+              <input type="text" id="hdr-grade" class="form-control" value="پایه ششم ابتدایی">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-subject">نام درس:</label>
+              <input type="text" id="hdr-subject" class="form-control" value="مطالعات اجتماعی">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-lessons-input">محدوده دروس:</label>
+              <input type="text" id="hdr-lessons-input" class="form-control" value="درس‌های ۱، ۲ و ۳">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-date">تاریخ برگزاری:</label>
+              <input type="text" id="hdr-date" class="form-control" value="۱۴۰۳/۰۸/۱۵">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hdr-duration">مدت پاسخگویی:</label>
+              <input type="text" id="hdr-duration" class="form-control" value="۴۵ دقیقه">
+            </div>
+
+
+          </div>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- بخش پیش‌نمایش برگه امتحانی (Canvas) -->
+    <main class="preview-area">
+
+      <!-- تولبار بالای پیش‌نمایش -->
+      <div class="preview-toolbar no-print">
+        <span class="toolbar-status" id="preview-status-text">آماده چاپ</span>
+        <button class="btn btn-outline btn-sm" onclick="window.QuiznerApp.generateExam()">
+          🎲 سوالات رندوم جدید
+        </button>
+        <button class="btn btn-success btn-sm" onclick="window.QuiznerApp.printExam()">
+          🖨️ چاپ مستقیم / PDF
+        </button>
+      </div>
+
+      <!-- برگه آزمون و پاسخ‌نامه -->
+      <div id="exam-preview-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <!-- با جاوااسکریپت رندر می‌شود -->
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- اسکریپت پایگاه داده محلی (بدون نیاز به سرور و بدون خطای CORS) -->
+  <script src="js/data.js?v=3"></script>
+  <!-- اسکریپت منطق برنامه -->
+  <script src="js/app.js?v=3"></script>
+
+</body>
+
+</html>

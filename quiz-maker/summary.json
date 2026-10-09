@@ -1,0 +1,104 @@
+{
+  "generated_at": "2026-10-09",
+  "total_subjects": 6,
+  "total_lessons": 109,
+  "total_questions": 2022,
+  "subjects": [
+    {
+      "order": 1,
+      "id": "hedie6",
+      "filename": "hedie_asmani_sheshom.json",
+      "title": "هدیه های آسمانی ششم ابتدایی",
+      "grade": "ششم ابتدایی",
+      "subject": "هدیه‌های آسمان",
+      "source_hub_url": "https://hamyar.me/soalmatn-hedie6/",
+      "total_lessons": 17,
+      "total_questions": 261,
+      "types": {
+        "تشریحی": 212,
+        "جای خالی": 44,
+        "نکته / صحیح و غلط": 5
+      }
+    },
+    {
+      "order": 2,
+      "id": "motaleat6",
+      "filename": "motaleat_ejtemaei_sheshom.json",
+      "title": "مطالعات اجتماعی ششم ابتدایی",
+      "grade": "ششم ابتدایی",
+      "subject": "مطالعات اجتماعی",
+      "source_hub_url": "https://hamyar.me/soalmtan-motaleat6/",
+      "total_lessons": 24,
+      "total_questions": 409,
+      "types": {
+        "تشریحی": 382,
+        "جای خالی": 25,
+        "نکته / صحیح و غلط": 2
+      }
+    },
+    {
+      "order": 3,
+      "id": "olum6",
+      "filename": "oloom_tajrobi_sheshom.json",
+      "title": "علوم تجربی ششم ابتدایی",
+      "grade": "ششم ابتدایی",
+      "subject": "علوم تجربی",
+      "source_hub_url": "https://hamyar.me/soalmatn-olum6/",
+      "total_lessons": 14,
+      "total_questions": 403,
+      "types": {
+        "تشریحی": 356,
+        "جای خالی": 42,
+        "نکته / صحیح و غلط": 5
+      }
+    },
+    {
+      "order": 4,
+      "id": "hedie4",
+      "filename": "hedie_asmani_chaharom.json",
+      "title": "هدیه های آسمانی چهارم ابتدایی",
+      "grade": "چهارم ابتدایی",
+      "subject": "هدیه‌های آسمان",
+      "source_hub_url": "https://hamyar.me/soalmatn-4hedie/",
+      "total_lessons": 19,
+      "total_questions": 188,
+      "types": {
+        "تشریحی": 157,
+        "جای خالی": 30,
+        "نکته / صحیح و غلط": 1
+      }
+    },
+    {
+      "order": 5,
+      "id": "motaleat4",
+      "filename": "motaleat_ejtemaei_chaharom.json",
+      "title": "مطالعات اجتماعی چهارم ابتدایی",
+      "grade": "چهارم ابتدایی",
+      "subject": "مطالعات اجتماعی",
+      "source_hub_url": "https://hamyar.me/soalmatn-4mot/",
+      "total_lessons": 22,
+      "total_questions": 413,
+      "types": {
+        "تشریحی": 348,
+        "جای خالی": 61,
+        "نکته / صحیح و غلط": 4
+      }
+    },
+    {
+      "order": 6,
+      "id": "olum4",
+      "filename": "oloom_tajrobi_chaharom.json",
+      "title": "علوم تجربی چهارم ابتدایی",
+      "grade": "چهارم ابتدایی",
+      "subject": "علوم تجربی",
+      "source_hub_url": "https://hamyar.me/soalmatn-4olum/",
+      "total_lessons": 13,
+      "total_questions": 348,
+      "types": {
+        "تشریحی": 328,
+        "جای خالی": 5,
+        "نکته / صحیح و غلط": 15
+      }
+    }
+  ]
+}

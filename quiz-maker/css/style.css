@@ -1,0 +1,1065 @@
+/* ============================================================
+   کوییزنر (Quizner) - سامانه هوشمند طراحی و چاپ آزمون مدارس
+   استایل‌های مدرن و استانداردهای چاپ A4 و A5
+   ============================================================ */
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-border: #bfdbfe;
+
+    --secondary: #059669;
+    --secondary-hover: #047857;
+
+    --accent: #8b5cf6;
+    --accent-light: #f5f3ff;
+
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-sidebar: #ffffff;
+    --border-color: #e2e8f0;
+    --border-focus: #3b82f6;
+
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-sheet: 0 20px 25px -5px rgb(0 0 0 / 0.15), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    direction: rtl;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* ================= Top App Header ================= */
+.app-header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.logo-text h1 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-badge {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-weight: 500;
+}
+
+.logo-text p {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ================= Buttons ================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.btn-success {
+    background-color: var(--secondary);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+}
+
+.btn-success:hover {
+    background-color: var(--secondary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
+}
+
+.btn-secondary {
+    background-color: #334155;
+    color: #f8fafc;
+    border-color: #475569;
+}
+
+.btn-secondary:hover {
+    background-color: #475569;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+.btn-outline:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: var(--radius-sm);
+}
+
+/* ================= Main Layout ================= */
+.app-container {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    flex: 1;
+    min-height: calc(100vh - 65px);
+}
+
+@media (max-width: 1024px) {
+    .app-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================= Sidebar Controls ================= */
+.sidebar {
+    background-color: var(--bg-sidebar);
+    border-left: 1px solid var(--border-color);
+    padding: 1.25rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 65px);
+    position: sticky;
+    top: 65px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.panel-section {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.panel-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.panel-title span.badge {
+    font-size: 0.75rem;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 1px 7px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+}
+
+/* Book Select Cards */
+.book-selector-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+}
+
+.book-card {
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    background-color: #fafbfc;
+    position: relative;
+    overflow: hidden;
+}
+
+.book-card:hover {
+    border-color: var(--primary);
+    background-color: #f8fafc;
+    transform: translateY(-2px);
+}
+
+.book-card.active {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.book-card .grade-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    margin-bottom: 0.25rem;
+}
+
+.tag-grade6 {
+    background-color: #e0e7ff;
+    color: #3730a3;
+}
+
+.tag-grade4 {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.book-card .book-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.2rem;
+}
+
+.book-card .q-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* Lessons Checklist */
+.lessons-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+}
+
+.lessons-list {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    background-color: #fdfdfd;
+}
+
+.lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.8rem;
+    user-select: none;
+}
+
+.lesson-item:hover {
+    background-color: #f1f5f9;
+}
+
+.lesson-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.lesson-item .lesson-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lesson-item .l-title {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.lesson-item .l-badge {
+    font-size: 0.68rem;
+    background: #f1f5f9;
+    color: var(--text-muted);
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 0.85rem;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.35rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: var(--transition);
+    background-color: #ffffff;
+}
+
+.form-control:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.format-toggle-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.format-btn {
+    padding: 0.5rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background-color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.format-btn:hover {
+    border-color: var(--primary);
+}
+
+.format-btn.active {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* Accordion for Header Settings */
+.settings-accordion {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.accordion-header {
+    padding: 0.65rem 0.75rem;
+    background-color: #f8fafc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.83rem;
+    font-weight: 700;
+}
+
+.accordion-body {
+    padding: 0.75rem;
+    display: none;
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.accordion-body.open {
+    display: flex;
+}
+
+/* ================= Preview Canvas Area ================= */
+.preview-area {
+    background-color: #cbd5e1;
+    padding: 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.preview-toolbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 1rem;
+    z-index: 30;
+}
+
+.toolbar-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* ================= Exam Paper Styling ================= */
+.exam-page {
+    background-color: #ffffff;
+    box-shadow: var(--shadow-sheet);
+    border-radius: 2px;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0 auto;
+    color: #000000;
+    transition: all 0.2s ease;
+}
+
+/* A4 Dimensions (210mm x 297mm) */
+.exam-page.format-a4 {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 12mm 15mm;
+}
+
+/* A5 Dimensions (148mm x 210mm) */
+.exam-page.format-a5 {
+    width: 148mm;
+    min-height: 210mm;
+    padding: 8mm 10mm;
+    font-size: 0.88rem;
+}
+
+/* Exam Border Framework */
+.exam-frame {
+    border: 1.5px solid #1e293b;
+    border-radius: 4px;
+    min-height: calc(297mm - 24mm);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.format-a5 .exam-frame {
+    min-height: calc(210mm - 16mm);
+}
+
+/* Header Area */
+.exam-header {
+    border-bottom: 1.5px solid #1e293b;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #ffffff;
+}
+
+.header-top-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr 0.9fr;
+    align-items: center;
+}
+
+.header-right,
+.header-center,
+.header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 0.78rem;
+}
+
+.format-a5 .exam-header {
+    padding: 5px 8px;
+    gap: 5px;
+}
+
+.format-a5 .header-right,
+.format-a5 .header-center,
+.format-a5 .header-left {
+    font-size: 0.7rem;
+    gap: 2px;
+}
+
+.header-center {
+    text-align: center;
+    align-items: center;
+}
+
+.header-center .bismillah {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+
+.format-a5 .header-center .bismillah {
+    font-size: 0.85rem;
+}
+
+.header-center .exam-main-title {
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+.format-a5 .header-center .exam-main-title {
+    font-size: 0.92rem;
+}
+
+.header-center .exam-sub-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.header-left {
+    text-align: left;
+    direction: ltr;
+}
+
+.header-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.header-label {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.header-val {
+    font-weight: 500;
+}
+
+/* Integrated Student Name Row in Header */
+.header-student-row {
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 6px;
+    display: flex;
+    align-items: center;
+    font-size: 0.84rem;
+}
+
+.student-name-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.student-name-field .field-label {
+    font-weight: 700;
+    color: #0f172a;
+    white-space: nowrap;
+}
+
+.student-name-field .dots-line {
+    color: #94a3b8;
+    letter-spacing: 2px;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.format-a5 .header-student-row {
+    padding-top: 4px;
+    font-size: 0.74rem;
+}
+
+.exam-header-compact {
+    padding: 6px 12px;
+    background-color: #f8fafc;
+}
+
+.format-a5 .exam-header-compact {
+    padding: 4px 8px;
+}
+
+/* Exam Body & Questions */
+.exam-body {
+    padding: 12px 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.format-a5 .exam-body {
+    padding: 8px 10px;
+    gap: 8px;
+}
+
+.question-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.question-row:hover {
+    background-color: #f8fafc;
+}
+
+.q-number {
+    font-weight: 800;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.format-a5 .q-number {
+    min-width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+}
+
+.q-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.q-text {
+    font-size: 0.94rem;
+    line-height: 1.8;
+    font-weight: 600;
+    color: #0f172a;
+    word-break: break-word;
+    width: 100%;
+}
+
+.format-a5 .q-text {
+    font-size: 0.84rem;
+    line-height: 1.6;
+}
+
+.q-badge-type {
+    font-size: 0.65rem;
+    background: #e2e8f0;
+    color: #475569;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Answer Space Lines */
+.answer-space {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.format-a5 .answer-space {
+    margin-top: 4px;
+    gap: 8px;
+}
+
+.answer-line {
+    border-bottom: 1px dotted #94a3b8;
+    width: 100%;
+    height: 14px;
+}
+
+.format-a5 .answer-line {
+    height: 10px;
+}
+
+/* Score Box for Question (بارم) */
+.q-score-box {
+    width: 38px;
+    height: 28px;
+    border: 1px solid #cbd5e1;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #64748b;
+    flex-shrink: 0;
+}
+
+.format-a5 .q-score-box {
+    width: 32px;
+    height: 24px;
+    font-size: 0.68rem;
+}
+
+/* Floating Actions on Question Hover */
+.q-actions {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+    background: #ffffff;
+    padding: 2px 4px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    z-index: 10;
+}
+
+.question-row:hover .q-actions {
+    display: flex;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    transition: var(--transition);
+}
+
+.btn-icon:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.btn-icon.btn-delete:hover {
+    background-color: var(--danger-light);
+    color: var(--danger);
+}
+
+/* Exam Footer */
+.exam-footer {
+    border-top: 1px solid #1e293b;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: #475569;
+    background-color: #ffffff;
+}
+
+.format-a5 .exam-footer {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+}
+
+/* ================= Answer Key Sheet ================= */
+.answer-sheet {
+    background-color: #ffffff;
+}
+
+.answer-sheet-header {
+    background-color: #f1f5f9;
+    border-bottom: 1.5px solid #1e293b;
+    padding: 8px 14px;
+    text-align: center;
+}
+
+.answer-sheet-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.ans-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ans-row:last-child {
+    border-bottom: none;
+}
+
+.ans-content {
+    flex: 1;
+}
+
+.ans-q-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.ans-text {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #047857;
+    font-weight: 600;
+    white-space: pre-line;
+}
+
+/* ================= Printable Styles ================= */
+@media print {
+
+    /* Complete Scrollbar Elimination */
+    *,
+    *::before,
+    *::after {
+        overflow: visible !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+    }
+
+    *::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    html,
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Hide all UI elements */
+    .app-header,
+    .sidebar,
+    .preview-toolbar,
+    .q-actions,
+    .q-badge-type,
+    .btn,
+    .no-print {
+        display: none !important;
+    }
+
+    .app-container,
+    .preview-area,
+    #exam-preview-container {
+        display: block !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .exam-page {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        page-break-after: always;
+        break-after: page;
+    }
+
+    .exam-frame {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        border-color: #000000 !important;
+    }
+
+    .answer-sheet {
+        page-break-before: always;
+        break-before: page;
+    }
+
+    /* Specific Paper Size Rules */
+    body.print-a4 {
+        @page {
+            size: A4 portrait;
+            margin: 10mm 12mm;
+        }
+    }
+
+    body.print-a5 {
+        @page {
+            size: A5 portrait;
+            margin: 6mm 8mm;
+        }
+    }
+
+    .question-row {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .question-row:hover {
+        background-color: transparent !important;
+    }
+
+    /* High contrast black text for crisp printing */
+    .q-text,
+    .header-val,
+    .exam-main-title,
+    .bismillah,
+    .student-name-field .field-label,
+    .student-name-field .dots-line {
+        color: #000000 !important;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.exam-page {
+    animation: fadeIn 0.3s ease-out;
+}
