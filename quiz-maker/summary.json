@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-09",
-  "total_subjects": 6,
-  "total_lessons": 109,
-  "total_questions": 2022,
+  "generated_at": "2026-10-10",
+  "total_subjects": 9,
+  "total_lessons": 159,
+  "total_questions": 3372,
   "subjects": [
     {
       "order": 1,
@@ -53,7 +53,55 @@
       }
     },
     {
-      "order": 4,
+      "id": "hedie5",
+      "filename": "hedie_asmani_panjom.json",
+      "title": "هدیه های آسمانی پنجم ابتدایی",
+      "grade": "پنجم ابتدایی",
+      "subject": "هدیه‌های آسمان",
+      "source_hub_url": "https://hamyar.me/soalmatn-hedie5/",
+      "total_lessons": 17,
+      "total_questions": 375,
+      "types": {
+        "تشریحی": 325,
+        "جای خالی": 19,
+        "نکته / صحیح و غلط": 31
+      },
+      "order": 4
+    },
+    {
+      "id": "motaleat5",
+      "filename": "motaleat_ejtemaei_panjom.json",
+      "title": "مطالعات اجتماعی پنجم ابتدایی",
+      "grade": "پنجم ابتدایی",
+      "subject": "مطالعات اجتماعی",
+      "source_hub_url": "https://hamyar.me/soalmatn-5mot/",
+      "total_lessons": 21,
+      "total_questions": 680,
+      "types": {
+        "تشریحی": 570,
+        "جای خالی": 109,
+        "نکته / صحیح و غلط": 1
+      },
+      "order": 5
+    },
+    {
+      "id": "olum5",
+      "filename": "oloom_tajrobi_panjom.json",
+      "title": "علوم تجربی پنجم ابتدایی",
+      "grade": "پنجم ابتدایی",
+      "subject": "علوم تجربی",
+      "source_hub_url": "https://hamyar.me/soal-matn-5-olum/",
+      "total_lessons": 12,
+      "total_questions": 295,
+      "types": {
+        "تشریحی": 253,
+        "جای خالی": 41,
+        "نکته / صحیح و غلط": 1
+      },
+      "order": 6
+    },
+    {
+      "order": 7,
       "id": "hedie4",
       "filename": "hedie_asmani_chaharom.json",
       "title": "هدیه های آسمانی چهارم ابتدایی",
@@ -69,7 +117,7 @@
       }
     },
     {
-      "order": 5,
+      "order": 8,
       "id": "motaleat4",
       "filename": "motaleat_ejtemaei_chaharom.json",
       "title": "مطالعات اجتماعی چهارم ابتدایی",
@@ -85,7 +133,7 @@
       }
     },
     {
-      "order": 6,
+      "order": 9,
       "id": "olum4",
       "filename": "oloom_tajrobi_chaharom.json",
       "title": "علوم تجربی چهارم ابتدایی",

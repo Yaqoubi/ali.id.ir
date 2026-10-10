@@ -1,5 +1,5 @@
 // ============================================================
-// کوییزنر (Quizner) - اسکریپت اصلی مدیریت و طراحی آزمون
+// آزمونک‌ساز (AzmoonakSaz) - اسکریپت اصلی مدیریت و طراحی آزمونک
 // ============================================================
 
 (function () {
@@ -13,13 +13,12 @@
     paperFormat: 'a4', // 'a4' | 'a5'
     includeAnswerKey: true,
     hasAnswerLines: true,
-    answerLinesCount: 3,
-    paginationMode: 'auto',
+    answerLinesCount: 2,
     headerSettings: {
       bismillah: 'به نام خدا',
       schoolName: 'دبستان شهید قائمی',
-      educationDept: 'آموزش و پرورش شهرستان جویبار',
-      examTitle: 'آزمونک ارزشیابی کلاسی',
+      educationDept: 'مدیریت آموزش و پرورش شهرستان جویبار',
+      examTitle: 'آزمونک ارزشیابی نوبت کلاسی',
       grade: 'پایه ششم ابتدایی',
       subject: 'مطالعات اجتماعی',
       lessonsStr: 'درس‌های ۱، ۲ و ۳',
@@ -81,7 +80,9 @@
       card.className = `book-card ${b.id === state.selectedBookId ? 'active' : ''}`;
       card.dataset.bookId = b.id;
 
-      const gradeTagClass = b.grade.includes('ششم') ? 'tag-grade6' : 'tag-grade4';
+      const gradeTagClass = b.grade.includes('ششم') 
+        ? 'tag-grade6' 
+        : (b.grade.includes('پنجم') ? 'tag-grade5' : 'tag-grade4');
 
       card.innerHTML = `
         <span class="grade-tag ${gradeTagClass}">${b.grade}</span>
@@ -301,62 +302,70 @@
     renderExamSheet();
   }
 
-  // Chunk questions for smart pagination
+  // Estimate individual question height in pixels considering text length and answer lines
+  function estimateQuestionHeight(q, isA4, hasAnswerLines, linesCount) {
+    const charsPerLine = isA4 ? 75 : 50;
+    const textLen = (q.question || '').length;
+    const linesOfText = Math.max(1, Math.ceil(textLen / charsPerLine));
+    const textHeight = linesOfText * (isA4 ? 24 : 20);
+    let answerHeight = 0;
+    if (hasAnswerLines) {
+      answerHeight = linesCount * (isA4 ? 16 : 13) + (isA4 ? 8 : 6);
+    }
+    const paddingGap = isA4 ? 16 : 12;
+    return textHeight + answerHeight + paddingGap;
+  }
+
+  // Automatic smart pagination: strictly reserves space for the footer on every page so it NEVER overflows
   function chunkQuestions(questions) {
     if (questions.length === 0) return [];
-    const mode = state.paginationMode;
-    if (mode === 'all') return [questions];
-    if (typeof mode === 'number') {
-      const chunks = [];
-      for (let i = 0; i < questions.length; i += mode) {
-        chunks.push(questions.slice(i, i + mode));
-      }
-      return chunks;
-    }
 
-    // Auto mode: ظرفیت واقعی و کامل صفحه اول (با سربرگ) و صفحات بعدی (بدون سربرگ)
-    let p1Cap = 8;
-    let pNextCap = 11;
+    const isA4 = state.paperFormat === 'a4';
 
-    if (state.paperFormat === 'a4') {
-      if (!state.hasAnswerLines) {
-        p1Cap = 14; pNextCap = 18;
-      } else if (state.answerLinesCount === 1) {
-        p1Cap = 11; pNextCap = 14;
-      } else if (state.answerLinesCount === 2) {
-        p1Cap = 8; pNextCap = 11;
-      } else if (state.answerLinesCount === 3) {
-        p1Cap = 6; pNextCap = 9;
+    // Total printable frame heights in pixels (approx 96 DPI)
+    // A4: 277mm printable ≈ 1046px
+    // A5: 198mm printable ≈ 748px
+    const totalFrameHeight = isA4 ? 1046 : 748;
+
+    // Reserved sizes: Header (page 1 only), Footer (all pages), and safety buffer
+    const p1HeaderHeight = isA4 ? 125 : 95;
+    const footerHeight = isA4 ? 52 : 44; // Dedicated height reserved for footer + border + spacing
+    const safetyBuffer = isA4 ? 48 : 32; // Strict safety buffer so footer NEVER touches bottom or overflows
+
+    // Net available budget strictly for questions
+    const p1Budget = totalFrameHeight - (p1HeaderHeight + footerHeight + safetyBuffer);
+    const pNextBudget = totalFrameHeight - (footerHeight + safetyBuffer);
+
+    const pages = [];
+    let currentPage = [];
+    let currentHeight = 0;
+    let isFirstPage = true;
+
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      const qHeight = estimateQuestionHeight(q, isA4, state.hasAnswerLines, state.answerLinesCount);
+      const activeBudget = isFirstPage ? p1Budget : pNextBudget;
+
+      // If this is the very first question on the page, always place it
+      if (currentPage.length === 0) {
+        currentPage.push(q);
+        currentHeight += qHeight;
+      } else if ((currentHeight + qHeight) <= activeBudget) {
+        currentPage.push(q);
+        currentHeight += qHeight;
       } else {
-        p1Cap = 5; pNextCap = 7;
-      }
-    } else {
-      // A5
-      if (!state.hasAnswerLines) {
-        p1Cap = 9; pNextCap = 12;
-      } else if (state.answerLinesCount === 1) {
-        p1Cap = 7; pNextCap = 9;
-      } else if (state.answerLinesCount === 2) {
-        p1Cap = 5; pNextCap = 7;
-      } else if (state.answerLinesCount === 3) {
-        p1Cap = 4; pNextCap = 5;
-      } else {
-        p1Cap = 3; pNextCap = 4;
+        // Does not fit while strictly preserving footer space -> move to next page
+        pages.push(currentPage);
+        currentPage = [q];
+        currentHeight = qHeight;
+        isFirstPage = false;
       }
     }
 
-    // اگر تمام سوالات در صفحه اول جا می‌شوند (با ۱ سوال انعطاف‌پذیری برای جلوگیری از هدررفت کاغذ)
-    if (questions.length <= p1Cap + (questions.length <= p1Cap + 1 && state.answerLinesCount <= 2 ? 1 : 0)) {
-      return [questions];
+    if (currentPage.length > 0) {
+      pages.push(currentPage);
     }
 
-    // ابتدا صفحه اول تا ظرفیت کامل پر می‌شود، سپس سوالات باقی‌مانده به صفحات بعدی منتقل می‌شوند
-    const pages = [questions.slice(0, p1Cap)];
-    let rem = questions.slice(p1Cap);
-    while (rem.length > 0) {
-      pages.push(rem.slice(0, pNextCap));
-      rem = rem.slice(pNextCap);
-    }
     return pages;
   }
 
@@ -389,7 +398,7 @@
       const isFirstPage = (pageNum === 1);
       const isLastPage = (pageNum === totalPages);
 
-      // سربرگ فقط و فقط در صفحه اول قرار می‌گیرد؛ صفحات دوم و بعدی هیچ سربرگی ندارند
+      // Header for this page: ONLY for page 1! Pages 2 and beyond have NO header.
       let pageHeaderHtml = '';
       if (isFirstPage) {
         pageHeaderHtml = `
@@ -398,7 +407,7 @@
               <div class="header-right">
                 <div>${hdr.educationDept}</div>
                 <div style="font-weight: 700;">${hdr.schoolName}</div>
-                <div>سال تحصیلی ۱۴۰۶-۱۴۰۵</div>
+                <div>سال تحصیلی ۱۴۰۵-۱۴۰۶</div>
               </div>
               <div class="header-center">
                 <div class="bismillah">${hdr.bismillah}</div>
@@ -407,7 +416,7 @@
               </div>
               <div class="header-left">
                 <div><span>تاریخ:</span> <span class="header-val">${hdr.date}</span></div>
-                <div><span>مدت آزمون:</span> <span class="header-val">${hdr.duration}</span></div>
+                <div><span>مدت آزمونک:</span> <span class="header-val">${hdr.duration}</span></div>
               </div>
             </div>
 
@@ -420,9 +429,6 @@
             </div>
           </div>
         `;
-      } else {
-        // برای صفحات دوم و بعدی هیچ سربرگی قرار نمی‌گیرد
-        pageHeaderHtml = '';
       }
 
       // Questions for this page
@@ -512,7 +518,7 @@
               ${answersListHtml}
             </div>
             <div class="exam-footer">
-              <span>سامانه کوئیزنر</span>
+              <span>سامانه آزمونک‌ساز</span>
               <span>${hdr.designerCredit}</span>
             </div>
           </div>
@@ -525,7 +531,7 @@
     // Update status in toolbar
     const statusEl = document.getElementById('preview-status-text');
     if (statusEl) {
-      statusEl.textContent = `${toPersianDigits(state.currentQuestions.length)} سوال در ${toPersianDigits(totalPages)} برگه (کاغذ ${state.paperFormat.toUpperCase()})`;
+      statusEl.textContent = `${toPersianDigits(state.currentQuestions.length)} سوال در ${toPersianDigits(totalPages)} برگه آزمونک (کاغذ ${state.paperFormat.toUpperCase()})`;
     }
   }
 
@@ -674,20 +680,6 @@
       });
     }
 
-    // Pagination Mode
-    const selectPagination = document.getElementById('select-pagination-mode');
-    if (selectPagination) {
-      selectPagination.value = state.paginationMode;
-      selectPagination.addEventListener('change', (e) => {
-        const val = e.target.value;
-        if (val === 'auto' || val === 'all') {
-          state.paginationMode = val;
-        } else {
-          state.paginationMode = parseInt(val, 10);
-        }
-        renderExamSheet();
-      });
-    }
 
     // Header Settings Inputs
     const bindMap = {
@@ -776,7 +768,7 @@
   }
 
   // Expose global methods for inline HTML buttons
-  window.QuiznerApp = {
+  window.AzmoonakApp = window.AzmoonakSazApp = window.QuiznerApp = {
     swapQuestion,
     deleteQuestion,
     printExam,
