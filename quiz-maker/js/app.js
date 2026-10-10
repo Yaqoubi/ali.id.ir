@@ -407,7 +407,7 @@
               <div class="header-right">
                 <div>${hdr.educationDept}</div>
                 <div style="font-weight: 700;">${hdr.schoolName}</div>
-                <div>سال تحصیلی ۱۴۰۵-۱۴۰۶</div>
+                <div>سال تحصیلی ۱۴۰۶-۱۴۰۵</div>
               </div>
               <div class="header-center">
                 <div class="bismillah">${hdr.bismillah}</div>
@@ -511,7 +511,7 @@
               <div class="bismillah">${hdr.bismillah}</div>
               <div class="answer-sheet-title">کلید و پاسخ‌نامه تشریحی: ${hdr.subject} (${hdr.grade})</div>
               <div style="font-size: 0.8rem; color: #475569; margin-top: 3px;">
-                ${hdr.schoolName} | ${hdr.lessonsStr} | سال تحصیلی ۱۴۰۵-۱۴۰۶
+                ${hdr.schoolName} | ${hdr.lessonsStr} | سال تحصیلی ۱۴۰۶-۱۴۰۵
               </div>
             </div>
             <div class="exam-body">
