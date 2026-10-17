@@ -1,0 +1,610 @@
+<!doctype html>
+<!--
+  =====================================================
+   IP / WebRTC / DNS Leak Checker
+   Designer : Ali Yaqoubi
+   Website  : www.ali.id.ir
+  =====================================================
+-->
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Ali Yaqoubi">
+<title>بررسی IP و نشت WebRTC / DNS</title>
+<!-- Favicon (inline SVG) — Designer: Ali Yaqoubi | www.ali.id.ir -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d1117'/%3E%3Ccircle cx='32' cy='33' r='19' fill='none' stroke='%234c9aff' stroke-width='3.5'/%3E%3Cellipse cx='32' cy='33' rx='8' ry='19' fill='none' stroke='%234c9aff' stroke-width='3'/%3E%3Cpath d='M13 33h38' stroke='%234c9aff' stroke-width='3'/%3E%3Ccircle cx='47' cy='17' r='8' fill='%232ea043' stroke='%230d1117' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* Designer: Ali Yaqoubi — www.ali.id.ir */
+:root{
+  --bg:#0d1117; --card:#161b22; --card2:#1c232d; --text:#e6edf3; --muted:#8b98a8;
+  --border:#2a3340; --accent:#4c9aff; --ok:#2ea043; --warn:#d29922; --bad:#f85149;
+  --radius:16px;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#f3f5f9; --card:#ffffff; --card2:#f0f3f8; --text:#16202c; --muted:#5d6b7c; --border:#dde3ec; --accent:#1f6feb; }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Vazirmatn",Tahoma,"Segoe UI",system-ui,sans-serif; line-height:1.7;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+header h1{font-size:1.4rem;margin:0;font-weight:800}
+header p{margin:0;color:var(--muted);font-size:.9rem}
+button{
+  font:inherit;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--text);
+  padding:7px 14px;border-radius:10px;transition:.15s;
+}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.primary:hover{filter:brightness(1.1);color:#fff}
+button.small{padding:3px 10px;font-size:.8rem}
+
+.summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.chip{
+  display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);
+  padding:8px 14px;border-radius:999px;font-size:.88rem;
+}
+.chip .dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}
+.chip.ok .dot{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.chip.warn .dot{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+.chip.bad .dot{background:var(--bad);box-shadow:0 0 8px var(--bad)}
+.chip.load .dot{background:var(--accent);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;min-width:0}
+.card.full{grid-column:1/-1}
+.card h2{font-size:1.02rem;margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+@media (max-width:760px){ .grid{grid-template-columns:1fr} }
+
+.hero{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.hero .flagbox{
+  width:104px;height:78px;border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;background:var(--card2);font-size:3.2rem;flex:none;
+}
+.hero .flagbox img{width:100%;height:100%;object-fit:cover}
+.hero .meta{flex:1;min-width:220px}
+.label{color:var(--muted);font-size:.82rem}
+.ip{font-family:ui-monospace,Consolas,Menlo,monospace;font-size:1.9rem;font-weight:700;word-break:break-all;direction:ltr;text-align:right}
+.loc{font-size:1.05rem;margin-top:2px}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.badge{background:var(--card2);border:1px solid var(--border);padding:1px 10px;border-radius:999px;font-size:.78rem;color:var(--muted)}
+
+.kvs{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+@media (max-width:520px){ .kvs{grid-template-columns:1fr} }
+.kv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--border);min-width:0}
+.kv .k{color:var(--muted);font-size:.86rem;flex:none}
+.kv .v{font-weight:600;text-align:left;word-break:break-word;min-width:0;font-size:.9rem}
+.ltr{direction:ltr;unicode-bidi:plaintext;font-family:ui-monospace,Consolas,Menlo,monospace;font-size:.85rem}
+
+.verdict{padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:.92rem;border:1px solid var(--border);background:var(--card2)}
+.verdict.ok{border-color:var(--ok)} .verdict.warn{border-color:var(--warn)} .verdict.bad{border-color:var(--bad)}
+.verdict b{display:block;margin-bottom:2px}
+.verdict.ok b{color:var(--ok)} .verdict.warn b{color:var(--warn)} .verdict.bad b{color:var(--bad)}
+
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{padding:8px 6px;text-align:right;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:600;font-size:.8rem}
+td.ip-cell{direction:ltr;text-align:left;font-family:ui-monospace,Consolas,Menlo,monospace;word-break:break-all}
+.tag{display:inline-block;padding:0 8px;border-radius:6px;font-size:.75rem;background:var(--card2);border:1px solid var(--border)}
+.tag.bad{border-color:var(--bad);color:var(--bad)} .tag.ok{border-color:var(--ok);color:var(--ok)} .tag.warn{border-color:var(--warn);color:var(--warn)}
+.flag-sm{width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;margin-inline-end:6px;border:1px solid var(--border)}
+.note{color:var(--muted);font-size:.8rem;margin-top:10px}
+.loading{display:flex;align-items:center;gap:10px;color:var(--muted);padding:6px 0}
+.spin{width:18px;height:18px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+iframe{width:100%;height:260px;border:1px solid var(--border);border-radius:12px;background:var(--card2)}
+footer{margin-top:24px;color:var(--muted);font-size:.78rem;text-align:center}
+footer code{direction:ltr;unicode-bidi:plaintext}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>🛰️ بررسی IP، نشت WebRTC و نشت DNS</h1>
+      <p>همه‌چیز در مرورگر خودتان اجرا می‌شود؛ فقط از APIهای رایگان استفاده شده است.</p>
+    </div>
+    <button class="primary" id="btnAll">تست مجدد همه</button>
+  </header>
+
+  <div class="summary">
+    <div class="chip load" id="chip-ip"><span class="dot"></span><span>IP:</span><span class="txt">…</span></div>
+    <div class="chip load" id="chip-rtc"><span class="dot"></span><span>WebRTC:</span><span class="txt">…</span></div>
+    <div class="chip load" id="chip-dns"><span class="dot"></span><span>DNS:</span><span class="txt">…</span></div>
+  </div>
+
+  <div class="grid">
+    <section class="card full">
+      <div class="hero">
+        <div class="flagbox" id="heroFlag">🌐</div>
+        <div class="meta">
+          <div class="label">آی‌پی عمومی شما</div>
+          <div class="ip" id="heroIP">…</div>
+          <div class="loc" id="heroLoc">در حال دریافت اطلاعات…</div>
+          <div class="badges" id="heroBadges"></div>
+        </div>
+        <button id="btnCopy">کپی IP</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>جزئیات اتصال</h2>
+      <div id="details"><div class="loading"><div class="spin"></div>در حال بارگذاری…</div></div>
+    </section>
+
+    <section class="card">
+      <h2>موقعیت تقریبی</h2>
+      <div id="mapBox"><div class="loading"><div class="spin"></div>در حال بارگذاری…</div></div>
+      <div class="note">موقعیت بر پایهٔ IP و معمولاً در حد شهر/منطقه است، نه آدرس دقیق.</div>
+    </section>
+
+    <section class="card full">
+      <h2>مرورگر و سیستم <span class="label">برای مقایسه با IP</span></h2>
+      <div id="browser"></div>
+    </section>
+
+    <section class="card">
+      <h2>تست نشت WebRTC <button class="small" id="btnRtc">تست مجدد</button></h2>
+      <div id="rtc"><div class="loading"><div class="spin"></div>در حال بررسی…</div></div>
+    </section>
+
+    <section class="card">
+      <h2>تست نشت DNS <button class="small" id="btnDns">تست مجدد</button></h2>
+      <div id="dns"><div class="loading"><div class="spin"></div>در حال بررسی…</div></div>
+    </section>
+  </div>
+
+  <footer>
+    APIها: <code>ipwho.is</code> · <code>ipapi.co</code> · <code>ipinfo.io</code> · <code>freeipapi.com</code> · <code>ipify.org</code> ·
+    <code>bash.ws</code> (DNS leak) · <code>edns.ip-api.com</code> (پشتیبان DNS) · پرچم‌ها: <code>flagcdn.com</code> · نقشه: OpenStreetMap
+  </footer>
+</div>
+
+<script>
+/*
+ * Designer: Ali Yaqoubi
+ * Website : www.ali.id.ir
+ */
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const S = { info: null, known: new Set() };
+
+/* ---------- helpers ---------- */
+async function fetchWithTimeout(url, ms = 8000, opts = {}) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), ms);
+  try { return await fetch(url, { cache: 'no-store', ...opts, signal: ctl.signal }); }
+  finally { clearTimeout(t); }
+}
+async function fetchJSON(url, ms = 8000) {
+  const r = await fetchWithTimeout(url, ms);
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+async function fetchText(url, ms = 8000) {
+  const r = await fetchWithTimeout(url, ms);
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.text();
+}
+let regionFa = null;
+try { regionFa = new Intl.DisplayNames(['fa'], { type: 'region' }); } catch (e) {}
+function countryFa(cc, fallback) {
+  try { return (regionFa && cc && regionFa.of(cc.toUpperCase())) || fallback || cc || '—'; } catch (e) { return fallback || cc || '—'; }
+}
+function ccEmoji(cc) {
+  if (!cc || cc.length !== 2) return '🌐';
+  return String.fromCodePoint(...cc.toUpperCase().split('').map(c => 127397 + c.charCodeAt(0)));
+}
+function flagHTML(cc, small) {
+  if (!cc || cc.length !== 2) return small ? '' : '🌐';
+  const c = cc.toLowerCase();
+  const w = small ? 40 : 160;
+  const cls = small ? ' class="flag-sm"' : '';
+  return `<img${cls} src="https://flagcdn.com/w${w}/${c}.png" srcset="https://flagcdn.com/w${w * 2}/${c}.png 2x" alt="${esc(cc)}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${ccEmoji(cc)}'))">`;
+}
+function setChip(id, state, text) {
+  const el = $('#chip-' + id);
+  el.className = 'chip ' + state;
+  el.querySelector('.txt').textContent = text;
+}
+function loading(text) { return `<div class="loading"><div class="spin"></div>${esc(text)}</div>`; }
+function kv(label, val, ltr) {
+  const v = (val === undefined || val === null || val === '') ? '—' : esc(val);
+  return `<div class="kv"><span class="k">${esc(label)}</span><span class="v${ltr ? ' ltr' : ''}">${v}</span></div>`;
+}
+function asnNum(s) { const m = String(s || '').match(/AS?\s?(\d{2,})/i); return m ? m[1] : null; }
+function tzOffset(tz) {
+  try {
+    const p = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'longOffset' }).formatToParts(new Date());
+    const o = (p.find(x => x.type === 'timeZoneName') || {}).value || '';
+    return o === 'GMT' ? 'GMT+00:00' : o;
+  } catch (e) { return null; }
+}
+
+/* ---------- IP providers (fallback chain) ---------- */
+const providers = [
+  { name: 'ipwho.is', url: 'https://ipwho.is/', map: d => {
+      if (d.success === false) throw new Error('fail');
+      const c = d.connection || {}, tz = d.timezone || {};
+      return { ip: d.ip, type: d.type, cc: d.country_code, country: d.country, continent: d.continent,
+        region: d.region, city: d.city, postal: d.postal, lat: d.latitude, lon: d.longitude,
+        isp: c.isp, org: c.org, asn: c.asn ? 'AS' + c.asn : '', domain: c.domain,
+        tz: tz.id, currency: d.currency && (d.currency.name || d.currency.code), call: d.calling_code };
+  }},
+  { name: 'ipapi.co', url: 'https://ipapi.co/json/', map: d => {
+      if (d.error) throw new Error('fail');
+      return { ip: d.ip, type: d.version, cc: d.country_code, country: d.country_name, continent: d.continent_code,
+        region: d.region, city: d.city, postal: d.postal, lat: d.latitude, lon: d.longitude,
+        isp: d.org, org: d.org, asn: d.asn, domain: '', tz: d.timezone, currency: d.currency_name || d.currency,
+        call: d.country_calling_code };
+  }},
+  { name: 'ipinfo.io', url: 'https://ipinfo.io/json', map: d => {
+      if (!d.ip) throw new Error('fail');
+      const loc = (d.loc || ',').split(',');
+      const m = String(d.org || '').match(/^(AS\d+)\s*(.*)$/);
+      return { ip: d.ip, type: d.ip.includes(':') ? 'IPv6' : 'IPv4', cc: d.country, country: '', region: d.region, city: d.city,
+        postal: d.postal, lat: parseFloat(loc[0]), lon: parseFloat(loc[1]),
+        isp: m ? m[2] : d.org, org: m ? m[2] : d.org, asn: m ? m[1] : '', domain: d.hostname, tz: d.timezone };
+  }},
+  { name: 'freeipapi.com', url: 'https://freeipapi.com/api/json', map: d => {
+      if (!d.ipAddress) throw new Error('fail');
+      return { ip: d.ipAddress, type: 'IPv' + d.ipVersion, cc: d.countryCode, country: d.countryName, continent: d.continent,
+        region: d.regionName, city: d.cityName, postal: d.zipCode, lat: d.latitude, lon: d.longitude,
+        isp: '', org: '', asn: '', tz: d.timeZone, proxy: d.isProxy };
+  }}
+];
+async function getIPInfo() {
+  for (const p of providers) {
+    try {
+      const d = await fetchJSON(p.url, 8000);
+      const r = p.map(d);
+      r.source = p.name;
+      return r;
+    } catch (e) { /* try next */ }
+  }
+  throw new Error('all providers failed');
+}
+
+/* ---------- IP section ---------- */
+async function runIP() {
+  setChip('ip', 'load', 'در حال دریافت…');
+  $('#heroIP').textContent = '…';
+  $('#heroLoc').textContent = 'در حال دریافت اطلاعات…';
+  $('#heroFlag').textContent = '🌐';
+  $('#heroBadges').innerHTML = '';
+  $('#details').innerHTML = loading('در حال بارگذاری…');
+  $('#mapBox').innerHTML = loading('در حال بارگذاری…');
+
+  const [info, v4, v6] = await Promise.all([
+    getIPInfo().catch(() => null),
+    fetchJSON('https://api.ipify.org?format=json', 6000).catch(() => null),
+    fetchJSON('https://api6.ipify.org?format=json', 6000).catch(() => null)
+  ]);
+  S.info = info;
+  S.known = new Set([info && info.ip, v4 && v4.ip, v6 && v6.ip].filter(Boolean).map(x => x.toLowerCase()));
+
+  if (!info && !v4 && !v6) {
+    setChip('ip', 'bad', 'دریافت نشد');
+    $('#heroIP').textContent = 'نامشخص';
+    $('#heroLoc').textContent = 'هیچ‌کدام از APIها پاسخ ندادند (اینترنت قطع است یا مسدود شده‌اند).';
+    $('#details').innerHTML = '<div class="note">لطفاً اتصال را بررسی کنید و «تست مجدد همه» را بزنید.</div>';
+    $('#mapBox').innerHTML = '';
+    renderBrowser();
+    return;
+  }
+
+  const main = (info && info.ip) || (v4 && v4.ip) || (v6 && v6.ip);
+  $('#heroIP').textContent = main;
+  if (info) {
+    $('#heroFlag').innerHTML = flagHTML(info.cc);
+    const name = countryFa(info.cc, info.country);
+    $('#heroLoc').textContent = [info.city, info.region, name].filter(Boolean).join('، ');
+    const b = [];
+    if (info.type) b.push(String(info.type).toUpperCase().startsWith('IPV') ? String(info.type).replace(/^ipv/i, 'IPv') : info.type);
+    if (info.cc) b.push(info.cc.toUpperCase());
+    if (info.asn) b.push(info.asn);
+    if (info.isp) b.push(info.isp);
+    if (info.proxy) b.push('پروکسی/VPN');
+    $('#heroBadges').innerHTML = b.map(x => `<span class="badge ltr">${esc(x)}</span>`).join('');
+  } else {
+    $('#heroLoc').textContent = 'جزئیات موقعیت در دسترس نیست (فقط IP شناسایی شد).';
+  }
+
+  // details
+  let localTime = '';
+  if (info && info.tz) {
+    try { localTime = new Date().toLocaleTimeString('en-GB', { timeZone: info.tz, hour: '2-digit', minute: '2-digit' }); } catch (e) {}
+  }
+  const rows = [];
+  rows.push(kv('IPv4', v4 && v4.ip, true));
+  rows.push(kv('IPv6', v6 ? v6.ip : 'ندارد / شناسایی نشد', true));
+  if (info) {
+    rows.push(kv('کشور', countryFa(info.cc, info.country) + (info.country ? ` (${info.country})` : '') + (info.cc ? ` · ${info.cc.toUpperCase()}` : '')));
+    rows.push(kv('استان / منطقه', info.region));
+    rows.push(kv('شهر', info.city));
+    rows.push(kv('کد پستی', info.postal, true));
+    rows.push(kv('ISP', info.isp, true));
+    rows.push(kv('سازمان', info.org, true));
+    rows.push(kv('ASN', info.asn, true));
+    rows.push(kv('دامنه', info.domain, true));
+    rows.push(kv('منطقه زمانی', info.tz, true));
+    rows.push(kv('ساعت محلی', localTime, true));
+    if (info.lat != null && !isNaN(info.lat)) rows.push(kv('مختصات', `${info.lat}, ${info.lon}`, true));
+    if (info.continent) rows.push(kv('قاره', info.continent));
+    if (info.currency) rows.push(kv('ارز', info.currency));
+    if (info.call) rows.push(kv('کد تلفن', '+' + String(info.call).replace('+', ''), true));
+    rows.push(kv('منبع داده', info.source, true));
+  }
+  $('#details').innerHTML = `<div class="kvs">${rows.join('')}</div>`;
+
+  // map
+  if (info && info.lat != null && !isNaN(info.lat) && !isNaN(info.lon)) {
+    const la = +info.lat, lo = +info.lon;
+    const bbox = `${lo - 0.25},${la - 0.15},${lo + 0.25},${la + 0.15}`;
+    $('#mapBox').innerHTML =
+      `<iframe loading="lazy" referrerpolicy="no-referrer" src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${la},${lo}"></iframe>` +
+      `<div class="note"><a style="color:var(--accent)" target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=${la}&mlon=${lo}#map=10/${la}/${lo}">باز کردن در نقشهٔ بزرگ</a></div>`;
+  } else {
+    $('#mapBox').innerHTML = '<div class="note">مختصات در دسترس نیست.</div>';
+  }
+
+  setChip('ip', 'ok', info ? `${countryFa(info.cc, info.country)} ${ccEmoji(info.cc)}` : 'شناسایی شد');
+  renderBrowser();
+}
+
+/* ---------- browser info ---------- */
+function renderBrowser() {
+  const bTz = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '';
+  const ipTz = S.info && S.info.tz;
+  let tzNote = '';
+  if (ipTz && bTz) {
+    const a = tzOffset(bTz), b = tzOffset(ipTz);
+    if (a && b && a !== b) tzNote = `<span class="tag warn">ناهمخوان با IP (${esc(ipTz)})</span>`;
+    else if (a && b) tzNote = '<span class="tag ok">همخوان با IP</span>';
+  }
+  const c = navigator.connection || {};
+  const rows = [
+    kv('User-Agent', navigator.userAgent, true),
+    kv('زبان‌ها', (navigator.languages || [navigator.language]).join(', '), true),
+    `<div class="kv"><span class="k">منطقه زمانی مرورگر</span><span class="v"><span class="ltr">${esc(bTz)}</span> ${tzNote}</span></div>`,
+    kv('اندازه صفحه', `${screen.width}×${screen.height} @${window.devicePixelRatio || 1}x`, true),
+    kv('WebRTC', (window.RTCPeerConnection || window.webkitRTCPeerConnection) ? 'پشتیبانی می‌شود' : 'غیرفعال / پشتیبانی نمی‌شود'),
+    kv('کوکی', navigator.cookieEnabled ? 'فعال' : 'غیرفعال'),
+    kv('Do Not Track', navigator.doNotTrack === '1' ? 'روشن' : 'خاموش / نامشخص')
+  ];
+  if (c.effectiveType) rows.push(kv('نوع اتصال', `${c.effectiveType}${c.downlink ? ' · ' + c.downlink + ' Mbps' : ''}${c.rtt ? ' · ' + c.rtt + ' ms' : ''}`, true));
+  $('#browser').innerHTML = `<div class="kvs">${rows.join('')}</div>` +
+    '<div class="note">اگر VPN/پروکسی دارید و منطقه زمانی مرورگر با کشور IP نمی‌خواند، سایت‌ها می‌توانند این را ببینند.</div>';
+}
+
+/* ---------- WebRTC leak ---------- */
+function classify(addr) {
+  if (/\.local$/i.test(addr)) return 'mdns';
+  if (addr.includes(':')) {
+    const a = addr.toLowerCase();
+    if (a === '::1' || a.startsWith('fe80') || /^f[cd]/.test(a)) return 'local6';
+    return 'public6';
+  }
+  const p = addr.split('.').map(Number);
+  if (p[0] === 10 || p[0] === 127 || (p[0] === 172 && p[1] >= 16 && p[1] <= 31) ||
+      (p[0] === 192 && p[1] === 168) || (p[0] === 169 && p[1] === 254) || (p[0] === 100 && p[1] >= 64 && p[1] <= 127)) return 'local4';
+  return 'public4';
+}
+const KIND_LABEL = { mdns: ['mDNS (محافظت‌شده)', 'ok'], local4: ['محلی IPv4', 'warn'], local6: ['محلی IPv6', 'warn'], public4: ['عمومی IPv4', ''], public6: ['عمومی IPv6', ''] };
+
+function gatherWebRTC() {
+  return new Promise(resolve => {
+    const RTC = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+    if (!RTC) return resolve({ unsupported: true, found: new Map() });
+    const found = new Map();
+    let pc, done = false;
+    const add = line => {
+      const m = String(line).match(/candidate:\S+\s+\d+\s+(\w+)\s+\d+\s+(\S+)\s+(\d+)\s+typ\s+(\w+)/i);
+      if (!m) return;
+      const addr = m[2];
+      if (!found.has(addr)) found.set(addr, { addr, types: new Set() });
+      found.get(addr).types.add(m[4]);
+    };
+    const finish = () => {
+      if (done) return;
+      done = true;
+      try {
+        const sdp = pc.localDescription && pc.localDescription.sdp;
+        if (sdp) sdp.split(/\r?\n/).filter(l => l.startsWith('a=candidate:')).forEach(add);
+      } catch (e) {}
+      try { pc.close(); } catch (e) {}
+      resolve({ found });
+    };
+    try {
+      pc = new RTC({ iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun.cloudflare.com:3478' }
+      ]});
+    } catch (e) { return resolve({ unsupported: true, found }); }
+    pc.onicecandidate = e => { if (!e.candidate) finish(); else add(e.candidate.candidate); };
+    pc.onicegatheringstatechange = () => { if (pc.iceGatheringState === 'complete') finish(); };
+    try {
+      pc.createDataChannel('leaktest');
+      pc.createOffer().then(o => pc.setLocalDescription(o)).catch(finish);
+    } catch (e) { finish(); }
+    setTimeout(finish, 7000);
+  });
+}
+
+async function runWebRTC() {
+  setChip('rtc', 'load', 'در حال تست…');
+  $('#rtc').innerHTML = loading('در حال جمع‌آوری ICE candidateها…');
+  const { found, unsupported } = await gatherWebRTC();
+
+  if (unsupported) {
+    setChip('rtc', 'ok', 'غیرفعال');
+    $('#rtc').innerHTML = '<div class="verdict ok"><b>WebRTC در این مرورگر غیرفعال است</b>نشتی از این راه ممکن نیست.</div>';
+    return;
+  }
+  const list = [...found.values()].map(x => ({ ...x, kind: classify(x.addr) }));
+  const pub = list.filter(x => x.kind === 'public4' || x.kind === 'public6');
+  const leaked = S.known.size ? pub.filter(x => !S.known.has(x.addr.toLowerCase())) : [];
+  const localExposed = list.filter(x => x.kind === 'local4' || x.kind === 'local6');
+
+  let vClass, vTitle, vText;
+  if (!list.length) {
+    vClass = 'ok'; vTitle = 'هیچ candidate‌ای دیده نشد';
+    vText = 'احتمالاً WebRTC توسط افزونه یا تنظیمات مرورگر مسدود شده است.';
+  } else if (!S.known.size && pub.length) {
+    vClass = 'warn'; vTitle = 'مقایسه ممکن نیست';
+    vText = 'IP اصلی دریافت نشد؛ IPهای عمومی زیر را خودتان با IP اتصال مقایسه کنید.';
+  } else if (leaked.length) {
+    vClass = 'bad'; vTitle = 'نشت WebRTC شناسایی شد!';
+    vText = 'WebRTC یک IP عمومی نشان می‌دهد که با IP اصلی اتصال شما یکی نیست (معمولاً IP واقعی شما کنار VPN).';
+  } else if (pub.length) {
+    vClass = 'ok'; vTitle = 'نشتی دیده نشد';
+    vText = 'IPهای عمومیِ WebRTC با IP اتصال شما یکی هستند.';
+  } else {
+    vClass = 'ok'; vTitle = 'IP عمومی لو نمی‌رود';
+    vText = 'فقط آدرس‌های محلی/محافظت‌شده دیده شد.';
+  }
+  if (localExposed.length && vClass === 'ok') vText += ' (آدرس محلی شبکهٔ داخلی نمایان است که معمولاً خطری ندارد.)';
+
+  const rows = list.map((x, i) => {
+    const [lbl, cls] = KIND_LABEL[x.kind];
+    const isLeak = leaked.includes(x);
+    const tag = isLeak ? '<span class="tag bad">نشت</span>' : (x.kind.startsWith('public') ? '<span class="tag ok">همخوان</span>' : `<span class="tag ${cls}">${esc(lbl)}</span>`);
+    return `<tr><td class="ip-cell">${esc(x.addr)}</td><td>${esc([...x.types].join(', '))}<br><span class="label">${esc(lbl)}</span></td><td id="rtcinfo-${i}">${tag}</td></tr>`;
+  }).join('');
+  $('#rtc').innerHTML =
+    `<div class="verdict ${vClass}"><b>${vTitle}</b>${vText}</div>` +
+    (list.length ? `<table><thead><tr><th>آدرس</th><th>نوع candidate</th><th>وضعیت</th></tr></thead><tbody>${rows}</tbody></table>` : '') +
+    '<div class="note">آدرس‌های .local (mDNS) یعنی مرورگر IP محلی را پنهان کرده است.</div>';
+  setChip('rtc', vClass, vClass === 'bad' ? 'نشت دارد' : (vClass === 'warn' ? 'نامشخص' : 'ایمن'));
+
+  // lookup country for public IPs that differ
+  list.forEach((x, i) => {
+    if (!leaked.includes(x)) return;
+    fetchJSON('https://ipwho.is/' + encodeURIComponent(x.addr), 6000).then(d => {
+      if (d && d.success !== false) {
+        const el = $('#rtcinfo-' + i);
+        if (el) el.innerHTML = `<span class="tag bad">نشت</span><br>${flagHTML(d.country_code, true)}${esc(countryFa(d.country_code, d.country))}<br><span class="label ltr">${esc((d.connection && d.connection.isp) || '')}</span>`;
+      }
+    }).catch(() => {});
+  });
+}
+
+/* ---------- DNS leak ---------- */
+async function dnsBash() {
+  const id = (await fetchText('https://bash.ws/id', 8000)).trim();
+  if (!/^[\w-]{4,40}$/.test(id)) throw new Error('bad id');
+  const jobs = [];
+  for (let i = 1; i <= 10; i++) {
+    jobs.push(fetchWithTimeout(`https://${i}.${id}.bash.ws/`, 5000, { mode: 'no-cors' }).catch(() => {}));
+  }
+  await Promise.race([Promise.allSettled(jobs), sleep(9000)]);
+  await sleep(800);
+  const data = await fetchJSON(`https://bash.ws/dnsleak/test/${id}?json`, 10000);
+  const out = data.filter(x => x.type === 'dns').map(x => ({ ip: x.ip, cc: x.country, country: x.country_name, asn: x.asn || '' }));
+  if (!out.length) throw new Error('empty');
+  return out;
+}
+async function dnsEdns() {
+  const rand = () => Math.random().toString(36).slice(2, 12);
+  const res = await Promise.allSettled([1, 2, 3].map(() => fetchJSON(`http://${rand()}.edns.ip-api.com/json`, 8000)));
+  const map = new Map();
+  res.forEach(r => {
+    if (r.status !== 'fulfilled' || !r.value || !r.value.dns) return;
+    const d = r.value.dns, parts = String(d.geo || '').split(' - ');
+    if (d.ip && !map.has(d.ip)) map.set(d.ip, { ip: d.ip, cc: '', country: parts[0] || '', asn: parts.slice(1).join(' - ') });
+  });
+  if (!map.size) throw new Error('empty');
+  return [...map.values()];
+}
+const PUBLIC_DNS = /google|cloudflare|quad9|opendns|cisco|adguard|nextdns|yandex|level3|comodo/i;
+
+async function runDNS() {
+  setChip('dns', 'load', 'در حال تست…');
+  $('#dns').innerHTML = loading('در حال ارسال درخواست‌های DNS آزمایشی (تا ۲۰ ثانیه)…');
+  let list = null, via = '';
+  try { list = await dnsBash(); via = 'bash.ws'; } catch (e) {}
+  if (!list) { try { list = await dnsEdns(); via = 'edns.ip-api.com'; } catch (e) {} }
+
+  if (!list) {
+    setChip('dns', 'warn', 'انجام نشد');
+    $('#dns').innerHTML = '<div class="verdict warn"><b>تست DNS انجام نشد</b>سرویس تست در دسترس نبود یا توسط شبکه/افزونهٔ مسدودکننده بسته شده است. ' +
+      'اگر صفحه را روی HTTPS میزبانی کرده‌اید، پشتیبان HTTP هم مرورگر مسدود می‌کند؛ فایل را به‌صورت لوکال باز کنید یا «تست مجدد» بزنید.</div>';
+    return;
+  }
+
+  const info = S.info || {};
+  const myAsn = asnNum(info.asn);
+  const myCc = (info.cc || '').toUpperCase();
+  const myCountryEn = (info.country || '').toLowerCase();
+  const diffCountry = x => {
+    if (x.cc && myCc) return x.cc.toUpperCase() !== myCc;
+    if (x.country && myCountryEn) return x.country.toLowerCase() !== myCountryEn;
+    return false;
+  };
+  const sameAsn = x => myAsn && asnNum(x.asn) === myAsn;
+  const isPublic = x => PUBLIC_DNS.test(x.asn || '');
+
+  let vClass, vTitle, vText;
+  if (!S.info) {
+    vClass = 'warn'; vTitle = 'مقایسه ممکن نیست';
+    vText = 'اطلاعات IP در دسترس نبود؛ سرورهای DNS زیر را خودتان بررسی کنید.';
+  } else if (list.some(diffCountry)) {
+    vClass = 'bad'; vTitle = 'احتمال نشت DNS';
+    vText = 'حداقل یک DNS resolver در کشوری غیر از کشور IP شما قرار دارد. اگر VPN روشن است، DNS درخواست‌هایتان از مسیر VPN نمی‌گذرد.';
+  } else if (list.every(sameAsn)) {
+    vClass = 'ok'; vTitle = 'DNS با IP شما همخوان است';
+    vText = 'سرورهای DNS متعلق به همان شبکه‌ای هستند که IP شما از آن می‌آید.';
+  } else if (list.every(x => isPublic(x) || sameAsn(x))) {
+    vClass = 'warn'; vTitle = 'DNS عمومی (نیاز به بررسی)';
+    vText = 'از DNS عمومی مثل Google/Cloudflare استفاده می‌شود. اگر عمداً تنظیم کرده‌اید مشکلی نیست؛ در غیر این‌صورت بررسی کنید.';
+  } else {
+    vClass = 'warn'; vTitle = 'ناهمخوانی ISP / DNS';
+    vText = 'DNS resolver به سازمانی غیر از ISP فعلی شما تعلق دارد. اگر VPN دارید، احتمالاً DNS از ISP اصلی شما می‌آید (نشت).';
+  }
+
+  const rows = list.map(x => {
+    const bad = S.info && diffCountry(x);
+    return `<tr><td class="ip-cell">${esc(x.ip)}</td>` +
+      `<td>${flagHTML(x.cc, true)}${esc(x.cc ? countryFa(x.cc, x.country) : x.country)}</td>` +
+      `<td class="ltr">${esc(x.asn)}</td>` +
+      `<td>${bad ? '<span class="tag bad">کشور متفاوت</span>' : (isPublic(x) ? '<span class="tag warn">DNS عمومی</span>' : '<span class="tag ok">هم‌کشور</span>')}</td></tr>`;
+  }).join('');
+
+  $('#dns').innerHTML =
+    `<div class="verdict ${vClass}"><b>${vTitle}</b>${vText}</div>` +
+    `<table><thead><tr><th>DNS Resolver</th><th>کشور</th><th>ASN / ارائه‌دهنده</th><th>وضعیت</th></tr></thead><tbody>${rows}</tbody></table>` +
+    `<div class="note">تعداد سرورهای دیده‌شده: ${list.length} · منبع: <span class="ltr">${via}</span>. این تشخیص تقریبی است؛ برای قطعیت با خاموش/روشن کردن VPN مقایسه کنید.</div>`;
+  setChip('dns', vClass, vClass === 'bad' ? 'احتمال نشت' : (vClass === 'ok' ? 'ایمن' : 'بررسی شود'));
+}
+
+/* ---------- wiring ---------- */
+async function runAll() {
+  await runIP();
+  await Promise.all([runWebRTC(), runDNS()]);
+}
+$('#btnAll').onclick = runAll;
+$('#btnRtc').onclick = runWebRTC;
+$('#btnDns').onclick = runDNS;
+$('#btnCopy').onclick = async () => {
+  const t = $('#heroIP').textContent;
+  try { await navigator.clipboard.writeText(t); } catch (e) {
+    const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e2) {} ta.remove();
+  }
+  const b = $('#btnCopy'); const o = b.textContent; b.textContent = 'کپی شد ✓'; setTimeout(() => b.textContent = o, 1500);
+};
+renderBrowser();
+runAll();
+</script>
+</body>
+</html>
