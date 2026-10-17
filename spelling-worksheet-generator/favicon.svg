@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="pageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="pencilGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Document Sheet -->
+  <g filter="url(#softShadow)">
+    <rect x="7" y="5" width="30" height="38" rx="4" fill="url(#pageGrad)" stroke="#2563eb" stroke-width="2"/>
+    <!-- Folded Corner accent -->
+    <path d="M31 5 L37 11 L31 11 Z" fill="#93c5fd"/>
+    <path d="M31 5 L31 11 L37 11" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  </g>
+
+  <!-- Text / Worksheet lines -->
+  <line x1="12" y1="14" x2="27" y2="14" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+  <line x1="12" y1="20" x2="32" y2="20" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2"/>
+  <line x1="12" y1="26" x2="25" y2="26" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+  <line x1="12" y1="32" x2="30" y2="32" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2"/>
+
+  <!-- Modern Stylized Pencil -->
+  <g transform="translate(19, 15) rotate(42)" filter="url(#softShadow)">
+    <!-- Pencil Body -->
+    <rect x="0" y="0" width="7" height="24" rx="1.5" fill="url(#goldGrad)" stroke="#78350f" stroke-width="0.8"/>
+    <!-- Pencil Band & Eraser -->
+    <rect x="0" y="0" width="7" height="4" rx="1" fill="#ef4444"/>
+    <rect x="0" y="4" width="7" height="2" fill="#cbd5e1"/>
+    <!-- Pencil Tip -->
+    <polygon points="0,24 7,24 3.5,29" fill="#fde68a" stroke="#78350f" stroke-width="0.8"/>
+    <polygon points="2,27 5,27 3.5,29" fill="#1e293b"/>
+  </g>
+</svg>

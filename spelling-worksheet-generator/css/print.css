@@ -1,0 +1,180 @@
+/* ==========================================================================
+   Print Stylesheet for A4 Worksheets (Ctrl + P)
+   ========================================================================== */
+
+@page {
+  size: A4 portrait;
+  margin: 10mm;
+}
+
+@media print {
+  /* ------------------------------------------------------------------------
+     Hide UI Controls & System Chrome
+     ------------------------------------------------------------------------ */
+  .sidebar,
+  .preview-toolbar,
+  .modal-overlay,
+  .toast-container,
+  .no-print {
+    display: none !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     Reset Container Layouts for Clean Printing
+     ------------------------------------------------------------------------ */
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .app-container {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .main-preview-area {
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .pages-container {
+    display: block !important;
+    gap: 0 !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     A4 Page Sheet & Double Border Architecture on EVERY Page
+     ------------------------------------------------------------------------ */
+  .page-sheet {
+    width: 100% !important;
+    height: 275mm !important;
+    min-height: 275mm !important;
+    max-height: 275mm !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .page-sheet:last-of-type {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* Outer line 2px on every page */
+  .page-frame {
+    flex: 1 !important;
+    border: 2px solid #000000 !important;
+    padding: 3px !important; /* 3px distance between lines */
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Inner line 3px on every page */
+  .page-frame-inner {
+    flex: 1 !important;
+    border: 3px solid #000000 !important;
+    padding: 10px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     Header Cleanliness (Zero Borders)
+     ------------------------------------------------------------------------ */
+  .header-table, .header-table td {
+    border: none !important;
+  }
+
+  .editable-field {
+    border-bottom: none !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     Word Transformation in Print
+     ------------------------------------------------------------------------ */
+  .selectable-word {
+    display: inline !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    cursor: default !important;
+    padding: 0 !important;
+  }
+
+  /* 1. Fill-in-the-blank printed style: hide original word, show dashed line */
+  .is-blank .original-word-text {
+    display: none !important;
+  }
+
+  .is-blank .blank-replacement {
+    display: inline-block !important;
+    min-width: 48px !important;
+    border-bottom: 1.5px dashed #000000 !important;
+    margin: 0 4px !important;
+    height: 12px !important;
+    vertical-align: baseline !important;
+  }
+
+  /* 2. Spelling error printed style: show misspelled text cleanly without bold or highlight */
+  .selectable-word.is-error {
+    background: transparent !important;
+    color: #000000 !important;
+    font-weight: normal !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    text-decoration: none !important;
+  }
+
+  .is-error .misspelled-text {
+    display: inline !important;
+    color: #000000 !important;
+    font-weight: normal !important;
+    background: transparent !important;
+    border: none !important;
+    text-decoration: none !important;
+  }
+
+  .is-error .original-word-text {
+    display: none !important;
+  }
+
+  .error-badge-indicator {
+    display: none !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     Table & Answer Key Rules
+     ------------------------------------------------------------------------ */
+  .spelling-table th, .spelling-table td {
+    border-color: #000000 !important;
+  }
+
+  .answer-sheet.hide-answer-key {
+    display: none !important;
+  }
+}

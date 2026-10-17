@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سامانه آفلاین ساخت کاربرگ املای فارسی دبستان</title>
+  <meta name="description" content="نرم‌افزار کاملاً آفلاین و محلی برای تولید کاربرگ‌های استاندارد A4 املای فارسی دوره‌ی دوم ابتدایی (پایه‌های چهارم، پنجم و ششم)">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/font.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- ====================================================================
+         Sidebar Controls
+         ==================================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div style="display: flex; flex-direction: column; width: 100%;">
+          <h1>
+            <img src="favicon.svg" alt="آیکون" width="28" height="28" style="display: inline-block; vertical-align: middle;">
+            کاربرگ‌ساز املای فارسی
+          </h1>
+          <div class="sidebar-subtitle">
+            طراحی توسط امیرخراسانی و <a href="https://www.ali.id.ir" target="_blank" rel="noopener noreferrer">علی یعقوبی</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-body">
+        <!-- 1. Lesson & Grade Selection -->
+        <div class="control-group">
+          <label class="control-label" for="select-grade">پایه تحصیلی</label>
+          <select id="select-grade" class="form-select">
+            <option value="4" selected>فارسی چهارم دبستان</option>
+            <option value="5">فارسی پنجم دبستان</option>
+            <option value="6">فارسی ششم دبستان</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="select-lesson">انتخاب درس / بخش</label>
+          <select id="select-lesson" class="form-select">
+            <!-- Populated dynamically via app.js -->
+          </select>
+        </div>
+
+        <div class="control-group" id="group-subpart" style="display: none;">
+          <label class="control-label" for="select-subpart">بخش‌های تکمیلی درس</label>
+          <select id="select-subpart" class="form-select">
+            <!-- Sub-sections like read_and_think, anecdotes, poems -->
+          </select>
+        </div>
+
+        <!-- 2. Worksheet Mode -->
+        <div class="control-group">
+          <label class="control-label">نوع کاربرگ</label>
+          <div class="radio-pill-group">
+            <input type="radio" name="worksheet-mode" id="mode-blank" value="blank" checked>
+            <label class="radio-pill-label" for="mode-blank">جای خالی</label>
+
+            <input type="radio" name="worksheet-mode" id="mode-error" value="error">
+            <label class="radio-pill-label" for="mode-error">غلط املایی</label>
+
+            <input type="radio" name="worksheet-mode" id="mode-combined" value="combined">
+            <label class="radio-pill-label" for="mode-combined">ترکیبی</label>
+          </div>
+        </div>
+
+        <!-- 3. Word Selection Actions -->
+        <div class="control-group">
+          <label class="control-label">انتخاب تصادفی واژه‌ها</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="number" id="input-random-count" class="form-input" style="width: 85px;" value="10" min="1" max="100">
+            <button id="btn-random-select" class="btn btn-outline" style="flex: 1;">
+              🎲 انتخاب تصادفی
+            </button>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button id="btn-parallel-form" class="btn btn-outline" title="تغییر تصادفی کلمات با حفظ تعداد برای گروه موازی">
+            🔄 نسخه موازی (فرم ب)
+          </button>
+          <button id="btn-clear-selection" class="btn btn-danger-outline" title="حذف تمام کلمات انتخاب‌شده">
+            🗑️ پاکسازی
+          </button>
+        </div>
+
+        <!-- 4. Text Editing Tools -->
+        <div class="control-group">
+          <label class="control-label">مدیریت متن اولیه</label>
+          <div class="btn-row">
+            <button id="btn-open-edit-modal" class="btn btn-outline">
+              ✏️ ویرایش متن
+            </button>
+            <button id="btn-reset-text" class="btn btn-outline">
+              ↩️ بازگشت به کتاب
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Typography & Line Spacing Sliders -->
+        <div class="control-group">
+          <label class="control-label" for="slider-font-size">
+            اندازه قلم متن
+            <span class="value-indicator" id="indicator-font-size">۱۲pt</span>
+          </label>
+          <input type="range" id="slider-font-size" min="10" max="17" step="0.5" value="12">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="slider-line-height">
+            فاصله خطوط
+            <span class="value-indicator" id="indicator-line-height">۲.۰</span>
+          </label>
+          <input type="range" id="slider-line-height" min="1.6" max="2.6" step="0.1" value="2.0">
+        </div>
+
+        <!-- 6. Header Editable Fields -->
+        <div class="control-group">
+          <label class="control-label" for="input-school-name">نام دبستان</label>
+          <input type="text" id="input-school-name" class="form-input" value="شهید قائمی">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="input-teacher-name">نام آموزگار</label>
+          <input type="text" id="input-teacher-name" class="form-input" value="آقای خراسانی">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="input-date">تاریخ آزمون</label>
+          <input type="text" id="input-date" class="form-input">
+        </div>
+
+        <!-- 7. Print Options -->
+        <div class="control-group">
+          <label class="checkbox-row">
+            <input type="checkbox" id="check-print-answers" checked>
+            چاپ صفحه پاسخنامه در انتهای کاربرگ
+          </label>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button id="btn-print" class="btn btn-print">
+          🖨️ چاپ کاربرگ (Ctrl + P)
+        </button>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         Main A4 Live Preview Area
+         ==================================================================== -->
+    <main class="main-preview-area" id="preview-area">
+      <!-- Toolbar above sheets -->
+      <div class="preview-toolbar">
+        <div class="selection-summary">
+          <span>کلمات انتخابی:</span>
+          <span class="selection-tag" id="tag-blank-count">جای خالی: ۰</span>
+          <span class="selection-tag mode-error" id="tag-error-count">غلط املایی: ۰</span>
+          <span class="selection-tag" id="tag-pages-count" style="background: #e2e8f0; color: #334155;">۱ صفحه</span>
+          <span class="selection-tag" id="tag-form-variant" style="display: none; background: #e0e7ff; color: #4338ca;">فرم ب</span>
+        </div>
+        <div style="color: var(--text-muted); font-size: 0.85rem;">
+          💡 راهنما: با کلیک روی هر کلمه در برگه، آن را انتخاب یا لغو کنید.
+        </div>
+      </div>
+
+      <!-- Dynamic Paginated Pages Container -->
+      <div class="pages-container" id="pages-container">
+        <!-- Paginated pages dynamically injected here -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ====================================================================
+       Modals & Popups
+       ==================================================================== -->
+  <!-- 1. Text Editor Modal -->
+  <div class="modal-overlay" id="modal-edit-text">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>✏️ ویرایش متن درس (حذف، اضافه یا بازنویسی)</h3>
+        <button class="modal-close-btn" id="btn-close-edit-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: var(--text-muted);">
+          می‌توانید بخش‌هایی از متن درس را کم کنید، پاراگراف جدیدی بنویسید یا عبارات را تغییر دهید. با تأیید، متن به طور خودکار در صفحات A4 صفحه‌بندی می‌شود.
+        </p>
+        <textarea id="textarea-custom-text" class="form-textarea" rows="12" style="line-height: 1.8;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="btn-cancel-edit-text">انصراف</button>
+        <button class="btn btn-primary" id="btn-save-custom-text">تأیید و اعمال در کاربرگ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Spelling Choice Popover Modal -->
+  <div class="modal-overlay" id="modal-spelling-choice">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3>انتخاب شکل غلط املایی</h3>
+        <button class="modal-close-btn" id="btn-close-spelling-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.95rem;">
+          کلمه اصلی: <strong id="spelling-modal-original" style="color: var(--accent-color); font-size: 1.1rem;"></strong>
+        </div>
+        <div class="control-group">
+          <label class="control-label">پیشنهادهای خودکار (حروف هم‌صدا):</label>
+          <div id="spelling-suggestions-container" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Buttons of suggestions -->
+          </div>
+        </div>
+        <div class="control-group" style="margin-top: 6px;">
+          <label class="control-label" for="spelling-custom-input">یا تایپ غلط دلخواه:</label>
+          <input type="text" id="spelling-custom-input" class="form-input">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="btn-cancel-spelling-choice">انصراف</button>
+        <button class="btn btn-primary" id="btn-confirm-spelling-choice">تأیید</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ====================================================================
+       Scripts: Data & Modules (Fully Offline)
+       ==================================================================== -->
+  <script src="data/farsi-4.js"></script>
+  <script src="data/farsi-5.js"></script>
+  <script src="data/farsi-6.js"></script>
+  <script src="js/shamsi.js"></script>
+  <script src="js/speller.js"></script>
+  <script src="js/text-parser.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
