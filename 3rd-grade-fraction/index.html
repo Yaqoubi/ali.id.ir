@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سرزمین کسرها | آموزش و بازی کسر ریاضی سوم دبستان</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- فونت کودکانه اختصاصی تزریق شده mybaby mini -->
+    <link rel="stylesheet" href="font.css">
+
+    <!-- فونت کمکی وزیرمتن -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- استاندارد فرمول‌نویسی KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'mybaby mini', 'mybaby', 'Vazirmatn', sans-serif !important;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100dvh;
+            overflow: hidden !important;
+            font-family: 'mybaby mini', 'mybaby', 'Vazirmatn', sans-serif !important;
+            background: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 50%, #ecfdf5 100%);
+        }
+
+        button, input, select, textarea {
+            font-family: 'mybaby mini', 'mybaby', 'Vazirmatn', sans-serif !important;
+        }
+
+        /* ایزوله‌سازی کامل فرمول‌های ریاضی چپ‌چین در دل متن راست‌چین فارسی */
+        .math-ltr {
+            direction: ltr !important;
+            unicode-bidi: isolate !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            margin: 0 0.25rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            font-weight: 700;
+        }
+
+        .math-ltr-lg {
+            direction: ltr !important;
+            unicode-bidi: isolate !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            padding: 0.35rem 0.85rem;
+            border-radius: 0.85rem;
+            background: #ffffff;
+            border: 2px solid #e0e7ff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+        }
+
+        .katex, .katex * {
+            font-size: 1.15em !important;
+            direction: ltr !important;
+            unicode-bidi: isolate !important;
+            font-family: 'mybaby mini', 'mybaby', 'Vazirmatn', KaTeX_Main, sans-serif !important;
+        }
+
+        /* انیمیشن‌های نرم و کودک‌پسند */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+        }
+        .animate-float {
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45); }
+            50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+        }
+        .btn-glow {
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        /* استایل قطعات قابل کلیک شکل‌های کسری */
+        .slice-path {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .slice-path:hover {
+            filter: brightness(1.06);
+            transform: scale(1.015);
+            transform-origin: center;
+        }
+
+        /* اسلایدر سفارشی */
+        input[type="range"] {
+            accent-color: #4f46e5;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between h-[100dvh] w-[100vw] overflow-hidden text-slate-800">
+
+    <!-- بوم کاغذرنگی (Confetti Canvas) -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+
+    <!-- پنجره تمام‌صفحه معرفی برنامه و سازنده (علی یعقوبی) و لود وابستگی‌ها -->
+    <div id="intro-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-md transition-all duration-500">
+        <div class="relative w-full max-w-lg bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-indigo-200 p-5 sm:p-7 flex flex-col items-center text-center overflow-hidden animate-pop">
+            <!-- هاله‌های نورانی تزئینی پس‌زمینه -->
+            <div class="absolute -top-16 -right-16 w-44 h-44 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- آیکون پیتزا شناور -->
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center text-3xl sm:text-4xl shadow-xl shadow-indigo-300/40 animate-float mb-3">
+                🍕
+            </div>
+
+            <!-- برچسب بالایی -->
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-black bg-indigo-100 text-indigo-800 border border-indigo-200 mb-2">
+                ✨ نرم‌افزار تعاملی آموزش و یادآوری فصل ۳ ریاضی سوم دبستان ✨
+            </span>
+
+            <!-- عنوان بزرگ -->
+            <h1 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 leading-tight">
+                به <span class="bg-gradient-to-l from-indigo-600 to-violet-600 bg-clip-text text-transparent">«سرزمین کسرها»</span> خوش آمدید!
+            </h1>
+
+            <!-- معرفی طراح و سازنده علی یعقوبی -->
+            <div class="w-full bg-gradient-to-r from-indigo-50 via-slate-50 to-emerald-50 rounded-2xl border border-indigo-100/90 p-3 sm:p-3.5 my-2.5 flex items-center justify-between gap-3 text-right">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-base shadow-sm shrink-0">
+                        👨‍🏫
+                    </div>
+                    <div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold">طراح و توسعه‌دهنده نرم‌افزار:</div>
+                        <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-black text-indigo-700 hover:text-indigo-900 underline decoration-indigo-300 underline-offset-4 transition-colors">
+                            علی یعقوبی (ali.id.ir)
+                        </a>
+                    </div>
+                </div>
+                <div class="text-[10px] sm:text-xs font-extrabold text-emerald-700 bg-emerald-100/80 border border-emerald-300/60 px-2 py-1 rounded-lg shrink-0">
+                    پایه سوم دبستان
+                </div>
+            </div>
+
+            <!-- ۳ کارت ویژگی اصلی -->
+            <div class="grid grid-cols-3 gap-2 w-full my-2 text-center">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 flex flex-col items-center">
+                    <span class="text-lg">🎬</span>
+                    <span class="text-[11px] font-black text-slate-800 mt-0.5">آموزش انیمیشنی</span>
+                    <span class="text-[9px] text-slate-500">پیتزا، شکلات و کیک</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 flex flex-col items-center">
+                    <span class="text-lg">💡</span>
+                    <span class="text-[11px] font-black text-slate-800 mt-0.5">شبیه‌سازهای زنده</span>
+                    <span class="text-[9px] text-slate-500">ساعت، پیمانه، محور</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 flex flex-col items-center">
+                    <span class="text-lg">🎮</span>
+                    <span class="text-[11px] font-black text-slate-800 mt-0.5">بازی و آزمون</span>
+                    <span class="text-[9px] text-slate-500">۱۶ چالش با جایزه</span>
+                </div>
+            </div>
+
+            <!-- وضعیت بارگذاری وابستگی‌ها -->
+            <div id="dep-loader" class="flex items-center justify-center gap-2 text-xs font-bold text-slate-600 my-2.5">
+                <span id="dep-spinner" class="inline-block w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
+                <span id="dep-status">در حال بررسی و بارگذاری فونت و موتور ریاضی...</span>
+            </div>
+
+            <!-- دکمه ورود به بازی -->
+            <button id="start-game-btn" onclick="enterGame()" disabled class="w-full mt-1.5 py-3 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-600 text-white font-black text-sm sm:text-base shadow-lg shadow-indigo-300/50 flex items-center justify-center gap-2 transition-all opacity-60 cursor-not-allowed">
+                <span>🚀</span>
+                <span>ورود به بازی و شروع یادگیری</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- هدر بالایی: عنوان، انتخاب فصل‌ها و امتیازات -->
+    <header class="shrink-0 bg-white/90 backdrop-blur-md border-b border-indigo-100 px-2 sm:px-4 py-1.5 sm:py-2 shadow-sm z-20">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-1.5 sm:gap-3">
+            <!-- لوگو و عنوان -->
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md text-lg sm:text-xl font-black">
+                    🍕
+                </div>
+                <div>
+                    <h1 class="text-xs sm:text-base md:text-lg font-black text-indigo-950 leading-tight">سرزمین کسرها</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-medium hidden sm:block">آموزش تعاملی فصل ۳ ریاضی سوم دبستان</p>
+                </div>
+            </div>
+
+            <!-- دکمه‌های ۴ بخش اصلی کتاب درسی -->
+            <nav class="flex items-center gap-1 sm:gap-2 order-3 lg:order-2 w-full lg:w-auto justify-center bg-slate-100/80 p-1 rounded-xl">
+                <button onclick="selectChapter(0)" id="chap-btn-0" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                    <span>۱. مفهوم کسر</span>
+                    <span id="chap-badge-0" class="hidden text-emerald-500">✔</span>
+                </button>
+                <button onclick="selectChapter(1)" id="chap-btn-1" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                    <span>۲. اندازه‌گیری</span>
+                    <span id="chap-badge-1" class="hidden text-emerald-500">✔</span>
+                </button>
+                <button onclick="selectChapter(2)" id="chap-btn-2" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                    <span>۳. تساوی کسرها</span>
+                    <span id="chap-badge-2" class="hidden text-emerald-500">✔</span>
+                </button>
+                <button onclick="selectChapter(3)" id="chap-btn-3" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                    <span>۴. مقایسه کسرها</span>
+                    <span id="chap-badge-3" class="hidden text-emerald-500">✔</span>
+                </button>
+            </nav>
+
+            <!-- بخش امتیاز، ستاره، پیشرفت، صدا و راهنمای معرفی -->
+            <div class="flex items-center gap-1.5 sm:gap-2 order-2 lg:order-3">
+                <div class="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2 py-0.5 sm:py-1 rounded-xl">
+                    <span class="text-xs sm:text-sm">⭐</span>
+                    <span id="score-stars" class="text-xs sm:text-sm font-black text-amber-700">۰</span>
+                </div>
+                <div class="flex items-center gap-1 bg-emerald-50 border border-emerald-200 px-2 py-0.5 sm:py-1 rounded-xl">
+                    <span class="text-xs sm:text-sm">🪙</span>
+                    <span id="score-coins" class="text-xs sm:text-sm font-black text-emerald-700">۰</span>
+                </div>
+                <div class="hidden md:flex flex-col w-24 bg-slate-100 p-1 rounded-lg border border-slate-200">
+                    <div class="flex justify-between text-[10px] font-bold text-slate-600 px-0.5">
+                        <span>پیشرفت</span>
+                        <span id="progress-text">۰٪</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mt-0.5">
+                        <div id="progress-bar" class="h-full bg-gradient-to-l from-indigo-500 to-emerald-500 w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- کلید معرفی و درباره سازنده -->
+                <button onclick="showIntroModal()" title="درباره برنامه و سازنده (علی یعقوبی)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-violet-50 hover:bg-violet-100 text-violet-700 flex items-center justify-center border border-violet-200 transition-transform active:scale-90 text-sm font-bold">
+                    ℹ️
+                </button>
+
+                <!-- کلید صدا -->
+                <button onclick="toggleSound()" id="sound-btn" title="قطع/وصل صدا" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 flex items-center justify-center border border-indigo-200 transition-transform active:scale-90 text-sm">
+                    🔊
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- نوار تب‌های سه گانه هر بخش (آموزش انیمیشنی | مثال‌ها | بازی و تمرین) -->
+    <div class="shrink-0 bg-indigo-950/5 border-b border-indigo-100/80 px-2 py-1 sm:py-1.5 z-10">
+        <div class="max-w-3xl mx-auto flex items-center justify-center gap-1.5 sm:gap-3">
+            <button onclick="selectMode('learn')" id="mode-btn-learn" class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+                <span>🎬</span>
+                <span>آموزش انیمیشنی</span>
+            </button>
+            <button onclick="selectMode('examples')" id="mode-btn-examples" class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+                <span>💡</span>
+                <span>مثال‌ها</span>
+            </button>
+            <button onclick="selectMode('quiz')" id="mode-btn-quiz" class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+                <span>🎮</span>
+                <span>بازی و تمرین</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- محیط اصلی بازی و آموزش (بدون اسکرول، تطبیق‌پذیر با ارتفاع صفحه) -->
+    <main class="flex-1 min-h-0 w-full max-w-6xl mx-auto px-2 sm:px-4 py-1.5 sm:py-2.5 flex flex-col overflow-hidden relative">
+        <div id="stage-container" class="flex-1 min-h-0 w-full bg-white/95 backdrop-blur rounded-2xl shadow-lg border border-indigo-100 p-2.5 sm:p-4 flex flex-col justify-between overflow-hidden relative animate-pop">
+            <!-- محتوای پویا اینجا رندر می‌شود -->
+        </div>
+    </main>
+
+    <!-- فوتر ثابت بدون ایجاد اسکرول با لینک کپی‌رایت طراح -->
+    <footer class="shrink-0 bg-white/90 border-t border-indigo-100 px-3 sm:px-6 py-1 sm:py-1.5 text-[11px] sm:text-xs text-slate-600 flex items-center justify-between z-20">
+        <div class="flex items-center gap-1.5 font-medium">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span id="footer-hint" class="truncate max-w-[200px] sm:max-w-md">نکته: در نوشتن فرمول ریاضی، کسرها و علامت‌ها از چپ به راست خوانده می‌شوند.</span>
+        </div>
+        <div class="font-bold text-slate-700 shrink-0">
+            طراح: <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 underline decoration-indigo-300 underline-offset-4 transition-colors">علی یعقوبی</a>
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           ۱. سیستم تبدیل همه کاراکترهای عددی انگلیسی به فارسی
+           ========================================================================== */
+        function toFa(num) {
+            if (num === null || num === undefined) return '';
+            const faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return String(num).replace(/\d/g, d => faDigits[d]);
+        }
+
+        // تبدیل نام فارسی مخرج‌ها
+        function denomName(d) {
+            const names = {
+                1: 'یکم (واحد کامل)',
+                2: 'دوم (نیم)',
+                3: 'سوم',
+                4: 'چهارم (ربع)',
+                5: 'پنجم',
+                6: 'ششم',
+                7: 'هفتم',
+                8: 'هشتم',
+                9: 'نهم',
+                10: 'دهم'
+            };
+            return names[d] || `${toFa(d)}ام`;
+        }
+
+        // پایش و تبدیل خودکار اعداد در متن‌های ایجادشده
+        function applyPersianDigits(rootElement = document.body) {
+            const walker = document.createTreeWalker(rootElement, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while ((node = walker.nextNode())) {
+                const parent = node.parentElement;
+                if (!parent) continue;
+                const tag = parent.tagName;
+                if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+                if (/[0-9]/.test(node.nodeValue)) {
+                    node.nodeValue = toFa(node.nodeValue);
+                }
+            }
+        }
+
+        /* ==========================================================================
+           ۲. سیستم صوتی Web Audio API (بدون نیاز به فایل خارجی)
+           ========================================================================== */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(680, now + 0.06);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                } else if (type === 'pop') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(380, now);
+                    osc.frequency.exponentialRampToValueAtTime(760, now + 0.09);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.09);
+                } else if (type === 'success') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.22);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.08);
+                        osc.stop(now + idx * 0.08 + 0.22);
+                    });
+                } else if (type === 'wrong') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(240, now);
+                    osc.frequency.linearRampToValueAtTime(160, now + 0.25);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                }
+            } catch (e) {
+                // نادیده گرفتن خطا
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('sound-btn').textContent = soundEnabled ? '🔊' : '🔇';
+            if (soundEnabled) playSound('pop');
+        }
+
+        /* ==========================================================================
+           ۳. سیستم کاغذرنگی تشویقی (Confetti)
+           ========================================================================== */
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const confettiCtx = confettiCanvas.getContext('2d');
+        let confettiParticles = [];
+        let confettiAnimId = null;
+
+        function resizeConfetti() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeConfetti);
+        resizeConfetti();
+
+        function launchConfetti() {
+            const colors = ['#4f46e5', '#10b981', '#f59e0b', '#ec4899', '#06b6d4', '#8b5cf6'];
+            for (let i = 0; i < 65; i++) {
+                confettiParticles.push({
+                    x: window.innerWidth / 2 + (Math.random() - 0.5) * 200,
+                    y: window.innerHeight / 2,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: -Math.random() * 12 - 4,
+                    size: Math.random() * 8 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360,
+                    vrot: (Math.random() - 0.5) * 12,
+                    life: 1
+                });
+            }
+            if (!confettiAnimId) animateConfetti();
+        }
+
+        function animateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.35;
+                p.rot += p.vrot;
+                p.life -= 0.014;
+                confettiCtx.save();
+                confettiCtx.translate(p.x, p.y);
+                confettiCtx.rotate((p.rot * Math.PI) / 180);
+                confettiCtx.globalAlpha = Math.max(0, p.life);
+                confettiCtx.fillStyle = p.color;
+                confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+                confettiCtx.restore();
+            });
+            confettiParticles = confettiParticles.filter(p => p.life > 0 && p.y < confettiCanvas.height + 30);
+            if (confettiParticles.length > 0) {
+                confettiAnimId = requestAnimationFrame(animateConfetti);
+            } else {
+                confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                confettiAnimId = null;
+            }
+        }
+
+        /* ==========================================================================
+           ۴. رندر فرمول‌های ریاضی KaTeX با اعداد فارسی و جهت LTR
+           ========================================================================== */
+        function ktx(latex, large = false) {
+            const cls = large ? 'math-ltr-lg' : 'math-ltr';
+            const faLatex = toFa(latex);
+            try {
+                if (window.katex) {
+                    const html = katex.renderToString(faLatex, {
+                        throwOnError: false,
+                        displayMode: false
+                    });
+                    return `<span dir="ltr" class="${cls}">${html}</span>`;
+                }
+            } catch (e) {}
+            return `<span dir="ltr" class="${cls}">${faLatex}</span>`;
+        }
+
+        /* ==========================================================================
+           ۵. رسم گرافیک‌های برداری (SVG) با اعداد فارسی
+           ========================================================================== */
+        function createPieSVG(num, den, options = {}) {
+            const {
+                size = 170,
+                fillColor = '#6366f1',
+                emptyColor = '#f1f5f9',
+                strokeColor = '#334155',
+                unequal = false,
+                interactive = false,
+                selectedSlices = null,
+                onClickFn = '',
+                subDivide = 1
+            } = options;
+
+            const cx = 100, cy = 100, r = 86;
+            let paths = '';
+
+            if (unequal) {
+                const xCuts = [-86, -55, -10, 45, 86];
+                paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${emptyColor}" stroke="${strokeColor}" stroke-width="3"/>`;
+                paths += `<clipPath id="circleClip"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath>`;
+                paths += `<g clip-path="url(#circleClip)">`;
+                for (let i = 0; i < 4; i++) {
+                    const x1 = cx + xCuts[i];
+                    const w = xCuts[i + 1] - xCuts[i];
+                    const isColored = i < num;
+                    paths += `<rect x="${x1}" y="14" width="${w}" height="172" fill="${isColored ? '#f43f5e' : emptyColor}" stroke="${strokeColor}" stroke-width="2.5"/>`;
+                }
+                paths += `</g>`;
+                paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${strokeColor}" stroke-width="3"/>`;
+                return `<svg viewBox="0 0 200 200" style="width:${size}px; height:${size}px;" class="mx-auto select-none drop-shadow-sm">${paths}</svg>`;
+            }
+
+            if (den === 1) {
+                const isColored = selectedSlices ? selectedSlices.includes(0) : (num >= 1);
+                const clickAttr = interactive ? `onclick="${onClickFn}(0)"` : '';
+                paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${isColored ? fillColor : emptyColor}" stroke="${strokeColor}" stroke-width="3" class="${interactive ? 'slice-path' : ''}" ${clickAttr}/>`;
+            } else {
+                for (let i = 0; i < den; i++) {
+                    const startAngle = (i * 360) / den - 90;
+                    const endAngle = ((i + 1) * 360) / den - 90;
+                    const startRad = (startAngle * Math.PI) / 180;
+                    const endRad = (endAngle * Math.PI) / 180;
+                    const x1 = cx + r * Math.cos(startRad);
+                    const y1 = cy + r * Math.sin(startRad);
+                    const x2 = cx + r * Math.cos(endRad);
+                    const y2 = cy + r * Math.sin(endRad);
+                    const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+                    const isColored = selectedSlices ? selectedSlices.includes(i) : (i < num);
+                    const clickAttr = interactive ? `onclick="${onClickFn}(${i})"` : '';
+                    const d = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+                    paths += `<path d="${d}" fill="${isColored ? fillColor : emptyColor}" stroke="${strokeColor}" stroke-width="2.5" stroke-linejoin="round" class="${interactive ? 'slice-path' : ''}" ${clickAttr}/>`;
+                }
+            }
+
+            if (subDivide > 1) {
+                const totalSub = den * subDivide;
+                for (let j = 0; j < totalSub; j++) {
+                    const ang = ((j * 360) / totalSub - 90) * (Math.PI / 180);
+                    const xEnd = cx + r * Math.cos(ang);
+                    const yEnd = cy + r * Math.sin(ang);
+                    paths += `<line x1="${cx}" y1="${cy}" x2="${xEnd}" y2="${yEnd}" stroke="#0f172a" stroke-width="1.8" stroke-dasharray="4,3" pointer-events="none"/>`;
+                }
+            }
+
+            return `<svg viewBox="0 0 200 200" style="width:${size}px; height:${size}px;" class="mx-auto select-none drop-shadow-sm">${paths}</svg>`;
+        }
+
+        function createBarSVG(num, den, options = {}) {
+            const {
+                width = 240,
+                height = 56,
+                fillColor = '#10b981',
+                emptyColor = '#f1f5f9',
+                strokeColor = '#334155',
+                unequal = false,
+                interactive = false,
+                selectedSlices = null,
+                onClickFn = '',
+                subDivide = 1
+            } = options;
+
+            let rects = '';
+            const pad = 6;
+            const totalW = 288;
+            const totalH = 68;
+
+            if (unequal) {
+                const widths = [35, 95, 48, 110];
+                let curX = pad;
+                for (let i = 0; i < 4; i++) {
+                    const isColored = i < num;
+                    rects += `<rect x="${curX}" y="${pad}" width="${widths[i]}" height="${totalH - pad * 2}" fill="${isColored ? '#f43f5e' : emptyColor}" stroke="${strokeColor}" stroke-width="2.5"/>`;
+                    curX += widths[i];
+                }
+                return `<svg viewBox="0 0 300 80" style="width:${width}px; height:${height}px;" class="mx-auto select-none">${rects}</svg>`;
+            }
+
+            const cellW = totalW / den;
+            for (let i = 0; i < den; i++) {
+                const x = pad + i * cellW;
+                const isColored = selectedSlices ? selectedSlices.includes(i) : (i < num);
+                const clickAttr = interactive ? `onclick="${onClickFn}(${i})"` : '';
+                rects += `<rect x="${x}" y="${pad}" width="${cellW}" height="${totalH - pad * 2}" fill="${isColored ? fillColor : emptyColor}" stroke="${strokeColor}" stroke-width="2.5" class="${interactive ? 'slice-path' : ''}" ${clickAttr}/>`;
+            }
+
+            if (subDivide > 1) {
+                const subW = totalW / (den * subDivide);
+                for (let j = 1; j < den * subDivide; j++) {
+                    const x = pad + j * subW;
+                    rects += `<line x1="${x}" y1="${pad}" x2="${x}" y2="${totalH - pad}" stroke="#0f172a" stroke-width="1.8" stroke-dasharray="4,3" pointer-events="none"/>`;
+                }
+            }
+
+            return `<svg viewBox="0 0 300 80" style="width:${width}px; height:${height}px;" class="mx-auto select-none drop-shadow-sm">${rects}</svg>`;
+        }
+
+        function createClockSVG(quarters, size = 165) {
+            const cx = 100, cy = 100, r = 82;
+            let sector = '';
+            const fill = '#38bdf8';
+
+            if (quarters === 4) {
+                sector = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" fill-opacity="0.45"/>`;
+            } else if (quarters > 0) {
+                const endAngle = quarters * 90 - 90;
+                const endRad = (endAngle * Math.PI) / 180;
+                const x2 = cx + r * Math.cos(endRad);
+                const y2 = cy + r * Math.sin(endRad);
+                const largeArc = quarters > 2 ? 1 : 0;
+                sector = `<path d="M ${cx} ${cy} L ${cx} ${cy - r} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${fill}" fill-opacity="0.5"/>`;
+            }
+
+            const quarterLines = `
+                <line x1="${cx}" y1="${cy - r}" x2="${cx}" y2="${cy + r}" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                <line x1="${cx - r}" y1="${cy}" x2="${cx + r}" y2="${cy}" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+            `;
+
+            // اعداد ساعت به فارسی
+            const nums = [
+                { n: '۱۲', x: 100, y: 32 },
+                { n: '۳', x: 168, y: 105 },
+                { n: '۶', x: 100, y: 174 },
+                { n: '۹', x: 32, y: 105 }
+            ].map(item => `<text x="${item.x}" y="${item.y}" text-anchor="middle" font-size="14" font-weight="800" fill="#1e293b">${item.n}</text>`).join('');
+
+            const handAngle = (quarters * 90 - 90) * (Math.PI / 180);
+            const hx = cx + (r - 18) * Math.cos(handAngle);
+            const hy = cy + (r - 18) * Math.sin(handAngle);
+
+            return `
+                <svg viewBox="0 0 200 200" style="width:${size}px; height:${size}px;" class="mx-auto select-none drop-shadow-sm">
+                    <circle cx="${cx}" cy="${cy}" r="${r + 6}" fill="#1e293b"/>
+                    <circle cx="${cx}" cy="${cy}" r="${r}" fill="#ffffff"/>
+                    ${sector}
+                    ${quarterLines}
+                    ${nums}
+                    <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - 42}" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="${cx}" y1="${cy}" x2="${hx}" y2="${hy}" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="${cx}" cy="${cy}" r="5.5" fill="#ef4444"/>
+                </svg>
+            `;
+        }
+
+        function createNumberLineSVG(num, den, options = {}) {
+            const { interactive = false, onClickFn = '' } = options;
+            const startX = 35, endX = 365, y = 62;
+            const totalW = endX - startX;
+            const stepW = totalW / den;
+
+            let ticks = '';
+            let arcs = '';
+
+            for (let i = 0; i < num; i++) {
+                const x1 = startX + i * stepW;
+                const x2 = startX + (i + 1) * stepW;
+                const midX = (x1 + x2) / 2;
+                arcs += `<path d="M ${x1} ${y - 4} Q ${midX} ${y - 36} ${x2} ${y - 4}" fill="none" stroke="#10b981" stroke-width="2.5" stroke-dasharray="4,2"/>`;
+            }
+
+            const fillW = num * stepW;
+            const bar = `<rect x="${startX}" y="${y - 4}" width="${fillW}" height="8" rx="4" fill="#6366f1" opacity="0.75"/>`;
+
+            for (let i = 0; i <= den; i++) {
+                const x = startX + i * stepW;
+                const isTarget = i === num;
+                const clickAttr = interactive ? `onclick="${onClickFn}(${i})"` : '';
+                const pointLabel = i === 0 ? '۰' : (i === den ? '۱' : `${toFa(i)}/${toFa(den)}`);
+                ticks += `
+                    <g class="${interactive ? 'cursor-pointer' : ''}" ${clickAttr}>
+                        <line x1="${x}" y1="${y - 11}" x2="${x}" y2="${y + 11}" stroke="${isTarget ? '#4f46e5' : '#334155'}" stroke-width="${isTarget ? '3.5' : '2.5'}"/>
+                        <circle cx="${x}" cy="${y}" r="${interactive ? 9 : (isTarget ? 6 : 3.5)}" fill="${isTarget ? '#4f46e5' : (interactive ? '#e0e7ff' : '#334155')}" stroke="#4f46e5" stroke-width="1.5"/>
+                        <text x="${x}" y="${y + 28}" text-anchor="middle" font-size="12" font-weight="800" fill="${isTarget ? '#4f46e5' : '#475569'}">${pointLabel}</text>
+                    </g>
+                `;
+            }
+
+            const frogX = startX + num * stepW;
+
+            return `
+                <svg viewBox="0 0 400 105" class="w-full max-w-[420px] h-auto mx-auto select-none" dir="ltr">
+                    <line x1="${startX - 12}" y1="${y}" x2="${endX + 12}" y2="${y}" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+                    ${bar}
+                    ${arcs}
+                    ${ticks}
+                    <text x="${frogX}" y="${y - 16}" text-anchor="middle" font-size="22">🐸</text>
+                </svg>
+            `;
+        }
+
+        function createBeakerSVG(num, den, options = {}) {
+            const { size = 155, interactive = false, onClickFn = '' } = options;
+            const topY = 25, botY = 175, leftX = 50, rightX = 150;
+            const totalH = botY - topY;
+            const fillH = (num / den) * totalH;
+            const fillY = botY - fillH;
+
+            let lines = '';
+            for (let i = 1; i <= den; i++) {
+                const ly = botY - (i / den) * totalH;
+                const clickAttr = interactive ? `onclick="${onClickFn}(${i})"` : '';
+                const fracLabel = `${toFa(i)}/${toFa(den)}`;
+                lines += `
+                    <g class="${interactive ? 'cursor-pointer' : ''}" ${clickAttr}>
+                        <line x1="${leftX}" y1="${ly}" x2="${rightX}" y2="${ly}" stroke="#475569" stroke-width="1.8" stroke-dasharray="4,3"/>
+                        <rect x="${rightX + 4}" y="${ly - 10}" width="40" height="20" rx="4" fill="${i === num ? '#4f46e5' : '#f1f5f9'}"/>
+                        <text x="${rightX + 24}" y="${ly + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="${i === num ? '#ffffff' : '#334155'}">${fracLabel}</text>
+                    </g>
+                `;
+            }
+
+            return `
+                <svg viewBox="0 0 215 195" style="width:${size}px; height:${size}px;" class="mx-auto select-none" dir="ltr">
+                    <rect x="${leftX + 2}" y="${fillY}" width="${rightX - leftX - 4}" height="${fillH}" rx="4" fill="#38bdf8" fill-opacity="0.7"/>
+                    ${lines}
+                    <path d="M ${leftX - 6} ${topY} L ${leftX} ${topY} L ${leftX} ${botY} Q ${leftX} ${botY + 8} ${leftX + 8} ${botY + 8} L ${rightX - 8} ${botY + 8} Q ${rightX} ${botY + 8} ${rightX} ${botY} L ${rightX} ${topY} L ${rightX + 6} ${topY}" fill="none" stroke="#1e293b" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+                </svg>
+            `;
+        }
+
+        /* ==========================================================================
+           ۶. وضعیت کلی برنامه (State)
+           ========================================================================== */
+        const state = {
+            chapter: 0,
+            mode: 'learn',
+            stars: 0,
+            coins: 0,
+            completedQuizzes: {},
+
+            // فصل ۱
+            c1Slide: 0,
+            c1EqualMode: true,
+            c1Num: 3,
+            c1Den: 6,
+            c1Shape: 'pie',
+            c1ExampleIdx: 0,
+            c1QuizIdx: 0,
+            c1SelectedSlices: [0, 1],
+
+            // فصل ۲
+            c2Slide: 0,
+            c2Quarters: 1,
+            c2Num: 3,
+            c2Den: 5,
+            c2BeakerNum: 2,
+            c2BeakerDen: 4,
+            c2ExampleIdx: 0,
+            c2QuizIdx: 0,
+            c2QuizUserVal: 1,
+
+            // فصل ۳
+            c3Slide: 0,
+            c3FoldMult: 2,
+            c3BaseNum: 1,
+            c3BaseDen: 2,
+            c3ExampleIdx: 0,
+            c3QuizIdx: 0,
+
+            // فصل ۴
+            c4Slide: 0,
+            c4SameDenA: 5,
+            c4SameDenB: 2,
+            c4SameDenD: 7,
+            c4SameNumN: 1,
+            c4SameNumDA: 2,
+            c4SameNumDB: 5,
+            c4ExampleIdx: 0,
+            c4QuizIdx: 0
+        };
+
+        const totalQuizCount = 16;
+
+        function updateHUD() {
+            document.getElementById('score-stars').textContent = toFa(state.stars);
+            document.getElementById('score-coins').textContent = toFa(state.coins);
+
+            const solvedCount = Object.keys(state.completedQuizzes).length;
+            const pct = Math.min(100, Math.round((solvedCount / totalQuizCount) * 100));
+            document.getElementById('progress-text').textContent = toFa(pct) + '٪';
+            document.getElementById('progress-bar').style.width = pct + '%';
+
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`chap-btn-${i}`);
+                const badge = document.getElementById(`chap-badge-${i}`);
+                const chapDone = [0, 1, 2, 3].every(q => state.completedQuizzes[`${i}-${q}`]);
+                if (chapDone) badge.classList.remove('hidden');
+
+                if (state.chapter === i) {
+                    btn.className = 'chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-extrabold transition-all flex items-center justify-center gap-1 bg-indigo-600 text-white shadow-sm';
+                } else {
+                    btn.className = 'chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1 text-slate-600 hover:bg-white/70';
+                }
+            }
+
+            const modes = ['learn', 'examples', 'quiz'];
+            modes.forEach(m => {
+                const btn = document.getElementById(`mode-btn-${m}`);
+                if (state.mode === m) {
+                    btn.className = 'mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 bg-white text-indigo-700 shadow-sm border border-indigo-200';
+                } else {
+                    btn.className = 'mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:bg-white/50';
+                }
+            });
+        }
+
+        function selectChapter(chapIdx) {
+            playSound('click');
+            state.chapter = chapIdx;
+            state.mode = 'learn';
+            renderStage();
+        }
+
+        function selectMode(mode) {
+            playSound('click');
+            state.mode = mode;
+            renderStage();
+        }
+
+        function rewardAnswer(key, feedbackElId, msg) {
+            playSound('success');
+            launchConfetti();
+            if (!state.completedQuizzes[key]) {
+                state.completedQuizzes[key] = true;
+                state.stars += 1;
+                state.coins += 10;
+            }
+            updateHUD();
+            const fb = document.getElementById(feedbackElId);
+            if (fb) {
+                fb.className = 'mt-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs sm:text-sm font-bold text-center animate-pop';
+                fb.innerHTML = `🌟 آفرین قهرمان! ${msg}`;
+            }
+            applyPersianDigits(fb);
+        }
+
+        function wrongAnswer(feedbackElId, hintMsg) {
+            playSound('wrong');
+            const fb = document.getElementById(feedbackElId);
+            if (fb) {
+                fb.className = 'mt-1.5 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-800 text-xs sm:text-sm font-bold text-center animate-pop';
+                fb.innerHTML = `💡 دقت کن: ${hintMsg}`;
+            }
+            applyPersianDigits(fb);
+        }
+
+        /* ==========================================================================
+           ۷. رندر فصل ۱: آشنایی با مفهوم کسر
+           ========================================================================== */
+        function renderChapter1() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 3;
+                let slideHTML = '';
+
+                if (state.c1Slide === 0) {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
+                                <div class="flex gap-2 mb-2">
+                                    <button onclick="state.c1EqualMode=true; playSound('pop'); renderStage();" class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold transition ${state.c1EqualMode ? 'bg-emerald-600 text-white shadow' : 'bg-white text-slate-600 border'}">
+                                        ✅ تقسیم مساوی (کسر درست)
+                                    </button>
+                                    <button onclick="state.c1EqualMode=false; playSound('pop'); renderStage();" class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold transition ${!state.c1EqualMode ? 'bg-rose-600 text-white shadow' : 'bg-white text-slate-600 border'}">
+                                        ❌ تقسیم نامساوی
+                                    </button>
+                                </div>
+                                <div class="my-1">
+                                    ${createPieSVG(1, 4, { size: 145, unequal: !state.c1EqualMode, fillColor: '#10b981' })}
+                                </div>
+                                <div class="mt-1">
+                                    ${createBarSVG(1, 4, { width: 210, height: 42, unequal: !state.c1EqualMode, fillColor: '#10b981' })}
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col justify-center space-y-2.5 text-right px-2">
+                                <div class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-extrabold w-fit">
+                                    <span>🍕 گام اول: شرط مهم کسر چیست؟</span>
+                                </div>
+                                <h2 class="text-sm sm:text-lg font-black text-slate-800">
+                                    فقط وقتی شکل به <span class="text-emerald-600 underline">قسمت‌های مساوی</span> تقسیم شود، می‌توانیم کسر بنویسیم!
+                                </h2>
+                                ${state.c1EqualMode ? `
+                                    <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm leading-relaxed text-emerald-950">
+                                        در این شکل، کیک و شکلات به <b>۴ قسمت کاملاً مساوی</b> تقسیم شده‌اند و <b>۱ قسمت</b> آن رنگ شده است؛ پس می‌توانیم بنویسیم:
+                                        ${ktx('\\frac{1}{4}')}
+                                        یعنی <b>«یک چهارم»</b>.
+                                    </div>
+                                ` : `
+                                    <div class="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs sm:text-sm leading-relaxed text-rose-950">
+                                        ⚠️ <b>توجه!</b> در این حالت شکل به ۴ تکه تقسیم شده اما اندازه‌ی تکه‌ها با هم برابر نیست! بنابراین بخش رنگی را <b>نمی‌توانیم</b> ${ktx('\\frac{1}{4}')} بنامیم.
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                } else if (state.c1Slide === 1) {
+                    const isWhole = state.c1Num === state.c1Den;
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
+                                <div class="flex gap-2 mb-2">
+                                    <button onclick="state.c1Shape='pie'; playSound('pop'); renderStage();" class="px-3 py-1 rounded-lg text-xs font-bold ${state.c1Shape === 'pie' ? 'bg-indigo-600 text-white' : 'bg-white border text-slate-600'}">🍕 پیتزا دایره‌ای</button>
+                                    <button onclick="state.c1Shape='bar'; playSound('pop'); renderStage();" class="px-3 py-1 rounded-lg text-xs font-bold ${state.c1Shape === 'bar' ? 'bg-indigo-600 text-white' : 'bg-white border text-slate-600'}">🍫 نوار کسری</button>
+                                </div>
+                                <div class="my-1 flex items-center justify-center">
+                                    ${state.c1Shape === 'pie'
+                                        ? createPieSVG(state.c1Num, state.c1Den, { size: 150, fillColor: '#6366f1' })
+                                        : createBarSVG(state.c1Num, state.c1Den, { width: 240, height: 64, fillColor: '#6366f1' })
+                                    }
+                                </div>
+                                <p class="text-xs font-bold text-indigo-900 mt-1">
+                                    خوانش فارسی: «${toFa(state.c1Num)} از ${toFa(state.c1Den)} قسمت مساوی» یا <b>«${toFa(state.c1Num)} ${denomName(state.c1Den)}»</b>
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <div class="flex items-center justify-around bg-indigo-50/70 p-2.5 rounded-2xl border border-indigo-100">
+                                    <div class="text-center">
+                                        ${ktx(isWhole ? `\\frac{${state.c1Num}}{${state.c1Den}} = 1` : `\\frac{${state.c1Num}}{${state.c1Den}}`, true)}
+                                    </div>
+                                    <div class="text-xs sm:text-sm space-y-1 text-slate-700 font-bold">
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span><span><b>صورت کسر (${toFa(state.c1Num)}):</b> تعداد قسمت‌های رنگی</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span><span><b>خط کسری (—):</b> خط جداکننده</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span><span><b>مخرج کسر (${toFa(state.c1Den)}):</b> کل قسمت‌های مساوی</span></div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 bg-white p-2.5 rounded-xl border border-slate-200">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <label class="text-xs sm:text-sm font-bold text-indigo-700 w-32">صورت کسر (${toFa(state.c1Num)}):</label>
+                                        <input type="range" min="0" max="${state.c1Den}" value="${state.c1Num}" oninput="state.c1Num=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                    <div class="flex items-center justify-between gap-2">
+                                        <label class="text-xs sm:text-sm font-bold text-emerald-700 w-32">مخرج کسر (${toFa(state.c1Den)}):</label>
+                                        <input type="range" min="1" max="8" value="${state.c1Den}" oninput="state.c1Den=parseInt(this.value); if(state.c1Num>state.c1Den) state.c1Num=state.c1Den; playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                </div>
+
+                                ${isWhole ? `
+                                    <div class="p-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold text-center animate-pop">
+                                        🎉 وقتی صورت و مخرج کسر با هم برابر باشند (${ktx(`\\frac{${state.c1Den}}{${state.c1Den}} = 1`)}), یعنی <b>یک واحد کامل</b> رنگ شده است!
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
+                                <div class="flex items-center gap-4">
+                                    <div class="text-center">
+                                        ${createPieSVG(4, 4, { size: 130, fillColor: '#f59e0b' })}
+                                        <div class="mt-1">${ktx('\\frac{4}{4} = 1')}</div>
+                                    </div>
+                                    <div class="text-center">
+                                        ${createPieSVG(6, 6, { size: 130, fillColor: '#10b981' })}
+                                        <div class="mt-1">${ktx('\\frac{6}{6} = 1')}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🌟 واحد کامل در کسرها</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">هر وقت همه‌ی قسمت‌های مساوی یک شکل را برداریم، یک واحد کامل داریم!</h3>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    مثلاً اگر پیتزایی را به ۴ قسمت مساوی تقسیم کنیم و هر ۴ قسمت را بخوریم، ${ktx('\\frac{4}{4}')} یعنی <b>۱ پیتزای کامل</b> خورده‌ایم:
+                                </p>
+                                <div class="text-center py-1">
+                                    ${ktx('\\frac{2}{2} = \\frac{3}{3} = \\frac{4}{4} = \\frac{6}{6} = 1', true)}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `
+                    ${slideHTML}
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c1Slide>0){state.c1Slide--; playSound('click'); renderStage();}" ${state.c1Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c1Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'}">
+                            ◀ اسلاید قبلی
+                        </button>
+                        <div class="text-xs font-bold text-slate-500">
+                            بخش ۱ - گام آموزشی ${toFa(state.c1Slide + 1)} از ${toFa(slidesCount)}
+                        </div>
+                        <button onclick="if(state.c1Slide<${slidesCount - 1}){state.c1Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm">
+                            ${state.c1Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
+                        </button>
+                    </div>
+                `;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: کیک تولد ۶ قسمتی',
+                        visual: createPieSVG(2, 6, { size: 145, fillColor: '#ec4899' }),
+                        desc: `مادر کیک تولد را به <b>۶ قسمت مساوی</b> تقسیم کرد. علی <b>۲ قسمت</b> از آن را خورد.
+                               <br>• کسر کیک خورده‌شده: ${ktx('\\frac{2}{6}')} (دو ششم)
+                               <br>• کسر کیک باقی‌مانده: ${ktx('\\frac{4}{6}')} (چهار ششم)`
+                    },
+                    {
+                        title: 'مثال ۲: مزرعه کشاورز (نوار کسری)',
+                        visual: createBarSVG(5, 8, { width: 250, height: 60, fillColor: '#10b981' }),
+                        desc: `یک کشاورز زمین خود را به <b>۸ قسمت مساوی</b> تقسیم کرده و در <b>۵ قسمت</b> آن گندم کاشته است.
+                               <br>• کسر بخش گندم‌کاری‌شده: ${ktx('\\frac{5}{8}')} (پنج هشتم)
+                               <br>• کسر بخش کاشته‌نشده: ${ktx('\\frac{3}{8}')} (سه هشتم)`
+                    },
+                    {
+                        title: 'مثال ۳: شکلات کامل',
+                        visual: createBarSVG(4, 4, { width: 230, height: 60, fillColor: '#f59e0b' }),
+                        desc: `یک تخته شکلات به <b>۴ قسمت مساوی</b> تقسیم شده و هر ۴ قسمت آن رنگ شده است.
+                               <br>• کسر نمایش داده‌شده برابر با یک واحد کامل است: ${ktx('\\frac{4}{4} = 1')}`
+                    }
+                ];
+                const ex = examples[state.c1ExampleIdx];
+
+                container.innerHTML = `
+                    <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                        <div class="flex flex-col items-center justify-center bg-indigo-50/50 rounded-2xl p-4 border border-indigo-100 h-full">
+                            ${ex.visual}
+                        </div>
+                        <div class="flex flex-col justify-center space-y-3 px-2">
+                            <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">💡 مثال آموزشی ${toFa(state.c1ExampleIdx + 1)} از ${toFa(examples.length)}</span>
+                            <h3 class="text-base sm:text-lg font-black text-indigo-950">${ex.title}</h3>
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">
+                                ${ex.desc}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c1ExampleIdx>0){state.c1ExampleIdx--; playSound('click'); renderStage();}" ${state.c1ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c1ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                            ◀ مثال قبلی
+                        </button>
+                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c1ExampleIdx + 1)} از ${toFa(examples.length)}</span>
+                        <button onclick="if(state.c1ExampleIdx<${examples.length - 1}){state.c1ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm">
+                            ${state.c1ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
+                        </button>
+                    </div>
+                `;
+            } else {
+                renderChapter1Quiz(container);
+            }
+        }
+
+        function toggleC1Slice(idx) {
+            playSound('pop');
+            const pos = state.c1SelectedSlices.indexOf(idx);
+            if (pos > -1) state.c1SelectedSlices.splice(pos, 1);
+            else state.c1SelectedSlices.push(idx);
+            renderStage();
+        }
+
+        function renderChapter1Quiz(container) {
+            const qIdx = state.c1QuizIdx;
+            const key = `0-${qIdx}`;
+            let qContent = '';
+
+            if (qIdx === 0) {
+                qContent = `
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۱: در کدام شکل تقسیم به قسمت‌های مساوی انجام شده و کسر ${ktx('\\frac{1}{4}')} را درست نشان می‌دهد؟</h3>
+                        <div class="grid grid-cols-2 gap-3 max-w-md mx-auto pt-1">
+                            <button onclick="wrongAnswer('c1-fb', 'در این شکل اندازه‌ی ۴ قسمت با هم برابر نیست!')" class="p-3 rounded-2xl border-2 border-slate-200 hover:border-indigo-400 bg-slate-50 flex flex-col items-center gap-1 transition">
+                                ${createPieSVG(1, 4, { size: 110, unequal: true })}
+                                <span class="text-xs font-bold text-slate-700">شکل الف</span>
+                            </button>
+                            <button onclick="rewardAnswer('${key}', 'c1-fb', 'آفرین! تمام ۴ قسمت کاملاً مساوی هستند.')" class="p-3 rounded-2xl border-2 border-slate-200 hover:border-indigo-400 bg-slate-50 flex flex-col items-center gap-1 transition">
+                                ${createPieSVG(1, 4, { size: 110, unequal: false, fillColor: '#10b981' })}
+                                <span class="text-xs font-bold text-slate-700">شکل ب</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (qIdx === 1) {
+                qContent = `
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۲ (رنگ‌آمیزی تعاملی): روی قاچ‌های پیتزا کلیک کن تا دقیقاً کسر ${ktx('\\frac{3}{6}')} رنگ شود!</h3>
+                        <div class="my-1">
+                            ${createPieSVG(0, 6, {
+                                size: 140,
+                                interactive: true,
+                                selectedSlices: state.c1SelectedSlices,
+                                onClickFn: 'toggleC1Slice',
+                                fillColor: '#6366f1'
+                            })}
+                        </div>
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="text-xs font-bold text-slate-600">تعداد رنگ‌شده: ${toFa(state.c1SelectedSlices.length)} از ${toFa(6)}</span>
+                            <button onclick="if(state.c1SelectedSlices.length===3){rewardAnswer('${key}','c1-fb','دقیقاً ۳ قسمت از ۶ قسمت مساوی را رنگ کردی!');}else{wrongAnswer('c1-fb','صورت کسر ۳ است، پس باید دقیقاً ۳ قاچ را رنگ کنی.');}" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white text-xs sm:text-sm font-bold shadow">
+                                بررسی پاسخ ✔
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (qIdx === 2) {
+                qContent = `
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۳: چه کسری از این نوار کسری رنگ شده است؟</h3>
+                        <div class="my-2">
+                            ${createBarSVG(5, 8, { width: 250, height: 55, fillColor: '#f59e0b' })}
+                        </div>
+                        <div class="flex justify-center gap-3 pt-1">
+                            <button onclick="wrongAnswer('c1-fb', 'تعداد کل خانه‌ها ۸ است (مخرج) و ۵ خانه رنگی است (صورت).')" class="px-4 py-2 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{3}{8}')}</button>
+                            <button onclick="rewardAnswer('${key}', 'c1-fb', 'درست گفتی! ۵ قسمت از ۸ قسمت مساوی یعنی پنج هشتم.')" class="px-4 py-2 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{5}{8}')}</button>
+                            <button onclick="wrongAnswer('c1-fb', 'مخرج همیشه تعداد کل قسمت‌های مساوی (۸) در پایین خط کسری است!')" class="px-4 py-2 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{8}{5}')}</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                qContent = `
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۴: اگر همه‌ی ۵ قسمت یک کیک ۵ قسمتی رنگ شود، کدام تساوی درست است؟</h3>
+                        <div class="my-1">
+                            ${createPieSVG(5, 5, { size: 120, fillColor: '#10b981' })}
+                        </div>
+                        <div class="flex justify-center gap-3">
+                            <button onclick="rewardAnswer('${key}', 'c1-fb', 'عالیه! پنج پنجم برابر با ۱ واحد کامل است.')" class="px-4 py-2 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{5}{5} = 1')}</button>
+                            <button onclick="wrongAnswer('c1-fb', 'هر ۵ قسمت از ۵ قسمت انتخاب شده است!')" class="px-4 py-2 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{1}{5} = 1')}</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="flex-1 min-h-0 flex flex-col justify-center items-center">
+                    ${qContent}
+                    <div id="c1-fb" class="mt-2 min-h-[34px] flex items-center justify-center text-xs text-slate-400">روی پاسخ درست کلیک کن!</div>
+                </div>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <button onclick="if(state.c1QuizIdx>0){state.c1QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
+                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
+                    <button onclick="if(state.c1QuizIdx<3){state.c1QuizIdx++; playSound('click'); renderStage();}else{selectChapter(1);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'رفتن به بخش ۲: اندازه‌گیری 🚀'}
+                    </button>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           ۸. رندر فصل ۲: اندازه‌گیری
+           ========================================================================== */
+        function renderChapter2() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 3;
+                let slideHTML = '';
+
+                if (state.c2Slide === 0) {
+                    const q = state.c2Quarters;
+                    const names = {
+                        1: 'یک ربع ساعت (۱۵ دقیقه)',
+                        2: 'نیم ساعت (۳۰ دقیقه)',
+                        3: 'سه ربع ساعت (۴۵ دقیقه)',
+                        4: 'یک ساعت کامل (۶۰ دقیقه)'
+                    };
+                    const formulas = {
+                        1: '\\frac{1}{4}',
+                        2: '\\frac{2}{4} = \\frac{1}{2}',
+                        3: '\\frac{3}{4}',
+                        4: '\\frac{4}{4} = 1'
+                    };
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
+                                ${createClockSVG(q, 155)}
+                                <div class="flex flex-wrap justify-center gap-1.5 mt-2">
+                                    ${[1, 2, 3, 4].map(val => `
+                                        <button onclick="state.c2Quarters=${val}; playSound('pop'); renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition ${q === val ? 'bg-indigo-600 text-white shadow' : 'bg-white border text-slate-700'}">
+                                            ${val === 1 ? 'ربع ساعت' : val === 2 ? 'نیم ساعت' : val === 3 ? 'سه ربع' : 'ساعت کامل'}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">⏰ کسر روی صفحه ساعت</span>
+                                <h3 class="text-sm sm:text-lg font-black text-slate-800">صفحه ساعت به ۴ قسمت مساوی (هر قسمت ۱۵ دقیقه) تقسیم می‌شود!</h3>
+                                <div class="p-3 rounded-2xl bg-sky-50 border border-sky-200 space-y-1.5 text-xs sm:text-sm">
+                                    <div class="font-bold text-sky-950">وضعیت فعلی: <span class="text-indigo-700">${names[q]}</span></div>
+                                    <div>نمایش کسری از یک ساعت: ${ktx(formulas[q], true)}</div>
+                                    <p class="text-slate-600">وقتی عقربه دقیقه‌شمار از ۱۲ حرکت می‌کند، به ازای هر ۱۵ دقیقه، ${ktx('\\frac{1}{4}')} ساعت (یک ربع) جلو می‌رود.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.c2Slide === 1) {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 flex flex-col justify-around items-center px-2">
+                            <div class="text-center space-y-1">
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full text-xs font-extrabold">🐸 نمایش کسر روی محور اعداد (از ۰ تا ۱)</span>
+                                <h3 class="text-xs sm:text-base font-black text-slate-800">فاصله‌ی بین ۰ تا ۱ به ${toFa(state.c2Den)} قسمت مساوی تقسیم شده و قورباغه ${toFa(state.c2Num)} پرش انجام داده است: ${ktx(`\\frac{${state.c2Num}}{${state.c2Den}}`)}</h3>
+                            </div>
+                            <div class="w-full bg-slate-50 p-2 sm:p-3 rounded-2xl border border-slate-200">
+                                ${createNumberLineSVG(state.c2Num, state.c2Den)}
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-xl bg-white p-2.5 rounded-xl border border-slate-200">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-indigo-700 w-28">تعداد پرش (${toFa(state.c2Num)}):</span>
+                                    <input type="range" min="0" max="${state.c2Den}" value="${state.c2Num}" oninput="state.c2Num=parseInt(this.value); playSound('pop'); renderStage();" class="flex-1">
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-emerald-700 w-28">کل قسمت‌ها (${toFa(state.c2Den)}):</span>
+                                    <input type="range" min="2" max="8" value="${state.c2Den}" oninput="state.c2Den=parseInt(this.value); if(state.c2Num>state.c2Den) state.c2Num=state.c2Den; playSound('pop'); renderStage();" class="flex-1">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
+                                ${createBeakerSVG(state.c2BeakerNum, state.c2BeakerDen, { size: 155 })}
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🧪 لیوان مدرج آزمایشگاهی</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">اندازه‌گیری حجم مایعات با کسرها</h3>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    این پیمانه به <b>${toFa(state.c2BeakerDen)} قسمت مساوی</b> تقسیم شده و تا خط <b>${toFa(state.c2BeakerNum)}</b> پر از آب است:
+                                    ${ktx(`\\frac{${state.c2BeakerNum}}{${state.c2BeakerDen}}`, true)}
+                                </p>
+                                <div class="space-y-2 bg-slate-50 p-2.5 rounded-xl border">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-sky-700 w-28">مقدار مایع (${toFa(state.c2BeakerNum)}):</span>
+                                        <input type="range" min="0" max="${state.c2BeakerDen}" value="${state.c2BeakerNum}" oninput="state.c2BeakerNum=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-slate-700 w-28">درجه‌بندی (${toFa(state.c2BeakerDen)}):</span>
+                                        <input type="range" min="2" max="6" value="${state.c2BeakerDen}" oninput="state.c2BeakerDen=parseInt(this.value); if(state.c2BeakerNum>state.c2BeakerDen) state.c2BeakerNum=state.c2BeakerDen; playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `
+                    ${slideHTML}
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c2Slide>0){state.c2Slide--; playSound('click'); renderStage();}" ${state.c2Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c2Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ اسلاید قبلی</button>
+                        <span class="text-xs font-bold text-slate-500">بخش ۲ - گام آموزشی ${toFa(state.c2Slide + 1)} از ${toFa(slidesCount)}</span>
+                        <button onclick="if(state.c2Slide<${slidesCount - 1}){state.c2Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                            ${state.c2Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
+                        </button>
+                    </div>
+                `;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: زمان مطالعه روی ساعت',
+                        visual: createClockSVG(3, 145),
+                        desc: `سارا ۴۵ دقیقه کتاب خوانده است. چون هر ربع ساعت ۱۵ دقیقه است، ۴۵ دقیقه یعنی <b>سه ربع ساعت</b>:
+                               <br>• کسر ساعت مطالعه: ${ktx('\\frac{3}{4}')} ساعت`
+                    },
+                    {
+                        title: 'مثال ۲: پرش قورباغه روی محور اعداد',
+                        visual: createNumberLineSVG(4, 6),
+                        desc: `محور بین ۰ تا ۱ به <b>۶ قسمت مساوی</b> تقسیم شده است (مخرج ۶). قورباغه ۴ قسمت به جلو پریده است:
+                               <br>• نقطه توقف قورباغه: ${ktx('\\frac{4}{6}')}`
+                    },
+                    {
+                        title: 'مثال ۳: پیمانه شیر برای پخت کیک',
+                        visual: createBeakerSVG(2, 3, { size: 145 }),
+                        desc: `برای پخت کیک، لیوان مدرج ۳ قسمتی را تا خط دوم پر از شیر کرده‌ایم:
+                               <br>• کسر شیر داخل پیمانه: ${ktx('\\frac{2}{3}')} لیوان
+                               <br>• کسر بخش خالی پیمانه: ${ktx('\\frac{1}{3}')} لیوان`
+                    }
+                ];
+                const ex = examples[state.c2ExampleIdx];
+
+                container.innerHTML = `
+                    <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                        <div class="flex flex-col items-center justify-center bg-sky-50/50 rounded-2xl p-3 border border-sky-100 h-full">
+                            ${ex.visual}
+                        </div>
+                        <div class="flex flex-col justify-center space-y-2.5 px-2">
+                            <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">💡 مثال ${toFa(state.c2ExampleIdx + 1)} از ${toFa(examples.length)}</span>
+                            <h3 class="text-base sm:text-lg font-black text-slate-800">${ex.title}</h3>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">${ex.desc}</div>
+                        </div>
+                    </div>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c2ExampleIdx>0){state.c2ExampleIdx--; playSound('click'); renderStage();}" ${state.c2ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c2ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ مثال قبلی</button>
+                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c2ExampleIdx + 1)} از ${toFa(examples.length)}</span>
+                        <button onclick="if(state.c2ExampleIdx<${examples.length - 1}){state.c2ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                            ${state.c2ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
+                        </button>
+                    </div>
+                `;
+            } else {
+                renderChapter2Quiz(container);
+            }
+        }
+
+        function setC2QuizVal(val) {
+            playSound('pop');
+            state.c2QuizUserVal = val;
+            renderStage();
+        }
+
+        function renderChapter2Quiz(container) {
+            const qIdx = state.c2QuizIdx;
+            const key = `1-${qIdx}`;
+            let qContent = '';
+
+            if (qIdx === 0) {
+                qContent = `
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۱: این ساعت چه کسری از یک ساعت را نشان می‌دهد؟</h3>
+                        ${createClockSVG(3, 130)}
+                        <div class="flex justify-center gap-3">
+                            <button onclick="wrongAnswer('c2-fb', 'عقربه روی عدد ۹ است یعنی ۳ ربع از ۴ ربع ساعت گذشته!')" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{1}{4}')}</button>
+                            <button onclick="wrongAnswer('c2-fb', 'نیم ساعت یعنی عقربه روی ۶ باشد.')" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{2}{4}')}</button>
+                            <button onclick="rewardAnswer('${key}', 'c2-fb', 'احسنت! ۴۵ دقیقه معادل سه چهارم (سه ربع) ساعت است.')" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{3}{4}')}</button>
+                        </div>
+                    </div>
+                `;
+            } else if (qIdx === 1) {
+                qContent = `
+                    <div class="text-center space-y-2 w-full">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۲ (تعاملی): روی نقطه‌های محور کلیک کن تا قورباغه به کسر ${ktx('\\frac{4}{5}')} بپرد!</h3>
+                        <div class="w-full max-w-md mx-auto">
+                            ${createNumberLineSVG(state.c2QuizUserVal, 5, { interactive: true, onClickFn: 'setC2QuizVal' })}
+                        </div>
+                        <button onclick="if(state.c2QuizUserVal===4){rewardAnswer('${key}','c2-fb','عالی پریدی! ایستگاه چهارم از ۵ قسمت مساوی همان چهار پنجم است.');}else{wrongAnswer('c2-fb','صورت کسر ۴ است؛ روی خط چهارم بعد از صفر کلیک کن!');}" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white text-xs sm:text-sm font-bold shadow">
+                            بررسی مکان قورباغه ✔
+                        </button>
+                    </div>
+                `;
+            } else if (qIdx === 2) {
+                qContent = `
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۳ (آزمایشگاه): روی درجه‌های لیوان کلیک کن تا به اندازه ${ktx('\\frac{3}{4}')} پر شود!</h3>
+                        ${createBeakerSVG(state.c2QuizUserVal > 4 ? 1 : state.c2QuizUserVal, 4, { size: 135, interactive: true, onClickFn: 'setC2QuizVal' })}
+                        <button onclick="if(state.c2QuizUserVal===3){rewardAnswer('${key}','c2-fb','آفرین دانشمند کوچک! دقیقاً سه چهارم پیمانه پر شد.');}else{wrongAnswer('c2-fb','روی درجه ۳/۴ در کنار پیمانه کلیک کن.');}" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white text-xs sm:text-sm font-bold shadow">
+                            بررسی پیمانه ✔
+                        </button>
+                    </div>
+                `;
+            } else {
+                qContent = `
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۴: «نیم ساعت» معادل کدام کسر از ساعت است؟</h3>
+                        ${createClockSVG(2, 125)}
+                        <div class="flex justify-center gap-3">
+                            <button onclick="rewardAnswer('${key}', 'c2-fb', 'آفرین! نیم ساعت یعنی یک دوم یا دو چهارم ساعت.')" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{1}{2} = \\frac{2}{4}')}</button>
+                            <button onclick="wrongAnswer('c2-fb', 'یک چهارم یعنی ربع ساعت (۱۵ دقیقه).')" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white">${ktx('\\frac{1}{4}')}</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="flex-1 min-h-0 flex flex-col justify-center items-center w-full">
+                    ${qContent}
+                    <div id="c2-fb" class="mt-2 min-h-[34px] flex items-center justify-center text-xs text-slate-400">پاسخ درست را انتخاب کن!</div>
+                </div>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <button onclick="if(state.c2QuizIdx>0){state.c2QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
+                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
+                    <button onclick="if(state.c2QuizIdx<3){state.c2QuizIdx++; state.c2QuizUserVal=1; playSound('click'); renderStage();}else{selectChapter(2);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'رفتن به بخش ۳: تساوی کسرها 🚀'}
+                    </button>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           ۹. رندر فصل ۳: تساوی کسرها
+           ========================================================================== */
+        function renderChapter3() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 2;
+                let slideHTML = '';
+
+                if (state.c3Slide === 0) {
+                    const mult = state.c3FoldMult;
+                    const newNum = state.c3BaseNum * mult;
+                    const newDen = state.c3BaseDen * mult;
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="flex gap-2">
+                                    ${[1, 2, 3, 4].map(m => `
+                                        <button onclick="state.c3FoldMult=${m}; playSound('pop'); renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition ${mult === m ? 'bg-indigo-600 text-white shadow' : 'bg-white border text-slate-700'}">
+                                            ${m === 1 ? 'بدون تا کردن (×۱)' : `تا کردن (×${toFa(m)})`}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    ${createPieSVG(state.c3BaseNum, state.c3BaseDen, { size: 135, fillColor: '#8b5cf6', subDivide: mult })}
+                                </div>
+                                ${createBarSVG(state.c3BaseNum, state.c3BaseDen, { width: 230, height: 48, fillColor: '#8b5cf6', subDivide: mult })}
+                            </div>
+
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <span class="bg-violet-100 text-violet-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">📄 شبیه‌ساز تا کردن کاغذ و تساوی کسرها</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">مقدار رنگ‌شده اصلاً تغییر نکرده، فقط قسمت‌ها ریزتر شده‌اند!</h3>
+                                <div class="p-3 rounded-2xl bg-violet-50 border border-violet-200 text-center space-y-2">
+                                    <div>
+                                        ${ktx(`\\frac{${state.c3BaseNum}}{${state.c3BaseDen}} = \\frac{${state.c3BaseNum} \\times ${mult}}{${state.c3BaseDen} \\times ${mult}} = \\frac{${newNum}}{${newDen}}`, true)}
+                                    </div>
+                                    <p class="text-xs sm:text-sm text-violet-950 font-medium">
+                                        قانون طلایی: اگر <b>صورت و مخرج</b> کسری را در یک عدد ثابت (غیر از صفر) ضرب کنیم، کسر جدید با کسر اول <b>مساوی</b> است!
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-2 justify-center">
+                                    <span class="text-xs font-bold text-slate-600">تغییر کسر پایه:</span>
+                                    <button onclick="state.c3BaseNum=1; state.c3BaseDen=2; playSound('click'); renderStage();" class="px-2 py-0.5 rounded bg-white border text-xs font-bold">۱/۲</button>
+                                    <button onclick="state.c3BaseNum=1; state.c3BaseDen=3; playSound('click'); renderStage();" class="px-2 py-0.5 rounded bg-white border text-xs font-bold">۱/۳</button>
+                                    <button onclick="state.c3BaseNum=2; state.c3BaseDen=3; playSound('click'); renderStage();" class="px-2 py-0.5 rounded bg-white border text-xs font-bold">۲/۳</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-1.5">
+                                <span class="text-xs font-bold text-slate-600">سه نوار کسری هم‌اندازه با تقسیم‌بندی متفاوت:</span>
+                                <div class="flex items-center gap-2">
+                                    ${createBarSVG(1, 2, { width: 200, height: 38, fillColor: '#10b981' })}
+                                    ${ktx('\\frac{1}{2}')}
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    ${createBarSVG(2, 4, { width: 200, height: 38, fillColor: '#3b82f6' })}
+                                    ${ktx('\\frac{2}{4}')}
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    ${createBarSVG(4, 8, { width: 200, height: 38, fillColor: '#8b5cf6' })}
+                                    ${ktx('\\frac{4}{8}')}
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🧱 دیوار کسرهای مساوی</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">همه‌ی این کسرها دقیقاً یک اندازه از شکل را می‌پوشانند:</h3>
+                                <div class="text-center py-2">
+                                    ${ktx('\\frac{1}{2} = \\frac{2}{4} = \\frac{3}{6} = \\frac{4}{8}', true)}
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    روی محور اعداد نیز کسرهای مساوی دقیقاً روی <b>یک نقطه</b> قرار می‌گیرند.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `
+                    ${slideHTML}
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c3Slide>0){state.c3Slide--; playSound('click'); renderStage();}" ${state.c3Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c3Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ اسلاید قبلی</button>
+                        <span class="text-xs font-bold text-slate-500">بخش ۳ - گام آموزشی ${toFa(state.c3Slide + 1)} از ${toFa(slidesCount)}</span>
+                        <button onclick="if(state.c3Slide<${slidesCount - 1}){state.c3Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                            ${state.c3Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
+                        </button>
+                    </div>
+                `;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: تساوی یک‌سوم و دوششم',
+                        visual: `<div class="flex items-center gap-3">${createPieSVG(1, 3, { size: 120, fillColor: '#ec4899' })} <span class="text-xl font-black">=</span> ${createPieSVG(2, 6, { size: 120, fillColor: '#ec4899' })}</div>`,
+                        desc: `وقتی هر قاچ از پیتزای ۳ قسمتی را به ۲ قسمت مساوی تقسیم کنیم، ۶ قسمت می‌شود و ۱ قاچ رنگی تبدیل به ۲ قاچ می‌شود:
+                               <br>${ktx('\\frac{1}{3} = \\frac{1 \\times 2}{3 \\times 2} = \\frac{2}{6}', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: پیدا کردن عدد جاافتاده در تساوی کسرها',
+                        visual: createBarSVG(3, 4, { width: 220, height: 52, fillColor: '#6366f1', subDivide: 2 }),
+                        desc: `می‌خواهیم بدانیم ${ktx('\\frac{3}{4} = \\frac{?}{8}')} چند است.
+                               <br>چون مخرج از ۴ به ۸ رسیده یعنی در ۲ ضرب شده است (${ktx('4 \\times 2 = 8')})، پس صورت را هم در ۲ ضرب می‌کنیم:
+                               <br>${ktx('3 \\times 2 = 6 \\implies \\frac{3}{4} = \\frac{6}{8}')}`
+                    }
+                ];
+                const ex = examples[state.c3ExampleIdx % examples.length];
+
+                container.innerHTML = `
+                    <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                        <div class="flex flex-col items-center justify-center bg-violet-50/50 rounded-2xl p-3 border border-violet-100 h-full">
+                            ${ex.visual}
+                        </div>
+                        <div class="flex flex-col justify-center space-y-2.5 px-2">
+                            <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">💡 مثال ${toFa((state.c3ExampleIdx % examples.length) + 1)} از ${toFa(examples.length)}</span>
+                            <h3 class="text-base sm:text-lg font-black text-slate-800">${ex.title}</h3>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">${ex.desc}</div>
+                        </div>
+                    </div>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c3ExampleIdx>0){state.c3ExampleIdx--; playSound('click'); renderStage();}" ${state.c3ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c3ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ مثال قبلی</button>
+                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c3ExampleIdx + 1)} از ${toFa(examples.length)}</span>
+                        <button onclick="if(state.c3ExampleIdx<${examples.length - 1}){state.c3ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                            ${state.c3ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
+                        </button>
+                    </div>
+                `;
+            } else {
+                renderChapter3Quiz(container);
+            }
+        }
+
+        function renderChapter3Quiz(container) {
+            const qIdx = state.c3QuizIdx;
+            const key = `2-${qIdx}`;
+            const questions = [
+                {
+                    title: 'سوال ۱: عدد مناسب برای جای خالی در صورت کسر کدام است؟',
+                    formula: '\\frac{1}{2} = \\frac{\\square}{6}',
+                    visual: `<div class="flex items-center justify-center gap-3">${createPieSVG(1, 2, { size: 105, fillColor: '#6366f1' })} ${createPieSVG(3, 6, { size: 105, fillColor: '#6366f1' })}</div>`,
+                    options: [
+                        { label: '۲', ok: false, hint: 'مخرج ۲ در ۳ ضرب شده تا ۶ شود، پس صورت ۱ هم باید در ۳ ضرب شود!' },
+                        { label: '۳', ok: true, msg: 'آفرین! چون ۲ ضربدر ۳ برابر ۶ است، ۱ ضربدر ۳ هم می‌شود ۳.' },
+                        { label: '۴', ok: false, hint: 'نصف ۶ برابر با ۳ است!' }
+                    ]
+                },
+                {
+                    title: 'سوال ۲: عدد مناسب برای جای خالی در مخرج کسر کدام است؟',
+                    formula: '\\frac{2}{3} = \\frac{4}{\\square}',
+                    visual: createBarSVG(2, 3, { width: 220, height: 48, fillColor: '#10b981', subDivide: 2 }),
+                    options: [
+                        { label: '۵', ok: false, hint: 'صورت در ۲ ضرب شده است (۲×۲=۴)، پس مخرج ۳ را هم در ۲ ضرب کن!' },
+                        { label: '۶', ok: true, msg: 'فوق‌العاده! ۳ ضربدر ۲ می‌شود ۶، پس دو سوم مساوی چهار ششم است.' },
+                        { label: '۸', ok: false, hint: '۳ ضربدر ۲ برابر با ۶ است.' }
+                    ]
+                },
+                {
+                    title: 'سوال ۳: کدام کسر با کسر سه چهارم مساوی است؟',
+                    formula: '\\frac{3}{4} = ?',
+                    visual: createPieSVG(3, 4, { size: 115, fillColor: '#f59e0b', subDivide: 2 }),
+                    options: [
+                        { label: '\\frac{6}{8}', isKtx: true, ok: true, msg: 'درست گفتی! اگر صورت و مخرج ۳/۴ را در ۲ ضرب کنیم به ۶/۸ می‌رسیم.' },
+                        { label: '\\frac{4}{8}', isKtx: true, ok: false, hint: 'صورت ۳ هم باید در ۲ ضرب شود (۳×۲=۶).' },
+                        { label: '\\frac{3}{8}', isKtx: true, ok: false, hint: 'وقتی مخرج ۲ برابر می‌شود، صورت هم ۲ برابر می‌شود!' }
+                    ]
+                },
+                {
+                    title: 'سوال ۴: اگر کسر دو پنجم را هم صورت و هم مخرجش را در ۲ ضرب کنیم به چه کسری می‌رسیم؟',
+                    formula: '\\frac{2 \\times 2}{5 \\times 2} = ?',
+                    visual: createBarSVG(2, 5, { width: 220, height: 48, fillColor: '#ec4899', subDivide: 2 }),
+                    options: [
+                        { label: '\\frac{4}{10}', isKtx: true, ok: true, msg: 'آفرین قهرمان! دو پنجم دقیقاً با چهار دهم مساوی است.' },
+                        { label: '\\frac{4}{5}', isKtx: true, ok: false, hint: 'مخرج ۵ هم باید در ۲ ضرب شود (۵×۲=۱۰).' }
+                    ]
+                }
+            ];
+
+            const q = questions[qIdx];
+
+            container.innerHTML = `
+                <div class="flex-1 min-h-0 flex flex-col justify-center items-center text-center space-y-2">
+                    <h3 class="text-sm sm:text-base font-black text-slate-800">${q.title}</h3>
+                    <div>${ktx(q.formula, true)}</div>
+                    <div class="my-1">${q.visual}</div>
+                    <div class="flex justify-center gap-3 pt-1">
+                        ${q.options.map(opt => `
+                            <button onclick="${opt.ok ? `rewardAnswer('${key}','c3-fb','${opt.msg}')` : `wrongAnswer('c3-fb','${opt.hint}')`}" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white font-black text-sm">
+                                ${opt.isKtx ? ktx(opt.label) : toFa(opt.label)}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="c3-fb" class="mt-2 min-h-[34px] flex items-center justify-center text-xs text-slate-400">گزینه درست را انتخاب کن!</div>
+                </div>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <button onclick="if(state.c3QuizIdx>0){state.c3QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
+                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
+                    <button onclick="if(state.c3QuizIdx<3){state.c3QuizIdx++; playSound('click'); renderStage();}else{selectChapter(3);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'رفتن به بخش ۴: مقایسه کسرها 🚀'}
+                    </button>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           ۱۰. رندر فصل ۴: مقایسه کسرها
+           ========================================================================== */
+        function renderChapter4() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 2;
+                let slideHTML = '';
+
+                if (state.c4Slide === 0) {
+                    const a = state.c4SameDenA;
+                    const b = state.c4SameDenB;
+                    const d = state.c4SameDenD;
+                    const sign = a > b ? '>' : (a < b ? '<' : '=');
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="flex items-center justify-around w-full">
+                                    <div class="text-center">
+                                        ${createPieSVG(a, d, { size: 120, fillColor: '#6366f1' })}
+                                        <div class="mt-1">${ktx(`\\frac{${a}}{${d}}`)}</div>
+                                    </div>
+                                    <div class="text-2xl font-black text-indigo-700 bg-white px-3 py-1 rounded-xl border shadow-sm" dir="ltr">
+                                        ${sign}
+                                    </div>
+                                    <div class="text-center">
+                                        ${createPieSVG(b, d, { size: 120, fillColor: '#10b981' })}
+                                        <div class="mt-1">${ktx(`\\frac{${b}}{${d}}`)}</div>
+                                    </div>
+                                </div>
+                                <div class="w-full space-y-1.5 bg-white p-2 rounded-xl border text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-indigo-700 w-28">صورت کسر چپ (${toFa(a)}):</span>
+                                        <input type="range" min="1" max="${d}" value="${a}" oninput="state.c4SameDenA=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-emerald-700 w-28">صورت کسر راست (${toFa(b)}):</span>
+                                        <input type="range" min="1" max="${d}" value="${b}" oninput="state.c4SameDenB=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">⚖️ قانون اول: مقایسه کسرها با مخرج مساوی</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">وقتی مخرج‌ها مساوی هستند، کسری بزرگ‌تر است که <span class="text-indigo-600 underline">صورت بزرگ‌تری</span> دارد!</h3>
+                                <div class="text-center py-1">
+                                    ${ktx(`\\frac{${a}}{${d}} ${sign} \\frac{${b}}{${d}}`, true)}
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 leading-relaxed">
+                                    🐊 <b>نکته مهم جهت علامت در ریاضی چپ‌به‌راست:</b>
+                                    فرمول‌های ریاضی از چپ به راست نوشته می‌شوند و دهانه‌ی باز علامت (${ktx('>') } یا ${ktx('<')}) همیشه به سمت <b>کسر بزرگ‌تر</b> باز می‌شود!
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const n = state.c4SameNumN;
+                    const da = state.c4SameNumDA;
+                    const db = state.c4SameNumDB;
+                    const sign = da < db ? '>' : (da > db ? '<' : '=');
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="flex items-center justify-around w-full">
+                                    <div class="text-center">
+                                        ${createPieSVG(n, da, { size: 120, fillColor: '#ec4899' })}
+                                        <div class="mt-1">${ktx(`\\frac{${n}}{${da}}`)}</div>
+                                    </div>
+                                    <div class="text-2xl font-black text-pink-600 bg-white px-3 py-1 rounded-xl border shadow-sm" dir="ltr">
+                                        ${sign}
+                                    </div>
+                                    <div class="text-center">
+                                        ${createPieSVG(n, db, { size: 120, fillColor: '#f59e0b' })}
+                                        <div class="mt-1">${ktx(`\\frac{${n}}{${db}}`)}</div>
+                                    </div>
+                                </div>
+                                <div class="w-full space-y-1.5 bg-white p-2 rounded-xl border text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-pink-700 w-28">مخرج کسر چپ (${toFa(da)}):</span>
+                                        <input type="range" min="2" max="8" value="${da}" oninput="state.c4SameNumDA=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-amber-700 w-28">مخرج کسر راست (${toFa(db)}):</span>
+                                        <input type="range" min="2" max="8" value="${db}" oninput="state.c4SameNumDB=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col justify-center space-y-2.5 px-2">
+                                <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🍕 قانون دوم: مقایسه کسرها با صورت مساوی</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">وقتی صورت‌ها مساوی هستند، کسری بزرگ‌تر است که <span class="text-pink-600 underline">مخرج کوچک‌تری</span> دارد!</h3>
+                                <div class="text-center py-1">
+                                    ${ktx(`\\frac{${n}}{${da}} ${sign} \\frac{${n}}{${db}}`, true)}
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    چرا؟ چون وقتی یک پیتزا را بین افراد کمتری تقسیم کنیم (مخرج کوچک‌تر)، <b>سهم هر نفر (اندازه هر قاچ) بزرگ‌تر</b> می‌شود!
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `
+                    ${slideHTML}
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c4Slide>0){state.c4Slide--; playSound('click'); renderStage();}" ${state.c4Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c4Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ اسلاید قبلی</button>
+                        <span class="text-xs font-bold text-slate-500">بخش ۴ - گام آموزشی ${toFa(state.c4Slide + 1)} از ${toFa(slidesCount)}</span>
+                        <button onclick="if(state.c4Slide<${slidesCount - 1}){state.c4Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                            ${state.c4Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
+                        </button>
+                    </div>
+                `;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: مقایسه دو کسر با مخرج مساوی',
+                        visual: `<div class="flex items-center gap-3" dir="ltr">${createPieSVG(5, 8, { size: 115, fillColor: '#6366f1' })} <span class="text-2xl font-black text-indigo-600">&gt;</span> ${createPieSVG(3, 8, { size: 115, fillColor: '#6366f1' })}</div>`,
+                        desc: `در کسرهای ${ktx('\\frac{5}{8}')} و ${ktx('\\frac{3}{8}')} مخرج‌ها برابرند (۸). چون ۵ از ۳ بزرگ‌تر است:
+                               <br>${ktx('\\frac{5}{8} > \\frac{3}{8}', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: مقایسه دو کسر با صورت مساوی',
+                        visual: `<div class="flex items-center gap-3" dir="ltr">${createPieSVG(1, 3, { size: 115, fillColor: '#ec4899' })} <span class="text-2xl font-black text-pink-600">&gt;</span> ${createPieSVG(1, 6, { size: 115, fillColor: '#ec4899' })}</div>`,
+                        desc: `در کسرهای ${ktx('\\frac{1}{3}')} و ${ktx('\\frac{1}{6}')} صورت‌ها برابرند (۱). چون قاچ‌های پیتزای ۳ قسمتی بزرگ‌تر از پیتزای ۶ قسمتی است:
+                               <br>${ktx('\\frac{1}{3} > \\frac{1}{6}', true)}`
+                    }
+                ];
+                const ex = examples[state.c4ExampleIdx % examples.length];
+
+                container.innerHTML = `
+                    <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                        <div class="flex flex-col items-center justify-center bg-pink-50/50 rounded-2xl p-3 border border-pink-100 h-full">
+                            ${ex.visual}
+                        </div>
+                        <div class="flex flex-col justify-center space-y-2.5 px-2">
+                            <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">💡 مثال ${toFa((state.c4ExampleIdx % examples.length) + 1)} از ${toFa(examples.length)}</span>
+                            <h3 class="text-base sm:text-lg font-black text-slate-800">${ex.title}</h3>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">${ex.desc}</div>
+                        </div>
+                    </div>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="if(state.c4ExampleIdx>0){state.c4ExampleIdx--; playSound('click'); renderStage();}" ${state.c4ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c4ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ مثال قبلی</button>
+                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c4ExampleIdx + 1)} از ${toFa(examples.length)}</span>
+                        <button onclick="if(state.c4ExampleIdx<${examples.length - 1}){state.c4ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                            ${state.c4ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
+                        </button>
+                    </div>
+                `;
+            } else {
+                renderChapter4Quiz(container);
+            }
+        }
+
+        function renderChapter4Quiz(container) {
+            const qIdx = state.c4QuizIdx;
+            const key = `3-${qIdx}`;
+            const questions = [
+                {
+                    n1: 5, d1: 7, n2: 2, d2: 7, ans: '>',
+                    msg: 'آفرین! مخرج‌ها برابرند (۷) و ۵ از ۲ بزرگ‌تر است: ۵/۷ > ۲/۷',
+                    hint: 'مخرج‌ها هر دو ۷ هستند؛ کسر چپ ۵ قسمت از ۷ قسمت است و بزرگ‌تر است (دهانه علامت به سمت چپ: >).'
+                },
+                {
+                    n1: 1, d1: 5, n2: 1, d2: 2, ans: '<',
+                    msg: 'فوق‌العاده! صورت‌ها برابرند (۱)، پس کسری که مخرج کوچک‌تری دارد (۱/۲) بزرگ‌تر است: ۱/۵ < ۱/۲',
+                    hint: 'نصف پیتزا (۱/۲ در سمت راست) خیلی بزرگ‌تر از یک پنجم پیتزا (۱/۵ در سمت چپ) است! پس دهانه علامت به سمت راست باز می‌شود (<).'
+                },
+                {
+                    n1: 3, d1: 4, n2: 3, d2: 8, ans: '>',
+                    msg: 'احسنت! صورت‌ها برابرند (۳) و مخرج ۴ کوچک‌تر از ۸ است، پس سه چهارم بزرگ‌تر از سه هشتم است.',
+                    hint: 'به شکل نگاه کن! ۳ تکه از ۴ تکه خیلی بزرگ‌تر از ۳ تکه از ۸ تکه است.'
+                },
+                {
+                    n1: 2, d1: 4, n2: 1, d2: 2, ans: '=',
+                    msg: 'تبریک قهرمان! دو چهارم و یک دوم دو کسر مساوی هستند و کل بازی سرزمین کسرها را با موفقیت تمام کردی!',
+                    hint: 'به اندازه بخش رنگی هر دو دایره دقت کن؛ هر دو دقیقاً نصف دایره هستند!'
+                }
+            ];
+
+            const q = questions[qIdx];
+
+            container.innerHTML = `
+                <div class="flex-1 min-h-0 flex flex-col justify-center items-center text-center space-y-2">
+                    <h3 class="text-xs sm:text-base font-black text-slate-800">سوال ${toFa(qIdx + 1)}: علامت مناسب را بین دو کسر انتخاب کن (توجه: دهانه علامت به سمت کسر بزرگ‌تر باز شود):</h3>
+
+                    <div dir="ltr" class="flex items-center justify-center gap-3 sm:gap-6 bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-200">
+                        <div class="flex flex-col items-center">
+                            ${createPieSVG(q.n1, q.d1, { size: 105, fillColor: '#6366f1' })}
+                            <div class="mt-1">${ktx(`\\frac{${q.n1}}{${q.d1}}`, true)}</div>
+                        </div>
+
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 border-2 border-dashed border-indigo-400 flex items-center justify-center text-xl font-black text-indigo-700">
+                            ؟
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            ${createPieSVG(q.n2, q.d2, { size: 105, fillColor: '#10b981' })}
+                            <div class="mt-1">${ktx(`\\frac{${q.n2}}{${q.d2}}`, true)}</div>
+                        </div>
+                    </div>
+
+                    <div dir="ltr" class="flex justify-center gap-3 pt-1">
+                        ${['<', '=', '>'].map(op => `
+                            <button onclick="${op === q.ans ? `rewardAnswer('${key}','c4-fb','${q.msg}')` : `wrongAnswer('c4-fb','${q.hint}')`}" class="w-14 h-11 rounded-xl border-2 border-slate-300 hover:border-indigo-600 bg-white hover:bg-indigo-50 text-xl font-black text-slate-800 shadow-sm transition active:scale-95">
+                                ${op}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="c4-fb" class="mt-1 min-h-[34px] flex items-center justify-center text-xs text-slate-400">یکی از علامت‌های بالا را انتخاب کن!</div>
+                </div>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <button onclick="if(state.c4QuizIdx>0){state.c4QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
+                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
+                    <button onclick="if(state.c4QuizIdx<3){state.c4QuizIdx++; playSound('click'); renderStage();}else{launchConfetti(); playSound('success');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'جشن پایان دوره 🏆'}
+                    </button>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           ۱۱. مدیریت رندر صحنه، پنجره شروع و بارگذاری وابستگی‌ها
+           ========================================================================== */
+        function renderStage() {
+            updateHUD();
+            if (state.chapter === 0) renderChapter1();
+            else if (state.chapter === 1) renderChapter2();
+            else if (state.chapter === 2) renderChapter3();
+            else renderChapter4();
+
+            // اعمال خودکار تبدیل اعداد انگلیسی به فارسی روی تمام گره‌های متن جدید
+            applyPersianDigits(document.getElementById('stage-container'));
+        }
+
+        async function initAppDependencies() {
+            const statusEl = document.getElementById('dep-status');
+            const spinnerEl = document.getElementById('dep-spinner');
+            const startBtn = document.getElementById('start-game-btn');
+
+            // ۱. اطمینان از بارگذاری کامل فونت‌های سند
+            try {
+                if (document.fonts) {
+                    await document.fonts.ready;
+                }
+            } catch (e) {}
+
+            // ۲. بررسی در دسترس بودن موتور فرمول KaTeX
+            for (let i = 0; i < 25; i++) {
+                if (typeof window.katex !== 'undefined') break;
+                await new Promise(r => setTimeout(r, 100));
+            }
+
+            // آماده‌سازی رابط کاربری شروع
+            if (spinnerEl) spinnerEl.classList.add('hidden');
+            if (statusEl) {
+                statusEl.innerHTML = '✨ وابستگی‌ها و فونت اختصاصی با موفقیت آماده شدند!';
+                statusEl.className = 'text-xs font-bold text-emerald-600 animate-pulse';
+            }
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+                startBtn.classList.add('btn-glow', 'hover:scale-[1.02]', 'active:scale-95');
+            }
+        }
+
+        function enterGame() {
+            initAudio();
+            playSound('success');
+            launchConfetti();
+            const modal = document.getElementById('intro-modal');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        function showIntroModal() {
+            const modal = document.getElementById('intro-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        window.onload = function () {
+            renderStage();
+            initAppDependencies();
+            applyPersianDigits(document.body);
+        };
+    </script>
+</body>
+</html>
