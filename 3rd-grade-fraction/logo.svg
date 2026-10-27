@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <!-- گرادیان پس‌زمینه نشان -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+
+    <!-- گرادیان قاچ برگزیده (کسر ۱/۴) -->
+    <linearGradient id="sliceActive" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <!-- سایه نرم -->
+    <filter id="softShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#312e81" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- پس‌زمینه مربعی گوشه‌گرد مدرن -->
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bgGrad)" filter="url(#softShadow)"/>
+
+  <!-- هاله نورانی درون کادر -->
+  <circle cx="40" cy="40" r="32" fill="#ffffff" opacity="0.12"/>
+
+  <!-- حلقه دور کسر -->
+  <circle cx="64" cy="64" r="41" fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.3"/>
+
+  <!-- ۳ قاچ پایه کسر (سفید نیمه‌شفاف خوش‌رنگ) -->
+  <!-- قاچ بالا چپ: ۹۰ تا ۱۸۰ درجه -->
+  <path d="M 64 64 L 64 26 A 38 38 0 0 0 26 64 Z" fill="#ffffff" opacity="0.88"/>
+  <!-- قاچ پایین چپ: ۱۸۰ تا ۲۷۰ درجه -->
+  <path d="M 64 64 L 26 64 A 38 38 0 0 0 64 102 Z" fill="#ffffff" opacity="0.75"/>
+  <!-- قاچ پایین راست: ۲۷۰ تا ۳۶۰ درجه -->
+  <path d="M 64 64 L 64 102 A 38 38 0 0 0 102 64 Z" fill="#ffffff" opacity="0.88"/>
+
+  <!-- قاچ رنگی ۱/۴ متمایز و شاداب (طلایی درخشان با اندکی فاصله رو به بالا-راست) -->
+  <g transform="translate(3.5, -3.5)">
+    <path d="M 64 64 L 102 64 A 38 38 0 0 0 64 26 Z" fill="url(#sliceActive)" stroke="#ffffff" stroke-width="2.5"/>
+    <!-- دانه یا تزئین روی قاچ -->
+    <circle cx="80" cy="48" r="3.5" fill="#ffffff" opacity="0.9"/>
+  </g>
+
+  <!-- دایره مرکزی برای ایجاد نمای دوناتی/حلقه‌ای شیک -->
+  <circle cx="64" cy="64" r="14" fill="#4338ca" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="64" cy="64" r="5" fill="#fef08a"/>
+
+  <!-- ستاره‌های درخشان کودکانه (نماد سرزمین کسرها) -->
+  <!-- ستاره ۱: گوشه بالا راست -->
+  <path d="M 104 20 Q 104 26 110 26 Q 104 26 104 32 Q 104 26 98 26 Q 104 26 104 20 Z" fill="#fef08a"/>
+  <!-- ستاره ۲: گوشه پایین چپ -->
+  <path d="M 24 96 Q 24 100 28 100 Q 24 100 24 104 Q 24 100 20 100 Q 24 100 24 96 Z" fill="#fef08a" opacity="0.85"/>
+</svg>

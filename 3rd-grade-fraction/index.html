@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>سرزمین کسرها | آموزش و بازی کسر ریاضی سوم دبستان</title>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- آیکون و نشان اختصاصی سرزمین کسرها (Favicon) -->
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+
+    <!-- Tailwind CSS (نسخه محلی آفلاین) -->
+    <script src="tailwind.js"></script>
 
     <!-- فونت کودکانه اختصاصی تزریق شده mybaby mini -->
     <link rel="stylesheet" href="font.css">
 
-    <!-- فونت کمکی وزیرمتن -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- استاندارد فرمول‌نویسی KaTeX (نسخه محلی آفلاین) -->
+    <link rel="stylesheet" href="katex.min.css">
+    <script src="katex.min.js"></script>
 
     <style>
         * {
@@ -22,44 +25,36 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'mybaby mini', 'mybaby', 'Vazirmatn', sans-serif;
         }
 
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100dvh;
             overflow: hidden !important;
-            font-family: 'mybaby mini', 'mybaby', 'Vazirmatn', sans-serif;
+            font-family: 'mybaby mini', 'mybaby', sans-serif;
             background: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 50%, #ecfdf5 100%);
         }
 
-        button, input, select, textarea {
-            font-family: 'mybaby mini', 'mybaby', 'Vazirmatn', sans-serif;
+        button,
+        input,
+        select,
+        textarea,
+        span,
+        div,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        a {
+            font-family: 'mybaby mini', 'mybaby', sans-serif;
         }
 
-        /* ==========================================================================
-           استایل استاندارد و حرفه‌ای کسرها و عبارات ریاضی (منطبق بر کتاب درسی ایران)
-           ========================================================================== */
-        .math-ltr {
-            direction: ltr !important;
-            unicode-bidi: isolate !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            vertical-align: middle;
-            gap: 0.35rem;
-            margin: 0 0.25rem;
-            padding: 0.15rem 0.55rem;
-            border-radius: 0.65rem;
-            background: rgba(255, 255, 255, 0.95);
-            border: 1.5px solid #e0e7ff;
-            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.06);
-            font-weight: 700;
-            line-height: 1;
-        }
-
+        /* ایزوله‌سازی و استایل استاندارد فرمول‌ها و کسرهای فارسی */
+        .math-ltr,
         .math-ltr-lg {
             direction: ltr !important;
             unicode-bidi: isolate !important;
@@ -67,103 +62,175 @@
             align-items: center;
             justify-content: center;
             vertical-align: middle;
-            gap: 0.6rem;
-            padding: 0.35rem 0.95rem;
+            line-height: 1;
+            font-family: 'mybaby mini', 'mybaby', sans-serif !important;
+        }
+
+        .math-ltr {
+            margin: 0 0.25rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 0.65rem;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .math-ltr-lg {
+            margin: 0.2rem 0.35rem;
+            padding: 0.4rem 1.15rem;
             border-radius: 0.95rem;
             background: #ffffff;
             border: 2px solid #e0e7ff;
             box-shadow: 0 4px 14px rgba(79, 70, 229, 0.1);
-            font-size: 1.35rem;
             font-weight: 800;
-            line-height: 1;
+            font-size: 1.35rem;
         }
 
+        /* ساختار دقیق و استاندارد کسر با ارقام فارسی (جلوگیری قطعی از به‌هم‌ریختگی و تغییر اندازه) */
         .fa-frac {
             display: inline-flex;
             flex-direction: column;
+            vertical-align: middle;
             align-items: center;
             justify-content: center;
-            vertical-align: middle;
-            padding: 0 0.2rem;
+            margin: 0 0.22rem;
+            padding: 0.05rem 0.2rem;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .fa-frac .fa-num,
+        .fa-frac .fa-den {
+            display: inline-block;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.92em;
+            padding: 0 0.25em;
             line-height: 1.15;
+            white-space: nowrap;
+            color: #1e1b4b;
         }
 
         .fa-frac .fa-num {
-            display: block;
-            text-align: center;
-            padding: 0.05rem 0.25rem;
-            font-size: 0.92em;
-            font-weight: 800;
-            color: #312e81;
+            padding-bottom: 0.12em;
         }
 
         .fa-frac .fa-bar {
             display: block;
             width: 100%;
-            min-width: 1.25em;
-            height: 2.5px;
-            background-color: #1e293b;
-            border-radius: 2px;
-            margin: 1.5px 0;
+            min-width: 1.15em;
+            height: 2.2px;
+            background-color: #312e81;
+            border-radius: 1.5px;
+            margin: 0.06em 0;
         }
 
         .fa-frac .fa-den {
-            display: block;
-            text-align: center;
-            padding: 0.05rem 0.25rem;
-            font-size: 0.92em;
-            font-weight: 800;
-            color: #065f46;
+            padding-top: 0.12em;
         }
 
+        /* عملگرها و نمادهای فرمول */
         .fa-op {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
-            padding: 0 0.25rem;
-            color: #4f46e5;
-            font-size: 1.15em;
+            margin: 0 0.32rem;
+            font-weight: 800;
+            font-size: 1.05em;
+            color: #4338ca;
         }
 
-        .fa-op-sym {
-            display: inline-block;
-            margin: 0 0.2rem;
-            font-weight: 900;
+        .fa-op.fa-implies {
             color: #6366f1;
+            font-size: 1.2em;
         }
 
-        .fa-sq {
+        .fa-math-text {
             display: inline-block;
-            width: 1.3em;
-            height: 1.3em;
-            border: 2.5px dashed #6366f1;
-            border-radius: 0.4rem;
-            background: #eef2ff;
+            margin: 0 0.15rem;
+            font-weight: 800;
+            color: #1e1b4b;
+        }
+
+        .fa-math-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.4em;
+            height: 1.4em;
+            border: 2px dashed #6366f1;
+            background: #f5f3ff;
+            border-radius: 0.4em;
             vertical-align: middle;
+            margin: 0 0.15rem;
+        }
+
+        .fa-math-box.fa-box-sm {
+            width: 1.25em;
+            height: 1.25em;
+            margin: 0 0.1em;
+        }
+
+        .fa-math-box.fa-box-q {
+            color: #4f46e5;
+            font-weight: 900;
+            font-size: 0.85em;
+        }
+
+        /* ایزوله‌سازی کاتکس در صورت استفاده */
+        .katex {
+            font-size: 1.1em;
+            direction: ltr !important;
+            unicode-bidi: isolate !important;
         }
 
         /* انیمیشن‌های نرم و کودک‌پسند */
         @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-4px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
         }
+
         .animate-float {
             animation: floatSlow 3s ease-in-out infinite;
         }
 
         @keyframes popIn {
-            0% { transform: scale(0.85); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(0.85);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
+
         .animate-pop {
             animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
         @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45); }
-            50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45);
+            }
+
+            50% {
+                box-shadow: 0 0 0 12px rgba(99, 102, 241, 0);
+            }
         }
+
         .btn-glow {
             animation: pulseGlow 1.8s infinite;
         }
@@ -173,6 +240,7 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
+
         .slice-path:hover {
             filter: brightness(1.06);
             transform: scale(1.015);
@@ -183,50 +251,64 @@
         input[type="range"] {
             accent-color: #4f46e5;
             cursor: pointer;
+            touch-action: none;
         }
     </style>
 </head>
+
 <body class="flex flex-col justify-between h-[100dvh] w-[100vw] overflow-hidden text-slate-800">
 
     <!-- بوم کاغذرنگی (Confetti Canvas) -->
     <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
 
     <!-- پنجره تمام‌صفحه معرفی برنامه و سازنده (علی یعقوبی) و لود وابستگی‌ها -->
-    <div id="intro-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-md transition-all duration-500">
-        <div class="relative w-full max-w-lg bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-indigo-200 p-5 sm:p-7 flex flex-col items-center text-center overflow-hidden animate-pop">
+    <div id="intro-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-md transition-all duration-500">
+        <div
+            class="relative w-full max-w-lg bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-indigo-200 p-5 sm:p-7 flex flex-col items-center text-center overflow-hidden animate-pop">
             <!-- هاله‌های نورانی تزئینی پس‌زمینه -->
-            <div class="absolute -top-16 -right-16 w-44 h-44 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none"></div>
-
-            <!-- آیکون پیتزا شناور -->
-            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center text-3xl sm:text-4xl shadow-xl shadow-indigo-300/40 animate-float mb-3">
-                🍕
+            <div
+                class="absolute -top-16 -right-16 w-44 h-44 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none">
+            </div>
+            <div
+                class="absolute -bottom-16 -left-16 w-44 h-44 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none">
             </div>
 
+            <!-- لوگوی اختصاصی وکتور سرزمین کسرها -->
+            <img src="logo.svg" alt="سرزمین کسرها"
+                class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-xl shadow-indigo-300/40 animate-float mb-3">
+
             <!-- برچسب بالایی -->
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-black bg-indigo-100 text-indigo-800 border border-indigo-200 mb-2">
+            <span
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-black bg-indigo-100 text-indigo-800 border border-indigo-200 mb-2">
                 ✨ نرم‌افزار تعاملی آموزش و یادآوری فصل ۳ ریاضی سوم دبستان ✨
             </span>
 
             <!-- عنوان بزرگ -->
             <h1 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 leading-tight">
-                به <span class="bg-gradient-to-l from-indigo-600 to-violet-600 bg-clip-text text-transparent">«سرزمین کسرها»</span> خوش آمدید!
+                به <span class="bg-gradient-to-l from-indigo-600 to-violet-600 bg-clip-text text-transparent">«سرزمین
+                    کسرها»</span> خوش آمدید!
             </h1>
 
             <!-- معرفی طراح و سازنده علی یعقوبی -->
-            <div class="w-full bg-gradient-to-r from-indigo-50 via-slate-50 to-emerald-50 rounded-2xl border border-indigo-100/90 p-3 sm:p-3.5 my-2.5 flex items-center justify-between gap-3 text-right">
+            <div
+                class="w-full bg-gradient-to-r from-indigo-50 via-slate-50 to-emerald-50 rounded-2xl border border-indigo-100/90 p-3 sm:p-3.5 my-2.5 flex items-center justify-between gap-3 text-right">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-base shadow-sm shrink-0">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-base shadow-sm shrink-0">
                         👨‍🏫
                     </div>
                     <div>
-                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold">طراح و توسعه‌دهنده نرم‌افزار:</div>
-                        <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-black text-indigo-700 hover:text-indigo-900 underline decoration-indigo-300 underline-offset-4 transition-colors">
+                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold">طراح و توسعه‌دهنده نرم‌افزار:
+                        </div>
+                        <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer"
+                            class="text-xs sm:text-sm font-black text-indigo-700 hover:text-indigo-900 underline decoration-indigo-300 underline-offset-4 transition-colors">
                             علی یعقوبی (ali.id.ir)
                         </a>
                     </div>
                 </div>
-                <div class="text-[10px] sm:text-xs font-extrabold text-emerald-700 bg-emerald-100/80 border border-emerald-300/60 px-2 py-1 rounded-lg shrink-0">
+                <div
+                    class="text-[10px] sm:text-xs font-extrabold text-emerald-700 bg-emerald-100/80 border border-emerald-300/60 px-2 py-1 rounded-lg shrink-0">
                     پایه سوم دبستان
                 </div>
             </div>
@@ -252,12 +334,14 @@
 
             <!-- وضعیت بارگذاری وابستگی‌ها -->
             <div id="dep-loader" class="flex items-center justify-center gap-2 text-xs font-bold text-slate-600 my-2.5">
-                <span id="dep-spinner" class="inline-block w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
+                <span id="dep-spinner"
+                    class="inline-block w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
                 <span id="dep-status">در حال بررسی و بارگذاری فونت و موتور ریاضی...</span>
             </div>
 
             <!-- دکمه ورود به بازی -->
-            <button id="start-game-btn" onclick="enterGame()" disabled class="w-full mt-1.5 py-3 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-600 text-white font-black text-sm sm:text-base shadow-lg shadow-indigo-300/50 flex items-center justify-center gap-2 transition-all opacity-60 cursor-not-allowed">
+            <button id="start-game-btn" onclick="enterGame()" disabled
+                class="w-full mt-1.5 py-3 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-600 text-white font-black text-sm sm:text-base shadow-lg shadow-indigo-300/50 flex items-center justify-center gap-2 transition-all opacity-60 cursor-not-allowed">
                 <span>🚀</span>
                 <span>ورود به بازی و شروع یادگیری</span>
             </button>
@@ -265,35 +349,42 @@
     </div>
 
     <!-- هدر بالایی: عنوان، انتخاب فصل‌ها و امتیازات -->
-    <header class="shrink-0 bg-white/90 backdrop-blur-md border-b border-indigo-100 px-2 sm:px-4 py-1.5 sm:py-2 shadow-sm z-20">
+    <header
+        class="shrink-0 bg-white/90 backdrop-blur-md border-b border-indigo-100 px-2 sm:px-4 py-1.5 sm:py-2 shadow-sm z-20">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-1.5 sm:gap-3">
             <!-- لوگو و عنوان -->
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md text-lg sm:text-xl font-black">
-                    🍕
-                </div>
+                <img src="logo.svg" alt="لوگو سرزمین کسرها"
+                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl shadow-md shrink-0">
                 <div>
-                    <h1 class="text-xs sm:text-base md:text-lg font-black text-indigo-950 leading-tight">سرزمین کسرها</h1>
-                    <p class="text-[10px] sm:text-xs text-slate-500 font-medium hidden sm:block">آموزش تعاملی فصل ۳ ریاضی سوم دبستان</p>
+                    <h1 class="text-xs sm:text-base md:text-lg font-black text-indigo-950 leading-tight">سرزمین کسرها
+                    </h1>
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-medium hidden sm:block">آموزش تعاملی فصل ۳
+                        ریاضی سوم دبستان</p>
                 </div>
             </div>
 
             <!-- دکمه‌های ۴ بخش اصلی کتاب درسی -->
-            <nav class="flex items-center gap-1 sm:gap-2 order-3 lg:order-2 w-full lg:w-auto justify-center bg-slate-100/80 p-1 rounded-xl">
-                <button onclick="selectChapter(0)" id="chap-btn-0" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
-                    <span>۱. مفهوم کسر</span>
+            <nav
+                class="flex items-center gap-1 sm:gap-2 order-3 lg:order-2 w-full lg:w-auto justify-center bg-slate-100/80 p-1 rounded-xl">
+                <button onclick="selectChapter(0)" id="chap-btn-0"
+                    class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                    <span>۱. مفهوم</span>
                     <span id="chap-badge-0" class="hidden text-emerald-500">✔</span>
                 </button>
-                <button onclick="selectChapter(1)" id="chap-btn-1" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                <button onclick="selectChapter(1)" id="chap-btn-1"
+                    class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
                     <span>۲. اندازه‌گیری</span>
                     <span id="chap-badge-1" class="hidden text-emerald-500">✔</span>
                 </button>
-                <button onclick="selectChapter(2)" id="chap-btn-2" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
-                    <span>۳. تساوی کسرها</span>
+                <button onclick="selectChapter(2)" id="chap-btn-2"
+                    class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                    <span>۳. تساوی</span>
                     <span id="chap-badge-2" class="hidden text-emerald-500">✔</span>
                 </button>
-                <button onclick="selectChapter(3)" id="chap-btn-3" class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
-                    <span>۴. مقایسه کسرها</span>
+                <button onclick="selectChapter(3)" id="chap-btn-3"
+                    class="chap-btn flex-1 lg:flex-initial px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-1">
+                    <span>۴. مقایسه</span>
                     <span id="chap-badge-3" class="hidden text-emerald-500">✔</span>
                 </button>
             </nav>
@@ -304,7 +395,8 @@
                     <span class="text-xs sm:text-sm">⭐</span>
                     <span id="score-stars" class="text-xs sm:text-sm font-black text-amber-700">۰</span>
                 </div>
-                <div class="flex items-center gap-1 bg-emerald-50 border border-emerald-200 px-2 py-0.5 sm:py-1 rounded-xl">
+                <div
+                    class="flex items-center gap-1 bg-emerald-50 border border-emerald-200 px-2 py-0.5 sm:py-1 rounded-xl">
                     <span class="text-xs sm:text-sm">🪙</span>
                     <span id="score-coins" class="text-xs sm:text-sm font-black text-emerald-700">۰</span>
                 </div>
@@ -314,17 +406,21 @@
                         <span id="progress-text">۰٪</span>
                     </div>
                     <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mt-0.5">
-                        <div id="progress-bar" class="h-full bg-gradient-to-l from-indigo-500 to-emerald-500 w-0 transition-all duration-500"></div>
+                        <div id="progress-bar"
+                            class="h-full bg-gradient-to-l from-indigo-500 to-emerald-500 w-0 transition-all duration-500">
+                        </div>
                     </div>
                 </div>
 
                 <!-- کلید معرفی و درباره سازنده -->
-                <button onclick="showIntroModal()" title="درباره برنامه و سازنده (علی یعقوبی)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-violet-50 hover:bg-violet-100 text-violet-700 flex items-center justify-center border border-violet-200 transition-transform active:scale-90 text-sm font-bold">
+                <button onclick="showIntroModal()" title="درباره برنامه و سازنده (علی یعقوبی)"
+                    class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-violet-50 hover:bg-violet-100 text-violet-700 flex items-center justify-center border border-violet-200 transition-transform active:scale-90 text-sm font-bold">
                     ℹ️
                 </button>
 
                 <!-- کلید صدا -->
-                <button onclick="toggleSound()" id="sound-btn" title="قطع/وصل صدا" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 flex items-center justify-center border border-indigo-200 transition-transform active:scale-90 text-sm">
+                <button onclick="toggleSound()" id="sound-btn" title="قطع/وصل صدا"
+                    class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 flex items-center justify-center border border-indigo-200 transition-transform active:scale-90 text-sm">
                     🔊
                 </button>
             </div>
@@ -334,51 +430,80 @@
     <!-- نوار تب‌های سه گانه هر بخش (آموزش انیمیشنی | مثال‌ها | بازی و تمرین) -->
     <div class="shrink-0 bg-indigo-950/5 border-b border-indigo-100/80 px-2 py-1 sm:py-1.5 z-10">
         <div class="max-w-3xl mx-auto flex items-center justify-center gap-1.5 sm:gap-3">
-            <button onclick="selectMode('learn')" id="mode-btn-learn" class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+            <button onclick="selectMode('learn')" id="mode-btn-learn"
+                class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
                 <span>🎬</span>
-                <span>آموزش انیمیشنی</span>
+                <span>آموزش</span>
             </button>
-            <button onclick="selectMode('examples')" id="mode-btn-examples" class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+            <button onclick="selectMode('examples')" id="mode-btn-examples"
+                class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
                 <span>💡</span>
                 <span>مثال‌ها</span>
             </button>
-            <button onclick="selectMode('quiz')" id="mode-btn-quiz" class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+            <button onclick="selectMode('quiz')" id="mode-btn-quiz"
+                class="mode-btn flex-1 py-1 sm:py-1.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
                 <span>🎮</span>
-                <span>بازی و تمرین</span>
+                <span>تمرین</span>
             </button>
         </div>
     </div>
 
     <!-- محیط اصلی بازی و آموزش (بدون اسکرول، تطبیق‌پذیر با ارتفاع صفحه) -->
-    <main class="flex-1 min-h-0 w-full max-w-6xl mx-auto px-2 sm:px-4 py-1.5 sm:py-2.5 flex flex-col overflow-hidden relative">
-        <div id="stage-container" class="flex-1 min-h-0 w-full bg-white/95 backdrop-blur rounded-2xl shadow-lg border border-indigo-100 p-2.5 sm:p-4 flex flex-col justify-between overflow-hidden relative animate-pop">
+    <main
+        class="flex-1 min-h-0 w-full max-w-6xl mx-auto px-2 sm:px-4 py-1.5 sm:py-2.5 flex flex-col overflow-hidden relative">
+        <div id="stage-container"
+            class="flex-1 min-h-0 w-full bg-white/95 backdrop-blur rounded-2xl shadow-lg border border-indigo-100 p-2.5 sm:p-4 flex flex-col justify-between overflow-hidden relative animate-pop">
             <!-- محتوای پویا اینجا رندر می‌شود -->
         </div>
     </main>
 
     <!-- فوتر ثابت بدون ایجاد اسکرول با لینک کپی‌رایت طراح -->
-    <footer class="shrink-0 bg-white/90 border-t border-indigo-100 px-3 sm:px-6 py-1 sm:py-1.5 text-[11px] sm:text-xs text-slate-600 flex items-center justify-between z-20">
-        <div class="flex items-center gap-1.5 font-medium">
-            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span id="footer-hint" class="truncate max-w-[200px] sm:max-w-md">نکته: در نوشتن فرمول ریاضی، کسرها و علامت‌ها از چپ به راست خوانده می‌شوند.</span>
+    <footer
+        class="shrink-0 bg-white/90 border-t border-indigo-100 px-3 sm:px-6 py-1 sm:py-1.5 text-[11px] sm:text-xs text-slate-600 flex items-center justify-between z-20">
+        <div class="flex items-center gap-2 font-medium flex-1 pl-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+            <span id="footer-hint" class="text-[11px] sm:text-xs text-slate-700 font-semibold leading-normal">نکته: در
+                نوشتن فرمول ریاضی، کسرها و علامت‌ها از چپ به راست خوانده می‌شوند.</span>
         </div>
         <div class="font-bold text-slate-700 shrink-0">
-            طراح: <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 underline decoration-indigo-300 underline-offset-4 transition-colors">علی یعقوبی</a>
+            طراح: <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer"
+                class="text-indigo-600 hover:text-indigo-800 underline decoration-indigo-300 underline-offset-4 transition-colors">علی
+                یعقوبی</a>
         </div>
     </footer>
 
     <script>
         /* ==========================================================================
-           ۱. سیستم تبدیل همه کاراکترهای عددی انگلیسی به فارسی
+           ۱. سیستم هوشمند تبدیل ارقام (فارسی / انگلیسی) و ایزوله‌سازی فرمول‌ها
            ========================================================================== */
-        function toFa(num) {
-            if (num === null || num === undefined) return '';
-            const faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-            return String(num).replace(/\d/g, d => faDigits[d]);
+        const FA_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        const EN_DIGIT_MAP = {
+            '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
+            '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9',
+            '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
+            '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+        };
+
+        // تبدیل اعداد انگلیسی به فارسی (برای متون عمومی، برچسب‌ها، امتیازات و ...)
+        function toFa(val) {
+            if (val === null || val === undefined) return '';
+            return String(val).replace(/[0-9]/g, d => FA_DIGITS[d]);
         }
 
-        // نام فارسی مخرج‌ها
+        // تبدیل اعداد فارسی به انگلیسی (برای محاسبات، تبدیل مقادیر و تطبیق امن)
+        function toEn(val) {
+            if (val === null || val === undefined) return '';
+            return String(val).replace(/[۰-۹٠-٩]/g, d => EN_DIGIT_MAP[d]);
+        }
+
+        // بررسی وجود ارقام در رشته
+        function hasDigits(val) {
+            return /[0-9۰-۹]/.test(String(val));
+        }
+
+        // نام فارسی مخرج‌ها بر اساس فرهنگ واژگان ریاضی سوم دبستان
         function denomName(d) {
+            const num = Number(toEn(d));
             const names = {
                 1: 'یکم (واحد کامل)',
                 2: 'دوم (نیم)',
@@ -391,19 +516,36 @@
                 9: 'نهم',
                 10: 'دهم'
             };
-            return names[d] || `${toFa(d)}ام`;
+            return names[num] || `${toFa(num)}ام`;
         }
 
-        // پایش و تبدیل خودکار اعداد در متن‌های ایجادشده
+        // پایش و تبدیل خودکار اعداد انگلیسی به فارسی در متن‌ها
+        // با حفاظت کامل از فرمول‌های ریاضی رندرشده، اسکریپت‌ها، استایل‌ها و محیط‌های LTR
         function applyPersianDigits(rootElement = document.body) {
             if (!rootElement) return;
-            const walker = document.createTreeWalker(rootElement, NodeFilter.SHOW_TEXT, null, false);
+            const walker = document.createTreeWalker(
+                rootElement,
+                NodeFilter.SHOW_TEXT,
+                {
+                    acceptNode(node) {
+                        const parent = node.parentElement;
+                        if (!parent) return NodeFilter.FILTER_REJECT;
+                        const tag = parent.tagName;
+                        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' || tag === 'TEXTAREA') {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        // عدم مداخله در ساختار داخلی فرمول‌های ریاضی و کسرها
+                        if (parent.closest('.math-ltr, .math-ltr-lg, .fa-frac, .katex, .no-fa-digits, [data-no-fa]')) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                },
+                false
+            );
+
             let node;
             while ((node = walker.nextNode())) {
-                const parent = node.parentElement;
-                if (!parent) continue;
-                const tag = parent.tagName;
-                if (tag === 'SCRIPT' || tag === 'STYLE') continue;
                 if (/[0-9]/.test(node.nodeValue)) {
                     node.nodeValue = toFa(node.nodeValue);
                 }
@@ -411,46 +553,7 @@
         }
 
         /* ==========================================================================
-           ۲. رندرینگ کسرها و فرمول‌های ریاضی استاندارد کتاب درسی ریاضی سوم دبستان
-           (نمایش تمیز و عمودی کسرها با خط افقی و اعداد فارسی بدون هیچ تداخلی)
-           ========================================================================== */
-        function formatMathPart(str) {
-            if (!str) return '';
-            let s = str.trim();
-            const fracMatch = s.match(/^\\frac\{([^{}]+)\}\{([^{}]+)\}$/);
-            if (fracMatch) {
-                const num = formatMathPart(fracMatch[1]);
-                const den = formatMathPart(fracMatch[2]);
-                return `<span class="fa-frac"><span class="fa-num">${num}</span><span class="fa-bar"></span><span class="fa-den">${den}</span></span>`;
-            }
-            if (s.includes('\\frac')) {
-                return s.replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, (m, n, d) => {
-                    return `<span class="fa-frac"><span class="fa-num">${formatMathPart(n)}</span><span class="fa-bar"></span><span class="fa-den">${formatMathPart(d)}</span></span>`;
-                });
-            }
-            s = s.replace(/\\times/g, '<span class="fa-op-sym">×</span>');
-            s = s.replace(/\\square/g, '<span class="fa-sq"></span>');
-            s = s.replace(/\\implies/g, '<span class="fa-op-sym">➔</span>');
-            return toFa(s);
-        }
-
-        function ktx(latex, large = false) {
-            const cls = large ? 'math-ltr-lg' : 'math-ltr';
-            const tokens = latex.trim().split(/(\s*(?:\\implies|[=><])\s*)/);
-            const htmlTokens = tokens.map(token => {
-                const t = token.trim();
-                if (!t) return '';
-                if (t === '=') return '<span class="fa-op">=</span>';
-                if (t === '>') return '<span class="fa-op">&gt;</span>';
-                if (t === '<') return '<span class="fa-op">&lt;</span>';
-                if (t === '\\implies') return '<span class="fa-op">➔</span>';
-                return formatMathPart(t);
-            });
-            return `<span dir="ltr" class="${cls}">${htmlTokens.join(' ')}</span>`;
-        }
-
-        /* ==========================================================================
-           ۳. سیستم صوتی Web Audio API (بدون نیاز به فایل خارجی)
+           ۲. سیستم صوتی Web Audio API (بدون نیاز به فایل خارجی)
            ========================================================================== */
         let soundEnabled = true;
         let audioCtx = null;
@@ -535,7 +638,7 @@
         }
 
         /* ==========================================================================
-           ۴. سیستم کاغذرنگی تشویقی (Confetti)
+           ۳. سیستم کاغذرنگی تشویقی (Confetti)
            ========================================================================== */
         const confettiCanvas = document.getElementById('confetti-canvas');
         const confettiCtx = confettiCanvas.getContext('2d');
@@ -593,7 +696,73 @@
         }
 
         /* ==========================================================================
-           ۵. رسم گرافیک‌های برداری (SVG) با ارقام فارسی و کسر استاندارد
+           ۴. موتور اختصاصی رندر فرمول‌های ریاضی و کسرها با ارقام استاندارد فارسی
+           ========================================================================== */
+        function renderPersianMath(latex, large = false) {
+            if (!latex) return '';
+            const cls = large ? 'math-ltr-lg' : 'math-ltr';
+            const s = String(latex).trim();
+
+            function formatMathSegment(seg) {
+                const clean = seg.trim();
+                if (clean === '\\square' || clean === '□') {
+                    return '<span class="fa-math-box fa-box-sm"></span>';
+                }
+                if (clean === '?' || clean === '؟') {
+                    return '<span class="fa-math-box fa-box-sm fa-box-q">؟</span>';
+                }
+                return clean
+                    .replace(/\\times/g, ' × ')
+                    .replace(/\\cdot/g, ' · ')
+                    .replace(/\\div/g, ' ÷ ')
+                    .replace(/\\square/g, '<span class="fa-math-box fa-box-sm"></span>')
+                    .replace(/\?/g, '<span class="fa-math-box fa-box-sm fa-box-q">؟</span>')
+                    .replace(/[0-9]/g, d => toFa(d));
+            }
+
+            const tokenRegex = /(\\frac\s*\{[^{}]+\}\s*\{[^{}]+\}|\\implies|\\times|\\div|\\cdot|\\square|\?|=|>|<|[0-9]+|\S+)/g;
+            const parts = [];
+            let match;
+
+            while ((match = tokenRegex.exec(s)) !== null) {
+                const token = match[0];
+                const fracMatch = /^\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}$/.exec(token);
+                if (fracMatch) {
+                    const numContent = formatMathSegment(fracMatch[1]);
+                    const denContent = formatMathSegment(fracMatch[2]);
+                    parts.push(`<span class="fa-frac"><span class="fa-num">${numContent}</span><span class="fa-bar"></span><span class="fa-den">${denContent}</span></span>`);
+                } else if (token === '\\implies') {
+                    parts.push(`<span class="fa-op fa-implies">➜</span>`);
+                } else if (token === '\\times' || token === '×') {
+                    parts.push(`<span class="fa-op">×</span>`);
+                } else if (token === '\\div' || token === '÷') {
+                    parts.push(`<span class="fa-op">÷</span>`);
+                } else if (token === '\\cdot' || token === '·') {
+                    parts.push(`<span class="fa-op">·</span>`);
+                } else if (token === '=') {
+                    parts.push(`<span class="fa-op">=</span>`);
+                } else if (token === '>') {
+                    parts.push(`<span class="fa-op">&gt;</span>`);
+                } else if (token === '<') {
+                    parts.push(`<span class="fa-op">&lt;</span>`);
+                } else if (token === '\\square' || token === '□') {
+                    parts.push(`<span class="fa-math-box"></span>`);
+                } else if (token === '?' || token === '؟') {
+                    parts.push(`<span class="fa-math-box fa-box-q">؟</span>`);
+                } else {
+                    parts.push(`<span class="fa-math-text">${token.replace(/[0-9]/g, d => toFa(d))}</span>`);
+                }
+            }
+
+            return `<span dir="ltr" class="${cls}">${parts.join(' ')}</span>`;
+        }
+
+        function ktx(latex, large = false) {
+            return renderPersianMath(latex, large);
+        }
+
+        /* ==========================================================================
+           ۵. رسم گرافیک‌های برداری (SVG) با اعداد فارسی
            ========================================================================== */
         function createPieSVG(num, den, options = {}) {
             const {
@@ -760,7 +929,7 @@
 
         function createNumberLineSVG(num, den, options = {}) {
             const { interactive = false, onClickFn = '' } = options;
-            const startX = 35, endX = 365, y = 56;
+            const startX = 35, endX = 365, y = 62;
             const totalW = endX - startX;
             const stepW = totalW / den;
 
@@ -781,27 +950,12 @@
                 const x = startX + i * stepW;
                 const isTarget = i === num;
                 const clickAttr = interactive ? `onclick="${onClickFn}(${i})"` : '';
-                const fracColor = isTarget ? '#4f46e5' : '#475569';
-
-                // رسم کسر واقعی با خط افقی و اعداد فارسی زیبا روی محور
-                let fracLabelSVG = '';
-                if (i === 0) {
-                    fracLabelSVG = `<text x="${x}" y="${y + 26}" text-anchor="middle" font-size="13" font-weight="800" fill="${fracColor}">۰</text>`;
-                } else if (i === den) {
-                    fracLabelSVG = `<text x="${x}" y="${y + 26}" text-anchor="middle" font-size="13" font-weight="800" fill="${fracColor}">۱</text>`;
-                } else {
-                    fracLabelSVG = `
-                        <text x="${x}" y="${y + 20}" text-anchor="middle" font-size="11" font-weight="800" fill="${fracColor}">${toFa(i)}</text>
-                        <line x1="${x - 7}" y1="${y + 23}" x2="${x + 7}" y2="${y + 23}" stroke="${fracColor}" stroke-width="1.6"/>
-                        <text x="${x}" y="${y + 34}" text-anchor="middle" font-size="11" font-weight="800" fill="${fracColor}">${toFa(den)}</text>
-                    `;
-                }
-
+                const pointLabel = i === 0 ? '۰' : (i === den ? '۱' : `${toFa(i)}/${toFa(den)}`);
                 ticks += `
                     <g class="${interactive ? 'cursor-pointer' : ''}" ${clickAttr}>
                         <line x1="${x}" y1="${y - 11}" x2="${x}" y2="${y + 11}" stroke="${isTarget ? '#4f46e5' : '#334155'}" stroke-width="${isTarget ? '3.5' : '2.5'}"/>
                         <circle cx="${x}" cy="${y}" r="${interactive ? 9 : (isTarget ? 6 : 3.5)}" fill="${isTarget ? '#4f46e5' : (interactive ? '#e0e7ff' : '#334155')}" stroke="#4f46e5" stroke-width="1.5"/>
-                        ${fracLabelSVG}
+                        <text x="${x}" y="${y + 28}" text-anchor="middle" font-size="12" font-weight="800" fill="${isTarget ? '#4f46e5' : '#475569'}">${pointLabel}</text>
                     </g>
                 `;
             }
@@ -809,7 +963,7 @@
             const frogX = startX + num * stepW;
 
             return `
-                <svg viewBox="0 0 400 115" class="w-full max-w-[420px] h-auto mx-auto select-none" dir="ltr">
+                <svg viewBox="0 0 400 105" class="w-full max-w-[420px] h-auto mx-auto select-none" dir="ltr">
                     <line x1="${startX - 12}" y1="${y}" x2="${endX + 12}" y2="${y}" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
                     ${bar}
                     ${arcs}
@@ -830,14 +984,12 @@
             for (let i = 1; i <= den; i++) {
                 const ly = botY - (i / den) * totalH;
                 const clickAttr = interactive ? `onclick="${onClickFn}(${i})"` : '';
-                const textColor = i === num ? '#ffffff' : '#334155';
+                const fracLabel = `${toFa(i)}/${toFa(den)}`;
                 lines += `
                     <g class="${interactive ? 'cursor-pointer' : ''}" ${clickAttr}>
                         <line x1="${leftX}" y1="${ly}" x2="${rightX}" y2="${ly}" stroke="#475569" stroke-width="1.8" stroke-dasharray="4,3"/>
-                        <rect x="${rightX + 4}" y="${ly - 13}" width="38" height="26" rx="5" fill="${i === num ? '#4f46e5' : '#f1f5f9'}"/>
-                        <text x="${rightX + 23}" y="${ly - 2}" text-anchor="middle" font-size="10" font-weight="800" fill="${textColor}">${toFa(i)}</text>
-                        <line x1="${rightX + 13}" y1="${ly + 1}" x2="${rightX + 33}" y2="${ly + 1}" stroke="${textColor}" stroke-width="1.4"/>
-                        <text x="${rightX + 23}" y="${ly + 10}" text-anchor="middle" font-size="10" font-weight="800" fill="${textColor}">${toFa(den)}</text>
+                        <rect x="${rightX + 4}" y="${ly - 10}" width="40" height="20" rx="4" fill="${i === num ? '#4f46e5' : '#f1f5f9'}"/>
+                        <text x="${rightX + 24}" y="${ly + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="${i === num ? '#ffffff' : '#334155'}">${fracLabel}</text>
                     </g>
                 `;
             }
@@ -978,6 +1130,199 @@
         }
 
         /* ==========================================================================
+           توابع به‌روزرسانی زنده اسلایدرها (Range Inputs) بدون بازسازی کل DOM
+           این توابع مانع از نابود شدن المان input و قطع شدن درگ (Drag) کاربر می‌شوند.
+           ========================================================================== */
+        function updateC1Interactive(numVal, denVal) {
+            if (numVal !== null) state.c1Num = parseInt(numVal, 10);
+            if (denVal !== null) {
+                state.c1Den = parseInt(denVal, 10);
+                if (state.c1Num > state.c1Den) {
+                    state.c1Num = state.c1Den;
+                    const numInput = document.getElementById('c1-num-input');
+                    if (numInput) numInput.value = state.c1Num;
+                }
+                const numInput = document.getElementById('c1-num-input');
+                if (numInput) numInput.max = state.c1Den;
+            }
+            playSound('click');
+
+            const shapeEl = document.getElementById('c1-shape-container');
+            if (shapeEl) {
+                shapeEl.innerHTML = state.c1Shape === 'pie'
+                    ? createPieSVG(state.c1Num, state.c1Den, { size: 150, fillColor: '#6366f1' })
+                    : createBarSVG(state.c1Num, state.c1Den, { width: 240, height: 64, fillColor: '#6366f1' });
+            }
+            const readEl = document.getElementById('c1-read-text');
+            if (readEl) {
+                readEl.innerHTML = `خوانش فارسی: «${toFa(state.c1Num)} از ${toFa(state.c1Den)} قسمت مساوی» یا <b>«${toFa(state.c1Num)} ${denomName(state.c1Den)}»</b>`;
+            }
+            const formulaEl = document.getElementById('c1-formula');
+            const isWhole = state.c1Num === state.c1Den;
+            if (formulaEl) {
+                formulaEl.innerHTML = ktx(isWhole ? `\\frac{${state.c1Num}}{${state.c1Den}} = 1` : `\\frac{${state.c1Num}}{${state.c1Den}}`, true);
+            }
+            const numLabel = document.getElementById('c1-num-label');
+            if (numLabel) numLabel.textContent = toFa(state.c1Num);
+            const denLabel = document.getElementById('c1-den-label');
+            if (denLabel) denLabel.textContent = toFa(state.c1Den);
+            const numSliderVal = document.getElementById('c1-num-slider-val');
+            if (numSliderVal) numSliderVal.textContent = toFa(state.c1Num);
+            const denSliderVal = document.getElementById('c1-den-slider-val');
+            if (denSliderVal) denSliderVal.textContent = toFa(state.c1Den);
+
+            const wholeContainer = document.getElementById('c1-whole-container');
+            const wholeFormula = document.getElementById('c1-whole-formula');
+            if (wholeContainer) {
+                if (isWhole) {
+                    wholeContainer.classList.remove('hidden');
+                    if (wholeFormula) wholeFormula.innerHTML = ktx(`\\frac{${state.c1Den}}{${state.c1Den}} = 1`);
+                } else {
+                    wholeContainer.classList.add('hidden');
+                }
+            }
+        }
+
+        function setC1Shape(shape) {
+            state.c1Shape = shape;
+            playSound('pop');
+            const pieBtn = document.getElementById('c1-shape-pie-btn');
+            const barBtn = document.getElementById('c1-shape-bar-btn');
+            if (pieBtn && barBtn) {
+                if (shape === 'pie') {
+                    pieBtn.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white';
+                    barBtn.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-white border text-slate-600';
+                } else {
+                    pieBtn.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-white border text-slate-600';
+                    barBtn.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white';
+                }
+            }
+            updateC1Interactive(null, null);
+        }
+
+        function updateC2NumberLine(numVal, denVal) {
+            if (numVal !== null) state.c2Num = parseInt(numVal, 10);
+            if (denVal !== null) {
+                state.c2Den = parseInt(denVal, 10);
+                if (state.c2Num > state.c2Den) {
+                    state.c2Num = state.c2Den;
+                    const numInput = document.getElementById('c2-num-input');
+                    if (numInput) numInput.value = state.c2Num;
+                }
+                const numInput = document.getElementById('c2-num-input');
+                if (numInput) numInput.max = state.c2Den;
+            }
+            playSound('pop');
+
+            const svgEl = document.getElementById('c2-line-svg');
+            if (svgEl) svgEl.innerHTML = createNumberLineSVG(state.c2Num, state.c2Den);
+
+            const denTitle = document.getElementById('c2-den-title');
+            if (denTitle) denTitle.textContent = toFa(state.c2Den);
+            const numTitle = document.getElementById('c2-num-title');
+            if (numTitle) numTitle.textContent = toFa(state.c2Num);
+            const formulaEl = document.getElementById('c2-line-formula');
+            if (formulaEl) formulaEl.innerHTML = ktx(`\\frac{${state.c2Num}}{${state.c2Den}}`);
+
+            const numSliderVal = document.getElementById('c2-num-slider-val');
+            if (numSliderVal) numSliderVal.textContent = toFa(state.c2Num);
+            const denSliderVal = document.getElementById('c2-den-slider-val');
+            if (denSliderVal) denSliderVal.textContent = toFa(state.c2Den);
+        }
+
+        function updateC2Beaker(numVal, denVal) {
+            if (numVal !== null) state.c2BeakerNum = parseInt(numVal, 10);
+            if (denVal !== null) {
+                state.c2BeakerDen = parseInt(denVal, 10);
+                if (state.c2BeakerNum > state.c2BeakerDen) {
+                    state.c2BeakerNum = state.c2BeakerDen;
+                    const numInput = document.getElementById('c2-beaker-num-input');
+                    if (numInput) numInput.value = state.c2BeakerNum;
+                }
+                const numInput = document.getElementById('c2-beaker-num-input');
+                if (numInput) numInput.max = state.c2BeakerDen;
+            }
+            playSound('click');
+
+            const svgEl = document.getElementById('c2-beaker-svg');
+            if (svgEl) svgEl.innerHTML = createBeakerSVG(state.c2BeakerNum, state.c2BeakerDen, { size: 155 });
+
+            const denText = document.getElementById('c2-beaker-den-text');
+            if (denText) denText.textContent = toFa(state.c2BeakerDen);
+            const numText = document.getElementById('c2-beaker-num-text');
+            if (numText) numText.textContent = toFa(state.c2BeakerNum);
+            const formulaEl = document.getElementById('c2-beaker-formula');
+            if (formulaEl) formulaEl.innerHTML = ktx(`\\frac{${state.c2BeakerNum}}{${state.c2BeakerDen}}`, true);
+
+            const numValEl = document.getElementById('c2-beaker-num-val');
+            if (numValEl) numValEl.textContent = toFa(state.c2BeakerNum);
+            const denValEl = document.getElementById('c2-beaker-den-val');
+            if (denValEl) denValEl.textContent = toFa(state.c2BeakerDen);
+        }
+
+        function updateC4SameDen(valA, valB) {
+            if (valA !== null) state.c4SameDenA = parseInt(valA, 10);
+            if (valB !== null) state.c4SameDenB = parseInt(valB, 10);
+            const a = state.c4SameDenA;
+            const b = state.c4SameDenB;
+            const d = state.c4SameDenD;
+            const sign = a > b ? '>' : (a < b ? '<' : '=');
+            playSound('click');
+
+            const pieA = document.getElementById('c4-same-den-pie-a');
+            if (pieA) pieA.innerHTML = createPieSVG(a, d, { size: 120, fillColor: '#6366f1' });
+            const ktxA = document.getElementById('c4-same-den-ktx-a');
+            if (ktxA) ktxA.innerHTML = ktx(`\\frac{${a}}{${d}}`);
+
+            const pieB = document.getElementById('c4-same-den-pie-b');
+            if (pieB) pieB.innerHTML = createPieSVG(b, d, { size: 120, fillColor: '#10b981' });
+            const ktxB = document.getElementById('c4-same-den-ktx-b');
+            if (ktxB) ktxB.innerHTML = ktx(`\\frac{${b}}{${d}}`);
+
+            const signEl = document.getElementById('c4-same-den-sign');
+            if (signEl) signEl.textContent = sign;
+
+            const mainForm = document.getElementById('c4-same-den-main-formula');
+            if (mainForm) mainForm.innerHTML = ktx(`\\frac{${a}}{${d}} ${sign} \\frac{${b}}{${d}}`, true);
+
+            const valAEl = document.getElementById('c4-den-a-val');
+            if (valAEl) valAEl.textContent = toFa(a);
+            const valBEl = document.getElementById('c4-den-b-val');
+            if (valBEl) valBEl.textContent = toFa(b);
+        }
+
+        function updateC4SameNum(valDA, valDB) {
+            if (valDA !== null) state.c4SameNumDA = parseInt(valDA, 10);
+            if (valDB !== null) state.c4SameNumDB = parseInt(valDB, 10);
+            const n = state.c4SameNumN;
+            const da = state.c4SameNumDA;
+            const db = state.c4SameNumDB;
+            const sign = da < db ? '>' : (da > db ? '<' : '=');
+            playSound('click');
+
+            const pieA = document.getElementById('c4-same-num-pie-a');
+            if (pieA) pieA.innerHTML = createPieSVG(n, da, { size: 120, fillColor: '#ec4899' });
+            const ktxA = document.getElementById('c4-same-num-ktx-a');
+            if (ktxA) ktxA.innerHTML = ktx(`\\frac{${n}}{${da}}`);
+
+            const pieB = document.getElementById('c4-same-num-pie-b');
+            if (pieB) pieB.innerHTML = createPieSVG(n, db, { size: 120, fillColor: '#f59e0b' });
+            const ktxB = document.getElementById('c4-same-num-ktx-b');
+            if (ktxB) ktxB.innerHTML = ktx(`\\frac{${n}}{${db}}`);
+
+            const signEl = document.getElementById('c4-same-num-sign');
+            if (signEl) signEl.textContent = sign;
+
+            const mainForm = document.getElementById('c4-same-num-main-formula');
+            if (mainForm) mainForm.innerHTML = ktx(`\\frac{${n}}{${da}} ${sign} \\frac{${n}}{${db}}`, true);
+
+            const valDAEl = document.getElementById('c4-num-da-val');
+            if (valDAEl) valDAEl.textContent = toFa(da);
+            const valDBEl = document.getElementById('c4-num-db-val');
+            if (valDBEl) valDBEl.textContent = toFa(db);
+        }
+
+        /* ==========================================================================
            ۷. رندر فصل ۱: آشنایی با مفهوم کسر
            ========================================================================== */
         function renderChapter1() {
@@ -1034,48 +1379,48 @@
                         <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
                             <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
                                 <div class="flex gap-2 mb-2">
-                                    <button onclick="state.c1Shape='pie'; playSound('pop'); renderStage();" class="px-3 py-1 rounded-lg text-xs font-bold ${state.c1Shape === 'pie' ? 'bg-indigo-600 text-white' : 'bg-white border text-slate-600'}">🍕 پیتزا دایره‌ای</button>
-                                    <button onclick="state.c1Shape='bar'; playSound('pop'); renderStage();" class="px-3 py-1 rounded-lg text-xs font-bold ${state.c1Shape === 'bar' ? 'bg-indigo-600 text-white' : 'bg-white border text-slate-600'}">🍫 نوار کسری</button>
+                                    <button id="c1-shape-pie-btn" onclick="setC1Shape('pie')" class="px-3 py-1 rounded-lg text-xs font-bold ${state.c1Shape === 'pie' ? 'bg-indigo-600 text-white' : 'bg-white border text-slate-600'}">🍕 پیتزا دایره‌ای</button>
+                                    <button id="c1-shape-bar-btn" onclick="setC1Shape('bar')" class="px-3 py-1 rounded-lg text-xs font-bold ${state.c1Shape === 'bar' ? 'bg-indigo-600 text-white' : 'bg-white border text-slate-600'}">🍫 نوار کسری</button>
                                 </div>
-                                <div class="my-1 flex items-center justify-center">
+                                <div id="c1-shape-container" class="my-1 flex items-center justify-center">
                                     ${state.c1Shape === 'pie'
-                                        ? createPieSVG(state.c1Num, state.c1Den, { size: 150, fillColor: '#6366f1' })
-                                        : createBarSVG(state.c1Num, state.c1Den, { width: 240, height: 64, fillColor: '#6366f1' })
-                                    }
+                            ? createPieSVG(state.c1Num, state.c1Den, { size: 150, fillColor: '#6366f1' })
+                            : createBarSVG(state.c1Num, state.c1Den, { width: 240, height: 64, fillColor: '#6366f1' })
+                        }
                                 </div>
-                                <p class="text-xs font-bold text-indigo-900 mt-1">
+                                <p id="c1-read-text" class="text-xs font-bold text-indigo-900 mt-1">
                                     خوانش فارسی: «${toFa(state.c1Num)} از ${toFa(state.c1Den)} قسمت مساوی» یا <b>«${toFa(state.c1Num)} ${denomName(state.c1Den)}»</b>
                                 </p>
                             </div>
 
                             <div class="flex flex-col justify-center space-y-2.5 px-2">
                                 <div class="flex items-center justify-around bg-indigo-50/70 p-2.5 rounded-2xl border border-indigo-100">
-                                    <div class="text-center">
+                                    <div id="c1-formula" class="text-center">
                                         ${ktx(isWhole ? `\\frac{${state.c1Num}}{${state.c1Den}} = 1` : `\\frac{${state.c1Num}}{${state.c1Den}}`, true)}
                                     </div>
                                     <div class="text-xs sm:text-sm space-y-1 text-slate-700 font-bold">
-                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span><span><b>صورت کسر (${toFa(state.c1Num)}):</b> تعداد قسمت‌های رنگی</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span><span><b>صورت کسر (<span id="c1-num-label">${toFa(state.c1Num)}</span>):</b> تعداد قسمت‌های رنگی</span></div>
                                         <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span><span><b>خط کسری (—):</b> خط جداکننده</span></div>
-                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span><span><b>مخرج کسر (${toFa(state.c1Den)}):</b> کل قسمت‌های مساوی</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span><span><b>مخرج کسر (<span id="c1-den-label">${toFa(state.c1Den)}</span>):</b> کل قسمت‌های مساوی</span></div>
                                     </div>
                                 </div>
 
                                 <div class="space-y-2 bg-white p-2.5 rounded-xl border border-slate-200">
                                     <div class="flex items-center justify-between gap-2">
-                                        <label class="text-xs sm:text-sm font-bold text-indigo-700 w-32">صورت کسر (${toFa(state.c1Num)}):</label>
-                                        <input type="range" min="0" max="${state.c1Den}" value="${state.c1Num}" oninput="state.c1Num=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                        <label class="text-xs sm:text-sm font-bold text-indigo-700 w-32">صورت کسر (<span id="c1-num-slider-val">${toFa(state.c1Num)}</span>):</label>
+                                        <input id="c1-num-input" type="range" min="0" max="${state.c1Den}" value="${state.c1Num}" oninput="updateC1Interactive(this.value, null)" class="flex-1">
                                     </div>
                                     <div class="flex items-center justify-between gap-2">
-                                        <label class="text-xs sm:text-sm font-bold text-emerald-700 w-32">مخرج کسر (${toFa(state.c1Den)}):</label>
-                                        <input type="range" min="1" max="8" value="${state.c1Den}" oninput="state.c1Den=parseInt(this.value); if(state.c1Num>state.c1Den) state.c1Num=state.c1Den; playSound('click'); renderStage();" class="flex-1">
+                                        <label class="text-xs sm:text-sm font-bold text-emerald-700 w-32">مخرج کسر (<span id="c1-den-slider-val">${toFa(state.c1Den)}</span>):</label>
+                                        <input id="c1-den-input" type="range" min="1" max="8" value="${state.c1Den}" oninput="updateC1Interactive(null, this.value)" class="flex-1">
                                     </div>
                                 </div>
 
-                                ${isWhole ? `
+                                <div id="c1-whole-container" class="${isWhole ? '' : 'hidden'}">
                                     <div class="p-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold text-center animate-pop">
-                                        🎉 وقتی صورت و مخرج کسر با هم برابر باشند (${ktx(`\\frac{${state.c1Den}}{${state.c1Den}} = 1`)}), یعنی <b>یک واحد کامل</b> رنگ شده است!
+                                        🎉 وقتی صورت و مخرج کسر با هم برابر باشند (<span id="c1-whole-formula">${ktx(`\\frac{${state.c1Den}}{${state.c1Den}} = 1`)}</span>), یعنی <b>یک واحد کامل</b> رنگ شده است!
                                     </div>
-                                ` : ''}
+                                </div>
                             </div>
                         </div>
                     `;
@@ -1110,16 +1455,18 @@
 
                 container.innerHTML = `
                     ${slideHTML}
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c1Slide>0){state.c1Slide--; playSound('click'); renderStage();}" ${state.c1Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c1Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'}">
-                            ◀ اسلاید قبلی
-                        </button>
-                        <div class="text-xs font-bold text-slate-500">
-                            بخش ۱ - گام آموزشی ${toFa(state.c1Slide + 1)} از ${toFa(slidesCount)}
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c1Slide>0){state.c1Slide--; playSound('click'); renderStage();}" ${state.c1Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c1Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'}">
+                                اسلاید قبلی ▶
+                            </button>
+                            <button onclick="if(state.c1Slide<${slidesCount - 1}){state.c1Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm">
+                                ${state.c1Slide < slidesCount - 1 ? '◀ اسلاید بعدی' : '◀ مشاهده مثال‌ها 💡'}
+                            </button>
                         </div>
-                        <button onclick="if(state.c1Slide<${slidesCount - 1}){state.c1Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm">
-                            ${state.c1Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
-                        </button>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">
+                            بخش ۱ - گام آموزشی ${toFa(state.c1Slide + 1)} از ${toFa(slidesCount)}
+                        </span>
                     </div>
                 `;
             } else if (state.mode === 'examples') {
@@ -1160,14 +1507,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c1ExampleIdx>0){state.c1ExampleIdx--; playSound('click'); renderStage();}" ${state.c1ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c1ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
-                            ◀ مثال قبلی
-                        </button>
-                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c1ExampleIdx + 1)} از ${toFa(examples.length)}</span>
-                        <button onclick="if(state.c1ExampleIdx<${examples.length - 1}){state.c1ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm">
-                            ${state.c1ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
-                        </button>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c1ExampleIdx>0){state.c1ExampleIdx--; playSound('click'); renderStage();}" ${state.c1ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c1ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                                مثال قبلی ▶
+                            </button>
+                            <button onclick="if(state.c1ExampleIdx<${examples.length - 1}){state.c1ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm">
+                                ${state.c1ExampleIdx < examples.length - 1 ? '◀ مثال بعدی' : '◀ ورود به بازی و تمرین 🎮'}
+                            </button>
+                        </div>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">مثال ${toFa(state.c1ExampleIdx + 1)} از ${toFa(examples.length)}</span>
                     </div>
                 `;
             } else {
@@ -1210,12 +1559,12 @@
                         <h3 class="text-sm sm:text-base font-black text-slate-800">سوال ۲ (رنگ‌آمیزی تعاملی): روی قاچ‌های پیتزا کلیک کن تا دقیقاً کسر ${ktx('\\frac{3}{6}')} رنگ شود!</h3>
                         <div class="my-1">
                             ${createPieSVG(0, 6, {
-                                size: 140,
-                                interactive: true,
-                                selectedSlices: state.c1SelectedSlices,
-                                onClickFn: 'toggleC1Slice',
-                                fillColor: '#6366f1'
-                            })}
+                    size: 140,
+                    interactive: true,
+                    selectedSlices: state.c1SelectedSlices,
+                    onClickFn: 'toggleC1Slice',
+                    fillColor: '#6366f1'
+                })}
                         </div>
                         <div class="flex items-center justify-center gap-3">
                             <span class="text-xs font-bold text-slate-600">تعداد رنگ‌شده: ${toFa(state.c1SelectedSlices.length)} از ${toFa(6)}</span>
@@ -1259,12 +1608,16 @@
                     ${qContent}
                     <div id="c1-fb" class="mt-2 min-h-[34px] flex items-center justify-center text-xs text-slate-400">روی پاسخ درست کلیک کن!</div>
                 </div>
-                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <button onclick="if(state.c1QuizIdx>0){state.c1QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
-                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
-                    <button onclick="if(state.c1QuizIdx<3){state.c1QuizIdx++; playSound('click'); renderStage();}else{selectChapter(1);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
-                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'رفتن به بخش ۲: اندازه‌گیری 🚀'}
-                    </button>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                    <div class="w-full flex items-center justify-between gap-2">
+                        <button onclick="if(state.c1QuizIdx>0){state.c1QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                            سوال قبلی ▶
+                        </button>
+                        <button onclick="if(state.c1QuizIdx<3){state.c1QuizIdx++; playSound('click'); renderStage();}else{selectChapter(1);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                            ${qIdx < 3 ? '◀ سوال بعدی' : '◀ رفتن به بخش ۲: اندازه‌گیری 🚀'}
+                        </button>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
                 </div>
             `;
         }
@@ -1322,20 +1675,21 @@
                         <div class="flex-1 min-h-0 flex flex-col justify-around items-center px-2">
                             <div class="text-center space-y-1">
                                 <span class="bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full text-xs font-extrabold">🐸 نمایش کسر روی محور اعداد (از ۰ تا ۱)</span>
-                                <h3 class="text-xs sm:text-base font-black text-slate-800">فاصله‌ی بین ۰ تا ۱ به ${toFa(state.c2Den)} قسمت مساوی تقسیم شده و قورباغه ${toFa(state.c2Num)} پرش انجام داده است:</h3>
-                                <div class="my-1">${ktx(`\\frac{${state.c2Num}}{${state.c2Den}}`, true)}</div>
+                                <h3 class="text-xs sm:text-base font-black text-slate-800">
+                                    فاصله‌ی بین ۰ تا ۱ به <span id="c2-den-title">${toFa(state.c2Den)}</span> قسمت مساوی تقسیم شده و قورباغه <span id="c2-num-title">${toFa(state.c2Num)}</span> پرش انجام داده است: <span id="c2-line-formula">${ktx(`\\frac{${state.c2Num}}{${state.c2Den}}`)}</span>
+                                </h3>
                             </div>
-                            <div class="w-full bg-slate-50 p-2 sm:p-3 rounded-2xl border border-slate-200">
+                            <div id="c2-line-svg" class="w-full bg-slate-50 p-2 sm:p-3 rounded-2xl border border-slate-200">
                                 ${createNumberLineSVG(state.c2Num, state.c2Den)}
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-xl bg-white p-2.5 rounded-xl border border-slate-200">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold text-indigo-700 w-28">تعداد پرش (${toFa(state.c2Num)}):</span>
-                                    <input type="range" min="0" max="${state.c2Den}" value="${state.c2Num}" oninput="state.c2Num=parseInt(this.value); playSound('pop'); renderStage();" class="flex-1">
+                                    <span class="text-xs font-bold text-indigo-700 w-28">تعداد پرش (<span id="c2-num-slider-val">${toFa(state.c2Num)}</span>):</span>
+                                    <input id="c2-num-input" type="range" min="0" max="${state.c2Den}" value="${state.c2Num}" oninput="updateC2NumberLine(this.value, null)" class="flex-1">
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold text-emerald-700 w-28">کل قسمت‌ها (${toFa(state.c2Den)}):</span>
-                                    <input type="range" min="2" max="8" value="${state.c2Den}" oninput="state.c2Den=parseInt(this.value); if(state.c2Num>state.c2Den) state.c2Num=state.c2Den; playSound('pop'); renderStage();" class="flex-1">
+                                    <span class="text-xs font-bold text-emerald-700 w-28">کل قسمت‌ها (<span id="c2-den-slider-val">${toFa(state.c2Den)}</span>):</span>
+                                    <input id="c2-den-input" type="range" min="2" max="8" value="${state.c2Den}" oninput="updateC2NumberLine(null, this.value)" class="flex-1">
                                 </div>
                             </div>
                         </div>
@@ -1343,24 +1697,24 @@
                 } else {
                     slideHTML = `
                         <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
-                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
+                            <div id="c2-beaker-svg" class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full">
                                 ${createBeakerSVG(state.c2BeakerNum, state.c2BeakerDen, { size: 155 })}
                             </div>
                             <div class="flex flex-col justify-center space-y-2.5 px-2">
                                 <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🧪 لیوان مدرج آزمایشگاهی</span>
                                 <h3 class="text-sm sm:text-base font-black text-slate-800">اندازه‌گیری حجم مایعات با کسرها</h3>
                                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                    این پیمانه به <b>${toFa(state.c2BeakerDen)} قسمت مساوی</b> تقسیم شده و تا خط <b>${toFa(state.c2BeakerNum)}</b> پر از آب است:
-                                    ${ktx(`\\frac{${state.c2BeakerNum}}{${state.c2BeakerDen}}`, true)}
+                                    این پیمانه به <b><span id="c2-beaker-den-text">${toFa(state.c2BeakerDen)}</span> قسمت مساوی</b> تقسیم شده و تا خط <b><span id="c2-beaker-num-text">${toFa(state.c2BeakerNum)}</span></b> پر از آب است:
+                                    <span id="c2-beaker-formula">${ktx(`\\frac{${state.c2BeakerNum}}{${state.c2BeakerDen}}`, true)}</span>
                                 </p>
                                 <div class="space-y-2 bg-slate-50 p-2.5 rounded-xl border">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-xs font-bold text-sky-700 w-28">مقدار مایع (${toFa(state.c2BeakerNum)}):</span>
-                                        <input type="range" min="0" max="${state.c2BeakerDen}" value="${state.c2BeakerNum}" oninput="state.c2BeakerNum=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                        <span class="text-xs font-bold text-sky-700 w-28">مقدار مایع (<span id="c2-beaker-num-val">${toFa(state.c2BeakerNum)}</span>):</span>
+                                        <input id="c2-beaker-num-input" type="range" min="0" max="${state.c2BeakerDen}" value="${state.c2BeakerNum}" oninput="updateC2Beaker(this.value, null)" class="flex-1">
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span class="text-xs font-bold text-slate-700 w-28">درجه‌بندی (${toFa(state.c2BeakerDen)}):</span>
-                                        <input type="range" min="2" max="6" value="${state.c2BeakerDen}" oninput="state.c2BeakerDen=parseInt(this.value); if(state.c2BeakerNum>state.c2BeakerDen) state.c2BeakerNum=state.c2BeakerDen; playSound('click'); renderStage();" class="flex-1">
+                                        <span class="text-xs font-bold text-slate-700 w-28">درجه‌بندی (<span id="c2-beaker-den-val">${toFa(state.c2BeakerDen)}</span>):</span>
+                                        <input id="c2-beaker-den-input" type="range" min="2" max="6" value="${state.c2BeakerDen}" oninput="updateC2Beaker(null, this.value)" class="flex-1">
                                     </div>
                                 </div>
                             </div>
@@ -1370,12 +1724,16 @@
 
                 container.innerHTML = `
                     ${slideHTML}
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c2Slide>0){state.c2Slide--; playSound('click'); renderStage();}" ${state.c2Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c2Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ اسلاید قبلی</button>
-                        <span class="text-xs font-bold text-slate-500">بخش ۲ - گام آموزشی ${toFa(state.c2Slide + 1)} از ${toFa(slidesCount)}</span>
-                        <button onclick="if(state.c2Slide<${slidesCount - 1}){state.c2Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
-                            ${state.c2Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
-                        </button>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c2Slide>0){state.c2Slide--; playSound('click'); renderStage();}" ${state.c2Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c2Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                                اسلاید قبلی ▶
+                            </button>
+                            <button onclick="if(state.c2Slide<${slidesCount - 1}){state.c2Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                                ${state.c2Slide < slidesCount - 1 ? '◀ اسلاید بعدی' : '◀ مشاهده مثال‌ها 💡'}
+                            </button>
+                        </div>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">بخش ۲ - گام آموزشی ${toFa(state.c2Slide + 1)} از ${toFa(slidesCount)}</span>
                     </div>
                 `;
             } else if (state.mode === 'examples') {
@@ -1413,12 +1771,16 @@
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">${ex.desc}</div>
                         </div>
                     </div>
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c2ExampleIdx>0){state.c2ExampleIdx--; playSound('click'); renderStage();}" ${state.c2ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c2ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ مثال قبلی</button>
-                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c2ExampleIdx + 1)} از ${toFa(examples.length)}</span>
-                        <button onclick="if(state.c2ExampleIdx<${examples.length - 1}){state.c2ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
-                            ${state.c2ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
-                        </button>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c2ExampleIdx>0){state.c2ExampleIdx--; playSound('click'); renderStage();}" ${state.c2ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c2ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                                مثال قبلی ▶
+                            </button>
+                            <button onclick="if(state.c2ExampleIdx<${examples.length - 1}){state.c2ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                                ${state.c2ExampleIdx < examples.length - 1 ? '◀ مثال بعدی' : '◀ ورود به بازی و تمرین 🎮'}
+                            </button>
+                        </div>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">مثال ${toFa(state.c2ExampleIdx + 1)} از ${toFa(examples.length)}</span>
                     </div>
                 `;
             } else {
@@ -1489,12 +1851,16 @@
                     ${qContent}
                     <div id="c2-fb" class="mt-2 min-h-[34px] flex items-center justify-center text-xs text-slate-400">پاسخ درست را انتخاب کن!</div>
                 </div>
-                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <button onclick="if(state.c2QuizIdx>0){state.c2QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
-                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
-                    <button onclick="if(state.c2QuizIdx<3){state.c2QuizIdx++; state.c2QuizUserVal=1; playSound('click'); renderStage();}else{selectChapter(2);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
-                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'رفتن به بخش ۳: تساوی کسرها 🚀'}
-                    </button>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                    <div class="w-full flex items-center justify-between gap-2">
+                        <button onclick="if(state.c2QuizIdx>0){state.c2QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                            سوال قبلی ▶
+                        </button>
+                        <button onclick="if(state.c2QuizIdx<3){state.c2QuizIdx++; state.c2QuizUserVal=1; playSound('click'); renderStage();}else{selectChapter(2);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                            ${qIdx < 3 ? '◀ سوال بعدی' : '◀ رفتن به بخش ۳: تساوی کسرها 🚀'}
+                        </button>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
                 </div>
             `;
         }
@@ -1543,9 +1909,9 @@
                                 </div>
                                 <div class="flex items-center gap-2 justify-center">
                                     <span class="text-xs font-bold text-slate-600">تغییر کسر پایه:</span>
-                                    <button onclick="state.c3BaseNum=1; state.c3BaseDen=2; playSound('click'); renderStage();" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold hover:border-indigo-400">${ktx('\\frac{1}{2}')}</button>
-                                    <button onclick="state.c3BaseNum=1; state.c3BaseDen=3; playSound('click'); renderStage();" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold hover:border-indigo-400">${ktx('\\frac{1}{3}')}</button>
-                                    <button onclick="state.c3BaseNum=2; state.c3BaseDen=3; playSound('click'); renderStage();" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold hover:border-indigo-400">${ktx('\\frac{2}{3}')}</button>
+                                    <button onclick="state.c3BaseNum=1; state.c3BaseDen=2; playSound('click'); renderStage();" class="px-2 py-0.5 rounded bg-white border text-xs font-bold">۱/۲</button>
+                                    <button onclick="state.c3BaseNum=1; state.c3BaseDen=3; playSound('click'); renderStage();" class="px-2 py-0.5 rounded bg-white border text-xs font-bold">۱/۳</button>
+                                    <button onclick="state.c3BaseNum=2; state.c3BaseDen=3; playSound('click'); renderStage();" class="px-2 py-0.5 rounded bg-white border text-xs font-bold">۲/۳</button>
                                 </div>
                             </div>
                         </div>
@@ -1584,26 +1950,30 @@
 
                 container.innerHTML = `
                     ${slideHTML}
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c3Slide>0){state.c3Slide--; playSound('click'); renderStage();}" ${state.c3Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c3Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ اسلاید قبلی</button>
-                        <span class="text-xs font-bold text-slate-500">بخش ۳ - گام آموزشی ${toFa(state.c3Slide + 1)} از ${toFa(slidesCount)}</span>
-                        <button onclick="if(state.c3Slide<${slidesCount - 1}){state.c3Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
-                            ${state.c3Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
-                        </button>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c3Slide>0){state.c3Slide--; playSound('click'); renderStage();}" ${state.c3Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c3Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                                اسلاید قبلی ▶
+                            </button>
+                            <button onclick="if(state.c3Slide<${slidesCount - 1}){state.c3Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                                ${state.c3Slide < slidesCount - 1 ? '◀ اسلاید بعدی' : '◀ مشاهده مثال‌ها 💡'}
+                            </button>
+                        </div>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">بخش ۳ - گام آموزشی ${toFa(state.c3Slide + 1)} از ${toFa(slidesCount)}</span>
                     </div>
                 `;
             } else if (state.mode === 'examples') {
                 const examples = [
                     {
                         title: 'مثال ۱: تساوی یک‌سوم و دوششم',
-                        visual: `<div class="flex items-center gap-3">${createPieSVG(1, 3, { size: 120, fillColor: '#ec4899' })} <span class="text-xl font-black text-indigo-700">=</span> ${createPieSVG(2, 6, { size: 120, fillColor: '#ec4899' })}</div>`,
+                        visual: `<div class="flex items-center gap-3">${createPieSVG(1, 3, { size: 120, fillColor: '#ec4899' })} <span class="text-xl font-black">=</span> ${createPieSVG(2, 6, { size: 120, fillColor: '#ec4899' })}</div>`,
                         desc: `وقتی هر قاچ از پیتزای ۳ قسمتی را به ۲ قسمت مساوی تقسیم کنیم، ۶ قسمت می‌شود و ۱ قاچ رنگی تبدیل به ۲ قاچ می‌شود:
                                <br>${ktx('\\frac{1}{3} = \\frac{1 \\times 2}{3 \\times 2} = \\frac{2}{6}', true)}`
                     },
                     {
                         title: 'مثال ۲: پیدا کردن عدد جاافتاده در تساوی کسرها',
                         visual: createBarSVG(3, 4, { width: 220, height: 52, fillColor: '#6366f1', subDivide: 2 }),
-                        desc: `می‌خواهیم بدانیم ${ktx('\\frac{3}{4} = \\frac{\\square}{8}')} چند است.
+                        desc: `می‌خواهیم بدانیم ${ktx('\\frac{3}{4} = \\frac{?}{8}')} چند است.
                                <br>چون مخرج از ۴ به ۸ رسیده یعنی در ۲ ضرب شده است (${ktx('4 \\times 2 = 8')})، پس صورت را هم در ۲ ضرب می‌کنیم:
                                <br>${ktx('3 \\times 2 = 6 \\implies \\frac{3}{4} = \\frac{6}{8}')}`
                     }
@@ -1621,12 +1991,16 @@
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">${ex.desc}</div>
                         </div>
                     </div>
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c3ExampleIdx>0){state.c3ExampleIdx--; playSound('click'); renderStage();}" ${state.c3ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c3ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ مثال قبلی</button>
-                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c3ExampleIdx + 1)} از ${toFa(examples.length)}</span>
-                        <button onclick="if(state.c3ExampleIdx<${examples.length - 1}){state.c3ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
-                            ${state.c3ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
-                        </button>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c3ExampleIdx>0){state.c3ExampleIdx--; playSound('click'); renderStage();}" ${state.c3ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c3ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                                مثال قبلی ▶
+                            </button>
+                            <button onclick="if(state.c3ExampleIdx<${examples.length - 1}){state.c3ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                                ${state.c3ExampleIdx < examples.length - 1 ? '◀ مثال بعدی' : '◀ ورود به بازی و تمرین 🎮'}
+                            </button>
+                        </div>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">مثال ${toFa(state.c3ExampleIdx + 1)} از ${toFa(examples.length)}</span>
                     </div>
                 `;
             } else {
@@ -1663,9 +2037,9 @@
                     formula: '\\frac{3}{4} = ?',
                     visual: createPieSVG(3, 4, { size: 115, fillColor: '#f59e0b', subDivide: 2 }),
                     options: [
-                        { label: '\\frac{6}{8}', ok: true, msg: 'درست گفتی! اگر صورت و مخرج ۳/۴ را در ۲ ضرب کنیم به ۶/۸ می‌رسیم.' },
-                        { label: '\\frac{4}{8}', ok: false, hint: 'صورت ۳ هم باید در ۲ ضرب شود (۳×۲=۶).' },
-                        { label: '\\frac{3}{8}', ok: false, hint: 'وقتی مخرج ۲ برابر می‌شود، صورت هم ۲ برابر می‌شود!' }
+                        { label: '\\frac{6}{8}', isKtx: true, ok: true, msg: 'درست گفتی! اگر صورت و مخرج ۳/۴ را در ۲ ضرب کنیم به ۶/۸ می‌رسیم.' },
+                        { label: '\\frac{4}{8}', isKtx: true, ok: false, hint: 'صورت ۳ هم باید در ۲ ضرب شود (۳×۲=۶).' },
+                        { label: '\\frac{3}{8}', isKtx: true, ok: false, hint: 'وقتی مخرج ۲ برابر می‌شود، صورت هم ۲ برابر می‌شود!' }
                     ]
                 },
                 {
@@ -1673,8 +2047,8 @@
                     formula: '\\frac{2 \\times 2}{5 \\times 2} = ?',
                     visual: createBarSVG(2, 5, { width: 220, height: 48, fillColor: '#ec4899', subDivide: 2 }),
                     options: [
-                        { label: '\\frac{4}{10}', ok: true, msg: 'آفرین قهرمان! دو پنجم دقیقاً با چهار دهم مساوی است.' },
-                        { label: '\\frac{4}{5}', ok: false, hint: 'مخرج ۵ هم باید در ۲ ضرب شود (۵×۲=۱۰).' }
+                        { label: '\\frac{4}{10}', isKtx: true, ok: true, msg: 'آفرین قهرمان! دو پنجم دقیقاً با چهار دهم مساوی است.' },
+                        { label: '\\frac{4}{5}', isKtx: true, ok: false, hint: 'مخرج ۵ هم باید در ۲ ضرب شود (۵×۲=۱۰).' }
                     ]
                 }
             ];
@@ -1689,18 +2063,22 @@
                     <div class="flex justify-center gap-3 pt-1">
                         ${q.options.map(opt => `
                             <button onclick="${opt.ok ? `rewardAnswer('${key}','c3-fb','${opt.msg}')` : `wrongAnswer('c3-fb','${opt.hint}')`}" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white font-black text-sm">
-                                ${opt.label.includes('\\frac') ? ktx(opt.label) : toFa(opt.label)}
+                                ${opt.isKtx ? ktx(opt.label) : toFa(opt.label)}
                             </button>
                         `).join('')}
                     </div>
                     <div id="c3-fb" class="mt-2 min-h-[34px] flex items-center justify-center text-xs text-slate-400">گزینه درست را انتخاب کن!</div>
                 </div>
-                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <button onclick="if(state.c3QuizIdx>0){state.c3QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
-                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
-                    <button onclick="if(state.c3QuizIdx<3){state.c3QuizIdx++; playSound('click'); renderStage();}else{selectChapter(3);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
-                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'رفتن به بخش ۴: مقایسه کسرها 🚀'}
-                    </button>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                    <div class="w-full flex items-center justify-between gap-2">
+                        <button onclick="if(state.c3QuizIdx>0){state.c3QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                            سوال قبلی ▶
+                        </button>
+                        <button onclick="if(state.c3QuizIdx<3){state.c3QuizIdx++; playSound('click'); renderStage();}else{selectChapter(3);}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                            ${qIdx < 3 ? '◀ سوال بعدی' : '◀ رفتن به بخش ۴: مقایسه کسرها 🚀'}
+                        </button>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
                 </div>
             `;
         }
@@ -1726,25 +2104,25 @@
                             <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
                                 <div class="flex items-center justify-around w-full">
                                     <div class="text-center">
-                                        ${createPieSVG(a, d, { size: 120, fillColor: '#6366f1' })}
-                                        <div class="mt-1">${ktx(`\\frac{${a}}{${d}}`)}</div>
+                                        <div id="c4-same-den-pie-a">${createPieSVG(a, d, { size: 120, fillColor: '#6366f1' })}</div>
+                                        <div id="c4-same-den-ktx-a" class="mt-1">${ktx(`\\frac{${a}}{${d}}`)}</div>
                                     </div>
-                                    <div class="text-2xl font-black text-indigo-700 bg-white px-3 py-1 rounded-xl border shadow-sm" dir="ltr">
+                                    <div id="c4-same-den-sign" class="text-2xl font-black text-indigo-700 bg-white px-3 py-1 rounded-xl border shadow-sm" dir="ltr">
                                         ${sign}
                                     </div>
                                     <div class="text-center">
-                                        ${createPieSVG(b, d, { size: 120, fillColor: '#10b981' })}
-                                        <div class="mt-1">${ktx(`\\frac{${b}}{${d}}`)}</div>
+                                        <div id="c4-same-den-pie-b">${createPieSVG(b, d, { size: 120, fillColor: '#10b981' })}</div>
+                                        <div id="c4-same-den-ktx-b" class="mt-1">${ktx(`\\frac{${b}}{${d}}`)}</div>
                                     </div>
                                 </div>
                                 <div class="w-full space-y-1.5 bg-white p-2 rounded-xl border text-xs">
                                     <div class="flex items-center gap-2">
-                                        <span class="font-bold text-indigo-700 w-28">صورت کسر چپ (${toFa(a)}):</span>
-                                        <input type="range" min="1" max="${d}" value="${a}" oninput="state.c4SameDenA=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                        <span class="font-bold text-indigo-700 w-28">صورت کسر چپ (<span id="c4-den-a-val">${toFa(a)}</span>):</span>
+                                        <input id="c4-den-a-input" type="range" min="1" max="${d}" value="${a}" oninput="updateC4SameDen(this.value, null)" class="flex-1">
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span class="font-bold text-emerald-700 w-28">صورت کسر راست (${toFa(b)}):</span>
-                                        <input type="range" min="1" max="${d}" value="${b}" oninput="state.c4SameDenB=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                        <span class="font-bold text-emerald-700 w-28">صورت کسر راست (<span id="c4-den-b-val">${toFa(b)}</span>):</span>
+                                        <input id="c4-den-b-input" type="range" min="1" max="${d}" value="${b}" oninput="updateC4SameDen(null, this.value)" class="flex-1">
                                     </div>
                                 </div>
                             </div>
@@ -1752,12 +2130,12 @@
                             <div class="flex flex-col justify-center space-y-2.5 px-2">
                                 <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">⚖️ قانون اول: مقایسه کسرها با مخرج مساوی</span>
                                 <h3 class="text-sm sm:text-base font-black text-slate-800">وقتی مخرج‌ها مساوی هستند، کسری بزرگ‌تر است که <span class="text-indigo-600 underline">صورت بزرگ‌تری</span> دارد!</h3>
-                                <div class="text-center py-1">
+                                <div id="c4-same-den-main-formula" class="text-center py-1">
                                     ${ktx(`\\frac{${a}}{${d}} ${sign} \\frac{${b}}{${d}}`, true)}
                                 </div>
                                 <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 leading-relaxed">
-                                    🐊 <b>نکته مهم جهت علامت در ریاضی:</b>
-                                    فرمول‌های ریاضی از چپ به راست نوشته می‌شوند و دهانه‌ی باز علامت همیشه به سمت <b>کسر بزرگ‌تر</b> باز می‌شود!
+                                    🐊 <b>نکته مهم جهت علامت در ریاضی چپ‌به‌راست:</b>
+                                    فرمول‌های ریاضی از چپ به راست نوشته می‌شوند و دهانه‌ی باز علامت (${ktx('>')} یا ${ktx('<')}) همیشه به سمت <b>کسر بزرگ‌تر</b> باز می‌شود!
                                 </div>
                             </div>
                         </div>
@@ -1773,25 +2151,25 @@
                             <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
                                 <div class="flex items-center justify-around w-full">
                                     <div class="text-center">
-                                        ${createPieSVG(n, da, { size: 120, fillColor: '#ec4899' })}
-                                        <div class="mt-1">${ktx(`\\frac{${n}}{${da}}`)}</div>
+                                        <div id="c4-same-num-pie-a">${createPieSVG(n, da, { size: 120, fillColor: '#ec4899' })}</div>
+                                        <div id="c4-same-num-ktx-a" class="mt-1">${ktx(`\\frac{${n}}{${da}}`)}</div>
                                     </div>
-                                    <div class="text-2xl font-black text-pink-600 bg-white px-3 py-1 rounded-xl border shadow-sm" dir="ltr">
+                                    <div id="c4-same-num-sign" class="text-2xl font-black text-pink-600 bg-white px-3 py-1 rounded-xl border shadow-sm" dir="ltr">
                                         ${sign}
                                     </div>
                                     <div class="text-center">
-                                        ${createPieSVG(n, db, { size: 120, fillColor: '#f59e0b' })}
-                                        <div class="mt-1">${ktx(`\\frac{${n}}{${db}}`)}</div>
+                                        <div id="c4-same-num-pie-b">${createPieSVG(n, db, { size: 120, fillColor: '#f59e0b' })}</div>
+                                        <div id="c4-same-num-ktx-b" class="mt-1">${ktx(`\\frac{${n}}{${db}}`)}</div>
                                     </div>
                                 </div>
                                 <div class="w-full space-y-1.5 bg-white p-2 rounded-xl border text-xs">
                                     <div class="flex items-center gap-2">
-                                        <span class="font-bold text-pink-700 w-28">مخرج کسر چپ (${toFa(da)}):</span>
-                                        <input type="range" min="2" max="8" value="${da}" oninput="state.c4SameNumDA=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                        <span class="font-bold text-pink-700 w-28">مخرج کسر چپ (<span id="c4-num-da-val">${toFa(da)}</span>):</span>
+                                        <input id="c4-num-da-input" type="range" min="2" max="8" value="${da}" oninput="updateC4SameNum(this.value, null)" class="flex-1">
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span class="font-bold text-amber-700 w-28">مخرج کسر راست (${toFa(db)}):</span>
-                                        <input type="range" min="2" max="8" value="${db}" oninput="state.c4SameNumDB=parseInt(this.value); playSound('click'); renderStage();" class="flex-1">
+                                        <span class="font-bold text-amber-700 w-28">مخرج کسر راست (<span id="c4-num-db-val">${toFa(db)}</span>):</span>
+                                        <input id="c4-num-db-input" type="range" min="2" max="8" value="${db}" oninput="updateC4SameNum(null, this.value)" class="flex-1">
                                     </div>
                                 </div>
                             </div>
@@ -1799,7 +2177,7 @@
                             <div class="flex flex-col justify-center space-y-2.5 px-2">
                                 <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🍕 قانون دوم: مقایسه کسرها با صورت مساوی</span>
                                 <h3 class="text-sm sm:text-base font-black text-slate-800">وقتی صورت‌ها مساوی هستند، کسری بزرگ‌تر است که <span class="text-pink-600 underline">مخرج کوچک‌تری</span> دارد!</h3>
-                                <div class="text-center py-1">
+                                <div id="c4-same-num-main-formula" class="text-center py-1">
                                     ${ktx(`\\frac{${n}}{${da}} ${sign} \\frac{${n}}{${db}}`, true)}
                                 </div>
                                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -1812,12 +2190,16 @@
 
                 container.innerHTML = `
                     ${slideHTML}
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c4Slide>0){state.c4Slide--; playSound('click'); renderStage();}" ${state.c4Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c4Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ اسلاید قبلی</button>
-                        <span class="text-xs font-bold text-slate-500">بخش ۴ - گام آموزشی ${toFa(state.c4Slide + 1)} از ${toFa(slidesCount)}</span>
-                        <button onclick="if(state.c4Slide<${slidesCount - 1}){state.c4Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
-                            ${state.c4Slide < slidesCount - 1 ? 'اسلاید بعدی ▶' : 'مشاهده مثال‌ها 💡'}
-                        </button>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c4Slide>0){state.c4Slide--; playSound('click'); renderStage();}" ${state.c4Slide === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c4Slide === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                                اسلاید قبلی ▶
+                            </button>
+                            <button onclick="if(state.c4Slide<${slidesCount - 1}){state.c4Slide++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white">
+                                ${state.c4Slide < slidesCount - 1 ? '◀ اسلاید بعدی' : '◀ مشاهده مثال‌ها 💡'}
+                            </button>
+                        </div>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">بخش ۴ - گام آموزشی ${toFa(state.c4Slide + 1)} از ${toFa(slidesCount)}</span>
                     </div>
                 `;
             } else if (state.mode === 'examples') {
@@ -1848,12 +2230,16 @@
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">${ex.desc}</div>
                         </div>
                     </div>
-                    <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="if(state.c4ExampleIdx>0){state.c4ExampleIdx--; playSound('click'); renderStage();}" ${state.c4ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c4ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ مثال قبلی</button>
-                        <span class="text-xs font-bold text-slate-500">مثال ${toFa(state.c4ExampleIdx + 1)} از ${toFa(examples.length)}</span>
-                        <button onclick="if(state.c4ExampleIdx<${examples.length - 1}){state.c4ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
-                            ${state.c4ExampleIdx < examples.length - 1 ? 'مثال بعدی ▶' : 'ورود به بازی و تمرین 🎮'}
-                        </button>
+                    <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                        <div class="w-full flex items-center justify-between gap-2">
+                            <button onclick="if(state.c4ExampleIdx>0){state.c4ExampleIdx--; playSound('click'); renderStage();}" ${state.c4ExampleIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${state.c4ExampleIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                                مثال قبلی ▶
+                            </button>
+                            <button onclick="if(state.c4ExampleIdx<${examples.length - 1}){state.c4ExampleIdx++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                                ${state.c4ExampleIdx < examples.length - 1 ? '◀ مثال بعدی' : '◀ ورود به بازی و تمرین 🎮'}
+                            </button>
+                        </div>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">مثال ${toFa(state.c4ExampleIdx + 1)} از ${toFa(examples.length)}</span>
                     </div>
                 `;
             } else {
@@ -1919,12 +2305,16 @@
 
                     <div id="c4-fb" class="mt-1 min-h-[34px] flex items-center justify-center text-xs text-slate-400">یکی از علامت‌های بالا را انتخاب کن!</div>
                 </div>
-                <div class="shrink-0 pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <button onclick="if(state.c4QuizIdx>0){state.c4QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">◀ سوال قبلی</button>
-                    <span class="text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
-                    <button onclick="if(state.c4QuizIdx<3){state.c4QuizIdx++; playSound('click'); renderStage();}else{launchConfetti(); playSound('success');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
-                        ${qIdx < 3 ? 'سوال بعدی ▶' : 'جشن پایان دوره 🏆'}
-                    </button>
+                <div class="shrink-0 pt-2 border-t border-slate-100 flex flex-col items-center gap-1.5">
+                    <div class="w-full flex items-center justify-between gap-2">
+                        <button onclick="if(state.c4QuizIdx>0){state.c4QuizIdx--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                            سوال قبلی ▶
+                        </button>
+                        <button onclick="if(state.c4QuizIdx<3){state.c4QuizIdx++; playSound('click'); renderStage();}else{launchConfetti(); playSound('success');}" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white">
+                            ${qIdx < 3 ? '◀ سوال بعدی' : '◀ جشن پایان دوره 🏆'}
+                        </button>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-500 text-center">تمرین ${toFa(qIdx + 1)} از ${toFa(4)}</span>
                 </div>
             `;
         }
@@ -1939,6 +2329,7 @@
             else if (state.chapter === 2) renderChapter3();
             else renderChapter4();
 
+            // اعمال خودکار تبدیل اعداد انگلیسی به فارسی روی تمام گره‌های متن جدید
             applyPersianDigits(document.getElementById('stage-container'));
         }
 
@@ -1947,18 +2338,23 @@
             const spinnerEl = document.getElementById('dep-spinner');
             const startBtn = document.getElementById('start-game-btn');
 
-            // بررسی آماده بودن فونت
+            // ۱. اطمینان از بارگذاری کامل فونت‌های سند
             try {
                 if (document.fonts) {
                     await document.fonts.ready;
                 }
-            } catch (e) {}
+            } catch (e) { }
 
-            await new Promise(r => setTimeout(r, 200));
+            // ۲. اطمینان از آماده بودن موتور فرمول‌نویسی ریاضی
+            for (let i = 0; i < 6; i++) {
+                if (typeof window.katex !== 'undefined') break;
+                await new Promise(r => setTimeout(r, 50));
+            }
 
+            // آماده‌سازی رابط کاربری شروع
             if (spinnerEl) spinnerEl.classList.add('hidden');
             if (statusEl) {
-                statusEl.innerHTML = '✨ تمامی وابستگی‌ها و فونت اختصاصی با موفقیت آماده شدند!';
+                statusEl.innerHTML = '✨ موتور ریاضی و فونت کودکانه با موفقیت آماده شدند!';
                 statusEl.className = 'text-xs font-bold text-emerald-600 animate-pulse';
             }
             if (startBtn) {
@@ -1996,4 +2392,5 @@
         };
     </script>
 </body>
+
 </html>
