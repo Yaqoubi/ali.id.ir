@@ -1,0 +1,3000 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سرزمین کسرها | یادآوری جامع کسرها (سوم، چهارم و پنجم) ویژه پایه ششم</title>
+
+    <!-- آیکون و نشان اختصاصی سرزمین کسرها (Favicon) -->
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+
+    <!-- Tailwind CSS (نسخه محلی آفلاین) -->
+    <script src="tailwind.js"></script>
+
+    <!-- فونت کودکانه اختصاصی تزریق شده mybaby mini -->
+    <link rel="stylesheet" href="font.css">
+
+    <!-- استاندارد فرمول‌نویسی KaTeX (نسخه محلی آفلاین) -->
+    <link rel="stylesheet" href="katex.min.css">
+    <script src="katex.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100dvh;
+            overflow: hidden !important;
+            font-family: 'mybaby mini', 'mybaby', sans-serif;
+            background: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 50%, #ecfdf5 100%);
+        }
+
+        button,
+        input,
+        select,
+        textarea,
+        span,
+        div,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        a {
+            font-family: 'mybaby mini', 'mybaby', sans-serif;
+        }
+
+        /* ایزوله‌سازی و استایل استاندارد فرمول‌ها، کسرها و اعداد مخلوط فارسی */
+        .math-ltr,
+        .math-ltr-lg,
+        .math-rtl,
+        .math-rtl-lg {
+            unicode-bidi: isolate !important;
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            line-height: 1.1;
+            font-family: 'mybaby mini', 'mybaby', sans-serif !important;
+        }
+
+        .math-ltr,
+        .math-ltr-lg {
+            direction: ltr !important;
+        }
+
+        .math-rtl,
+        .math-rtl-lg {
+            direction: rtl !important;
+        }
+
+        .math-ltr,
+        .math-rtl {
+            margin: 0.08rem 0.2rem;
+            padding: 0.14rem 0.45rem;
+            border-radius: 0.65rem;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            font-weight: 800;
+            font-size: 1.02rem;
+        }
+
+        .math-ltr-lg,
+        .math-rtl-lg {
+            margin: 0.15rem 0.3rem;
+            padding: 0.32rem 0.95rem;
+            border-radius: 0.95rem;
+            background: #ffffff;
+            border: 2px solid #c7d2fe;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.1);
+            font-weight: 800;
+            font-size: 1.22rem;
+        }
+
+        /* ساختار عدد مخلوط و کسر استاندارد با ارقام فارسی */
+        .fa-mixed {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            margin: 0 0.18rem;
+            gap: 0.12rem;
+        }
+
+        .fa-whole {
+            font-weight: 900;
+            font-size: 1.08em;
+            color: #1e1b4b;
+            padding-right: 0.05em;
+        }
+
+        .fa-frac {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.18rem;
+            padding: 0.04rem 0.18rem;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .fa-frac .fa-num,
+        .fa-frac .fa-den {
+            display: inline-block;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.9em;
+            padding: 0 0.22em;
+            line-height: 1.15;
+            white-space: nowrap;
+            color: #1e1b4b;
+        }
+
+        .fa-frac .fa-num {
+            padding-bottom: 0.1em;
+        }
+
+        .fa-frac .fa-bar {
+            display: block;
+            width: 100%;
+            min-width: 1.15em;
+            height: 2.2px;
+            background-color: #312e81;
+            border-radius: 1.5px;
+            margin: 0.05em 0;
+        }
+
+        .fa-frac .fa-den {
+            padding-top: 0.1em;
+        }
+
+        /* کسر کوچک و متناسب برای استفاده درون‌خطی در متن‌ها، عناوین، بازخوردها و دکمه‌ها */
+        .fa-frac-sm {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.18rem;
+            padding: 0.02rem 0.1rem;
+            line-height: 1;
+            text-align: center;
+            font-size: 0.84em;
+        }
+
+        .fa-frac-sm .fa-num,
+        .fa-frac-sm .fa-den {
+            display: inline-block;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.88em;
+            padding: 0 0.15em;
+            line-height: 1.1;
+            white-space: nowrap;
+            color: inherit;
+        }
+
+        .fa-frac-sm .fa-num {
+            padding-bottom: 0.05em;
+        }
+
+        .fa-frac-sm .fa-bar {
+            display: block;
+            width: 100%;
+            min-width: 0.92em;
+            height: 1.8px;
+            background-color: currentColor;
+            border-radius: 1px;
+            margin: 0.03em 0;
+            opacity: 0.85;
+        }
+
+        .fa-frac-sm .fa-den {
+            padding-top: 0.05em;
+        }
+
+        /* اسکرول‌بار ظریف و زیبا برای اسلایدهای پرمحتوا */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.6);
+            border-radius: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .custom-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 rgba(241, 245, 249, 0.6);
+        }
+
+        /* نمایش ساده‌کردن (خط زدن عدد در کسر) */
+        .fa-cancel-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.18em;
+        }
+
+        .fa-strike {
+            position: relative;
+            color: #94a3b8;
+            font-weight: 700;
+            padding: 0 0.1em;
+        }
+
+        .fa-strike::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            right: -2px;
+            top: 48%;
+            height: 2.2px;
+            background: #ef4444;
+            transform: rotate(-22deg);
+            border-radius: 2px;
+        }
+
+        .fa-new-val {
+            color: #059669;
+            font-weight: 900;
+            font-size: 0.95em;
+        }
+
+        /* عملگرها و نمادهای فرمول */
+        .fa-op {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.25rem;
+            font-weight: 800;
+            font-size: 1.04em;
+            color: #4338ca;
+        }
+
+        .fa-op.fa-implies {
+            color: #6366f1;
+            font-size: 1.15em;
+        }
+
+        .fa-math-text {
+            display: inline-block;
+            margin: 0 0.12rem;
+            font-weight: 800;
+            color: #1e1b4b;
+        }
+
+        .fa-math-word {
+            display: inline-block;
+            direction: rtl !important;
+            unicode-bidi: isolate;
+            margin: 0 0.28rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            font-family: inherit;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .fa-op.fa-paren {
+            margin: 0 0.08rem;
+            color: #4338ca;
+            font-size: 1.1em;
+        }
+
+        .fa-math-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.35em;
+            height: 1.35em;
+            border: 2px dashed #6366f1;
+            background: #f5f3ff;
+            border-radius: 0.38em;
+            vertical-align: middle;
+            margin: 0 0.12rem;
+        }
+
+        .fa-math-box.fa-box-sm {
+            width: 1.2em;
+            height: 1.2em;
+            margin: 0 0.08em;
+        }
+
+        .fa-math-box.fa-box-q {
+            color: #4f46e5;
+            font-weight: 900;
+            font-size: 0.85em;
+        }
+
+        /* انیمیشن‌های نرم */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .animate-float {
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.88); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-pop {
+            animation: popIn 0.26s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45); }
+            50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+        }
+
+        .btn-glow {
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        input[type="range"] {
+            accent-color: #4f46e5;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        /* استایل‌های اختصاصی چاپ رسمی کارنامه */
+        @media print {
+            body {
+                background: white !important;
+                color: #0f172a !important;
+            }
+            body > *:not(#report-modal) {
+                display: none !important;
+            }
+            #report-modal {
+                position: static !important;
+                display: block !important;
+                opacity: 1 !important;
+                background: transparent !important;
+                padding: 0 !important;
+                inset: auto !important;
+                z-index: 1 !important;
+            }
+            #report-card-content {
+                max-height: none !important;
+                overflow: visible !important;
+                box-shadow: none !important;
+                border: 2px solid #0f172a !important;
+                border-radius: 12px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 16px !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex flex-col justify-between h-[100dvh] w-[100vw] overflow-hidden text-slate-800">
+
+    <!-- بوم کاغذرنگی تشویقی -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+
+    <!-- پنجره تمام‌صفحه معرفی برنامه و سازنده (علی یعقوبی) -->
+    <div id="intro-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-md transition-all duration-500">
+        <div
+            class="relative w-full max-w-xl bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-indigo-200 p-4 sm:p-6 flex flex-col items-center text-center overflow-hidden animate-pop">
+            <div class="absolute -top-16 -right-16 w-44 h-44 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- لوگوی اختصاصی -->
+            <img src="logo.svg" alt="سرزمین کسرها"
+                onerror="this.style.display='none'"
+                class="w-14 h-14 sm:w-18 sm:h-18 rounded-2xl shadow-xl shadow-indigo-300/40 animate-float mb-2">
+
+            <span
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-black bg-indigo-100 text-indigo-800 border border-indigo-200 mb-1.5">
+                ✨ یادآوری صفر تا صد کسرهای سوم، چهارم و پنجم ویژه ورودی و پایه ششم ✨
+            </span>
+
+            <h1 class="text-lg sm:text-2xl font-black text-slate-900 mb-1.5 leading-tight">
+                نرم‌افزار جامع <span class="bg-gradient-to-l from-indigo-600 to-violet-600 bg-clip-text text-transparent">«سرزمین کسرها»</span>
+            </h1>
+
+            <!-- معرفی طراح و سازنده علی یعقوبی -->
+            <div
+                class="w-full bg-gradient-to-r from-indigo-50 via-slate-50 to-emerald-50 rounded-2xl border border-indigo-100/90 p-2.5 sm:p-3 my-2 flex items-center justify-between gap-2 text-right">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-base shadow-sm shrink-0">
+                        👨‍🏫
+                    </div>
+                    <div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold">طراح و توسعه‌دهنده نرم‌افزار:</div>
+                        <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer"
+                            class="text-xs sm:text-sm font-black text-indigo-700 hover:text-indigo-900 underline decoration-indigo-300 underline-offset-4 transition-colors">
+                            علی یعقوبی (ali.id.ir)
+                        </a>
+                    </div>
+                </div>
+                <div
+                    class="text-[10px] sm:text-xs font-extrabold text-emerald-700 bg-emerald-100/80 border border-emerald-300/60 px-2.5 py-1 rounded-lg shrink-0">
+                    ویژه پایه ششم
+                </div>
+            </div>
+
+            <!-- ۶ سرفصل اصلی برنامه -->
+            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 w-full my-1.5 text-center">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center">
+                    <span class="text-base">🍕</span>
+                    <span class="text-[10px] sm:text-[11px] font-black text-slate-800">۱. مفهوم و عدد مخلوط</span>
+                    <span class="text-[9px] text-slate-500">تبدیل دوطرفه و محور</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center">
+                    <span class="text-base">⚖️</span>
+                    <span class="text-[10px] sm:text-[11px] font-black text-slate-800">۲. ساده‌کردن و مقایسه</span>
+                    <span class="text-[9px] text-slate-500">هم‌مخرج کردن کامل</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center">
+                    <span class="text-base">➕</span>
+                    <span class="text-[10px] sm:text-[11px] font-black text-slate-800">۳. جمع و تفریق کسر</span>
+                    <span class="text-[9px] text-slate-500">مخرج مساوی و نامساوی</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center">
+                    <span class="text-base">🔄</span>
+                    <span class="text-[10px] sm:text-[11px] font-black text-slate-800">۴. جمع و تفریق مخلوط</span>
+                    <span class="text-[9px] text-slate-500">تکنیک قرض گرفتن واحد</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center">
+                    <span class="text-base">✖️</span>
+                    <span class="text-[10px] sm:text-[11px] font-black text-slate-800">۵. ضرب کسر و مخلوط</span>
+                    <span class="text-[9px] text-slate-500">مدل مساحتی و ساده‌کردن</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center">
+                    <span class="text-base">➗</span>
+                    <span class="text-[10px] sm:text-[11px] font-black text-slate-800">۶. تقسیم کسرها</span>
+                    <span class="text-[9px] text-slate-500">هم‌مخرج و ضرب در معکوس</span>
+                </div>
+            </div>
+
+            <!-- دریافت نام و نام‌خانوادگی دانش‌آموز -->
+            <div class="my-2 p-3 sm:p-3.5 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50 rounded-2xl border-2 border-indigo-200 shadow-sm text-center space-y-1.5">
+                <label for="student-name-input" class="block text-xs sm:text-sm font-black text-indigo-950">
+                    ✏️ لطفاً نام و نام‌خانوادگی خود را وارد کنید:
+                </label>
+                <div class="flex items-center justify-center gap-2 max-w-sm mx-auto">
+                    <input type="text" id="student-name-input" placeholder="مثال: علی رضایی" maxlength="35"
+                        class="w-full text-center px-4 py-2 rounded-xl border-2 border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200 focus:outline-none font-extrabold text-xs sm:text-sm text-slate-800 bg-white placeholder:text-slate-400 shadow-inner"
+                        onkeydown="if(event.key==='Enter') enterGame()">
+                </div>
+                <p id="name-error-msg" class="text-[11px] font-bold text-rose-600 hidden">
+                    ⚠️ لطفاً ابتدا نام و نام‌خانوادگی خود را بنویسید تا بتوانید وارد شوید و کارنامه به نام شما ثبت شود!
+                </p>
+            </div>
+
+            <!-- وضعیت بارگذاری وابستگی‌ها -->
+            <div id="dep-loader" class="flex items-center justify-center gap-2 text-xs font-bold text-slate-600 my-1.5">
+                <span id="dep-spinner"
+                    class="inline-block w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
+                <span id="dep-status">در حال آماده‌سازی شبیه‌سازها و موتور ریاضی...</span>
+            </div>
+
+            <!-- دکمه ورود -->
+            <button id="start-game-btn" onclick="enterGame()" disabled
+                class="w-full mt-1 py-2.5 sm:py-3 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-600 text-white font-black text-sm sm:text-base shadow-lg shadow-indigo-300/50 flex items-center justify-center gap-2 transition-all opacity-60 cursor-not-allowed">
+                <span>🚀</span>
+                <span>ورود به دوره جامع و شروع یادگیری</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- پنجره کارنامه نهایی دانش‌آموز (Report Card Modal) -->
+    <div id="report-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-300 hidden opacity-0">
+        <div id="report-card-content"
+            class="bg-white border-2 border-indigo-200 rounded-3xl p-3 sm:p-6 w-full max-w-3xl max-h-[94vh] flex flex-col shadow-2xl relative custom-scroll overflow-y-auto">
+            <!-- محتوای پویا در اینجا رندر می‌شود -->
+        </div>
+    </div>
+
+    <!-- هدر بالایی: عنوان، انتخاب ۶ فصل و امتیازات -->
+    <header
+        class="shrink-0 bg-white/90 backdrop-blur-md border-b border-indigo-100 px-2 sm:px-4 py-1 sm:py-1.5 shadow-sm z-20">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-1 sm:gap-2">
+            <!-- لوگو و عنوان -->
+            <div class="flex items-center gap-2">
+                <img src="logo.svg" alt="لوگو" onerror="this.style.display='none'"
+                    class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl shadow-md shrink-0">
+                <div>
+                    <h1 class="text-xs sm:text-sm md:text-base font-black text-indigo-950 leading-tight">سرزمین کسرها (جامع ششم)</h1>
+                    <p class="text-[9px] sm:text-[11px] text-slate-500 font-medium hidden sm:block">مرور کامل کسرهای سوم، چهارم و پنجم</p>
+                </div>
+            </div>
+
+            <!-- دکمه‌های ۶ بخش اصلی -->
+            <nav
+                class="flex flex-wrap items-center gap-1 order-3 xl:order-2 w-full xl:w-auto justify-center bg-slate-100/80 p-1 rounded-xl">
+                <button onclick="selectChapter(0)" id="chap-btn-0"
+                    class="chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-0.5">
+                    <span>۱. مفهوم و مخلوط</span>
+                    <span id="chap-badge-0" class="hidden text-emerald-400">✔</span>
+                </button>
+                <button onclick="selectChapter(1)" id="chap-btn-1"
+                    class="chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-0.5">
+                    <span>۲. ساده‌کردن و مقایسه</span>
+                    <span id="chap-badge-1" class="hidden text-emerald-400">✔</span>
+                </button>
+                <button onclick="selectChapter(2)" id="chap-btn-2"
+                    class="chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-0.5">
+                    <span>۳. جمع و تفریق</span>
+                    <span id="chap-badge-2" class="hidden text-emerald-400">✔</span>
+                </button>
+                <button onclick="selectChapter(3)" id="chap-btn-3"
+                    class="chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-0.5">
+                    <span>۴. عملیات مخلوط</span>
+                    <span id="chap-badge-3" class="hidden text-emerald-400">✔</span>
+                </button>
+                <button onclick="selectChapter(4)" id="chap-btn-4"
+                    class="chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-0.5">
+                    <span>۵. ضرب کسرها</span>
+                    <span id="chap-badge-4" class="hidden text-emerald-400">✔</span>
+                </button>
+                <button onclick="selectChapter(5)" id="chap-btn-5"
+                    class="chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-0.5">
+                    <span>۶. تقسیم کسرها</span>
+                    <span id="chap-badge-5" class="hidden text-emerald-400">✔</span>
+                </button>
+            </nav>
+
+            <!-- بخش امتیاز، ستاره، پیشرفت، صدا و راهنما -->
+            <div class="flex items-center gap-1 sm:gap-1.5 order-2 xl:order-3">
+                <div class="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-xl">
+                    <span class="text-xs">⭐</span>
+                    <span id="score-stars" class="text-xs font-black text-amber-700">۰</span>
+                </div>
+                <div class="flex items-center gap-1 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-xl">
+                    <span class="text-xs">🪙</span>
+                    <span id="score-coins" class="text-xs font-black text-emerald-700">۰</span>
+                </div>
+                <div class="hidden md:flex flex-col w-20 bg-slate-100 p-1 rounded-lg border border-slate-200">
+                    <div class="flex justify-between text-[9px] font-bold text-slate-600 px-0.5">
+                        <span>پیشرفت</span>
+                        <span id="progress-text">۰٪</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mt-0.5">
+                        <div id="progress-bar"
+                            class="h-full bg-gradient-to-l from-indigo-500 to-emerald-500 w-0 transition-all duration-500">
+                        </div>
+                    </div>
+                </div>
+                <!-- نام دانش‌آموز -->
+                <div id="hud-student-pill" class="hidden sm:flex items-center gap-1 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-xl text-[11px] font-bold text-indigo-900">
+                    <span>👤</span>
+                    <span id="student-display-name">دانش‌آموز</span>
+                </div>
+
+                <!-- دکمه مشاهده کارنامه عملکرد -->
+                <button onclick="showReportModal()" title="مشاهده کارنامه جامع عملکرد"
+                    class="flex items-center gap-1 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white px-2 py-1 rounded-xl text-xs font-black shadow-sm transition active:scale-95">
+                    <span>📜</span>
+                    <span class="hidden md:inline">کارنامه</span>
+                </button>
+
+                <button onclick="showIntroModal()" title="درباره برنامه و طراح (علی یعقوبی)"
+                    class="w-7 h-7 rounded-xl bg-violet-50 hover:bg-violet-100 text-violet-700 flex items-center justify-center border border-violet-200 transition-transform active:scale-90 text-xs font-bold">
+                    ℹ️
+                </button>
+                <button onclick="toggleSound()" id="sound-btn" title="قطع/وصل صدا"
+                    class="w-7 h-7 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 flex items-center justify-center border border-indigo-200 transition-transform active:scale-90 text-xs">
+                    🔊
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- نوار تب‌های سه گانه هر بخش (آموزش تعاملی | مثال‌های تشریحی | بازی و آزمون) -->
+    <div class="shrink-0 bg-indigo-950/5 border-b border-indigo-100/80 px-2 py-1 z-10">
+        <div class="max-w-3xl mx-auto flex items-center justify-center gap-1.5 sm:gap-3">
+            <button onclick="selectMode('learn')" id="mode-btn-learn"
+                class="mode-btn flex-1 py-1 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+                <span>🎬</span>
+                <span>کارگاه آموزش</span>
+            </button>
+            <button onclick="selectMode('examples')" id="mode-btn-examples"
+                class="mode-btn flex-1 py-1 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+                <span>💡</span>
+                <span>مثال‌های حل‌شده</span>
+            </button>
+            <button onclick="selectMode('quiz')" id="mode-btn-quiz"
+                class="mode-btn flex-1 py-1 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5">
+                <span>🎮</span>
+                <span>آزمون و چالش</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- محیط اصلی بازی و آموزش (بدون اسکرول، تطبیق‌پذیر با ارتفاع صفحه) -->
+    <main
+        class="flex-1 min-h-0 w-full max-w-6xl mx-auto px-2 sm:px-4 py-1.5 sm:py-2 flex flex-col overflow-hidden relative">
+        <div id="stage-container"
+            class="flex-1 min-h-0 w-full bg-white/95 backdrop-blur rounded-2xl shadow-lg border border-indigo-100 p-2.5 sm:p-4 flex flex-col justify-between overflow-hidden relative animate-pop">
+            <!-- محتوای پویا اینجا رندر می‌شود -->
+        </div>
+    </main>
+
+    <!-- فوتر ثابت بدون ایجاد اسکرول با لینک کپی‌رایت طراح -->
+    <footer
+        class="shrink-0 bg-white/90 border-t border-indigo-100 px-3 sm:px-6 py-1 text-[10px] sm:text-xs text-slate-600 flex items-center justify-between z-20">
+        <div class="flex items-center gap-1.5 font-medium flex-1 pl-2 truncate">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+            <span id="footer-hint" class="text-slate-700 font-semibold truncate">نکته: در نوشتن عبارت‌های ریاضی و اعداد مخلوط، نوشتار از چپ به راست است (عدد صحیح در سمت چپ کسر قرار می‌گیرد).</span>
+        </div>
+        <div class="font-bold text-slate-700 shrink-0">
+            طراح: <a href="https://ali.id.ir" target="_blank" rel="noopener noreferrer"
+                class="text-indigo-600 hover:text-indigo-800 underline decoration-indigo-300 underline-offset-4 transition-colors">علی یعقوبی</a>
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           ۱. سیستم هوشمند تبدیل ارقام فارسی و توابع کمکی ریاضی
+           ========================================================================== */
+        const FA_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+        function toFa(val) {
+            if (val === null || val === undefined) return '';
+            return String(val).replace(/[0-9]/g, d => FA_DIGITS[d]);
+        }
+
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b) {
+                let t = b;
+                b = a % b;
+                a = t;
+            }
+            return a || 1;
+        }
+
+        function lcm(a, b) {
+            return Math.abs(a * b) / gcd(a, b);
+        }
+
+        function denomName(d) {
+            const names = {
+                1: 'واحد', 2: 'دوم (نیم)', 3: 'سوم', 4: 'چهارم (ربع)', 5: 'پنجم',
+                6: 'ششم', 7: 'هفتم', 8: 'هشتم', 9: 'نهم', 10: 'دهم',
+                12: 'دوازدهم', 15: 'پانزدهم', 16: 'شانزدهم', 18: 'هجدهم', 20: 'بیستم', 24: 'بیست‌وچهارم'
+            };
+            return names[d] || `${toFa(d)}ام`;
+        }
+
+        function applyPersianDigits(rootElement = document.body) {
+            if (!rootElement) return;
+            const walker = document.createTreeWalker(
+                rootElement,
+                NodeFilter.SHOW_TEXT,
+                {
+                    acceptNode(node) {
+                        const parent = node.parentElement;
+                        if (!parent) return NodeFilter.FILTER_REJECT;
+                        const tag = parent.tagName;
+                        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' || tag === 'TEXTAREA') {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        if (parent.closest('.math-ltr, .math-ltr-lg, .math-rtl, .math-rtl-lg, .fa-frac, .fa-frac-sm, .fa-mixed, .katex, .no-fa-digits')) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                },
+                false
+            );
+
+            let node;
+            while ((node = walker.nextNode())) {
+                if (/[0-9]/.test(node.nodeValue)) {
+                    node.nodeValue = toFa(node.nodeValue);
+                }
+            }
+        }
+
+        /* ساخت کسر کوچک متناسب با خط کسری استاندارد برای متن‌ها و دکمه‌ها */
+        function frac(n, d) {
+            return `<span class="fa-frac-sm"><span class="fa-num">${toFa(n)}</span><span class="fa-bar"></span><span class="fa-den">${toFa(d)}</span></span>`;
+        }
+
+        /* پیمایش هوشمند درخت DOM و تبدیل خودکار کسر‌های اسلش‌دار (مانند ۱۲/۱۸) به کسر با خط کسری */
+        function convertSlashFractionsInDOM(rootElement = document.body) {
+            if (!rootElement) return;
+            const walker = document.createTreeWalker(
+                rootElement,
+                NodeFilter.SHOW_TEXT,
+                {
+                    acceptNode(node) {
+                        const parent = node.parentElement;
+                        if (!parent) return NodeFilter.FILTER_REJECT;
+                        const tag = parent.tagName;
+                        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' || tag === 'TEXTAREA' || tag === 'SVG' || tag === 'text') {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        if (parent.closest('.math-ltr, .math-ltr-lg, .math-rtl, .math-rtl-lg, .fa-frac, .fa-frac-sm, .fa-mixed, .katex, .no-fa-digits')) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        if (/[0-9۰-۹]+\s*\/\s*[0-9۰-۹]+/.test(node.nodeValue)) {
+                            return NodeFilter.FILTER_ACCEPT;
+                        }
+                        return NodeFilter.FILTER_SKIP;
+                    }
+                },
+                false
+            );
+
+            const nodesToReplace = [];
+            let n;
+            while ((n = walker.nextNode())) {
+                nodesToReplace.push(n);
+            }
+
+            for (const textNode of nodesToReplace) {
+                const text = textNode.nodeValue;
+                const regex = /([0-9۰-۹]+)\s*\/\s*([0-9۰-۹]+)/g;
+                if (!regex.test(text)) continue;
+                regex.lastIndex = 0;
+
+                const frag = document.createDocumentFragment();
+                let lastIdx = 0;
+                let match;
+                while ((match = regex.exec(text)) !== null) {
+                    if (match.index > lastIdx) {
+                        frag.appendChild(document.createTextNode(text.substring(lastIdx, match.index)));
+                    }
+                    const num = toFa(match[1].trim());
+                    const den = toFa(match[2].trim());
+                    const span = document.createElement('span');
+                    span.className = 'fa-frac-sm';
+                    span.innerHTML = `<span class="fa-num">${num}</span><span class="fa-bar"></span><span class="fa-den">${den}</span>`;
+                    frag.appendChild(span);
+                    lastIdx = regex.lastIndex;
+                }
+                if (lastIdx < text.length) {
+                    frag.appendChild(document.createTextNode(text.substring(lastIdx)));
+                }
+                textNode.replaceWith(frag);
+            }
+        }
+
+        /* ==========================================================================
+           ۲. سیستم صوتی Web Audio API
+           ========================================================================== */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(540, now);
+                    osc.frequency.exponentialRampToValueAtTime(700, now + 0.05);
+                    gain.gain.setValueAtTime(0.11, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'pop') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(780, now + 0.08);
+                    gain.gain.setValueAtTime(0.16, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'success') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.075);
+                        gain.gain.setValueAtTime(0.17, now + idx * 0.075);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.075 + 0.2);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.075);
+                        osc.stop(now + idx * 0.075 + 0.2);
+                    });
+                } else if (type === 'wrong') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(230, now);
+                    osc.frequency.linearRampToValueAtTime(150, now + 0.24);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.24);
+                }
+            } catch (e) { }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('sound-btn').textContent = soundEnabled ? '🔊' : '🔇';
+            if (soundEnabled) playSound('pop');
+        }
+
+        /* ==========================================================================
+           ۳. سیستم کاغذرنگی تشویقی (Confetti)
+           ========================================================================== */
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const confettiCtx = confettiCanvas.getContext('2d');
+        let confettiParticles = [];
+        let confettiAnimId = null;
+
+        function resizeConfetti() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeConfetti);
+        resizeConfetti();
+
+        function launchConfetti() {
+            const colors = ['#4f46e5', '#10b981', '#f59e0b', '#ec4899', '#06b6d4', '#8b5cf6'];
+            for (let i = 0; i < 65; i++) {
+                confettiParticles.push({
+                    x: window.innerWidth / 2 + (Math.random() - 0.5) * 220,
+                    y: window.innerHeight / 2,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: -Math.random() * 12 - 4,
+                    size: Math.random() * 8 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360,
+                    vrot: (Math.random() - 0.5) * 12,
+                    life: 1
+                });
+            }
+            if (!confettiAnimId) animateConfetti();
+        }
+
+        function animateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.35;
+                p.rot += p.vrot;
+                p.life -= 0.014;
+                confettiCtx.save();
+                confettiCtx.translate(p.x, p.y);
+                confettiCtx.rotate((p.rot * Math.PI) / 180);
+                confettiCtx.globalAlpha = Math.max(0, p.life);
+                confettiCtx.fillStyle = p.color;
+                confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+                confettiCtx.restore();
+            });
+            confettiParticles = confettiParticles.filter(p => p.life > 0 && p.y < confettiCanvas.height + 30);
+            if (confettiParticles.length > 0) {
+                confettiAnimId = requestAnimationFrame(animateConfetti);
+            } else {
+                confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                confettiAnimId = null;
+            }
+        }
+
+        /* ==========================================================================
+           ۴. موتور پیشرفته رندر فرمول‌های ریاضی، اعداد مخلوط، متن فارسی و ساده‌کردن کسرها
+           پشتیبانی از:
+           - کسر معمولی: \frac{a}{b}
+           - عدد مخلوط: 2\frac{3}{4} یا \mixed{2}{3}{4}
+           - متن کلامی و فارسی در فرمول: \text{از}، \text{ساعت و} و ...
+           - ساده‌کردن (خط زدن): \cancel{old}{new} در کسر یا فرمول
+           - فاصله‌های استاندارد لاتک: \; ، \, ، \quad و عملگرهای کامل
+           ========================================================================== */
+        function renderPersianMath(latex, large = false) {
+            if (!latex) return '';
+            const s = String(latex).trim();
+            const hasPersian = /\\text\{|[\u0600-\u06FF]/.test(s);
+            const cls = hasPersian 
+                ? (large ? 'math-rtl-lg' : 'math-rtl')
+                : (large ? 'math-ltr-lg' : 'math-ltr');
+            const dir = hasPersian ? 'rtl' : 'ltr';
+
+            function formatSegment(seg) {
+                let clean = seg.trim();
+                if (clean === '\\square' || clean === '□') {
+                    return '<span class="fa-math-box fa-box-sm"></span>';
+                }
+                if (clean === '?' || clean === '؟') {
+                    return '<span class="fa-math-box fa-box-sm fa-box-q">؟</span>';
+                }
+                // پردازش \text{...} داخل اجزای کسر
+                clean = clean.replace(/\\(?:text|mathrm|mbox)\s*\{((?:[^{}]|\{[^{}]*\})*)\}/g, (_, t) => {
+                    const txt = t.trim().replace(/[0-9]/g, d => toFa(d));
+                    return `<span class="fa-math-word" dir="rtl">${txt}</span>`;
+                });
+                // پردازش \cancel{old}{new} برای نمایش ساده‌کردن کسر
+                clean = clean.replace(/\\cancel\{([^{}]+)\}\{([^{}]+)\}/g, (_, oldV, newV) => {
+                    return `<span class="fa-cancel-wrap"><span class="fa-strike">${toFa(oldV)}</span><span class="fa-new-val">${toFa(newV)}</span></span>`;
+                });
+                return clean
+                    .replace(/\\times/g, ' × ')
+                    .replace(/\\div/g, ' ÷ ')
+                    .replace(/\\cdot/g, ' · ')
+                    .replace(/\\[;,! ]/g, ' ')
+                    .replace(/\\square/g, '<span class="fa-math-box fa-box-sm"></span>')
+                    .replace(/\?/g, '<span class="fa-math-box fa-box-sm fa-box-q">؟</span>')
+                    .replace(/[0-9]/g, d => toFa(d));
+            }
+
+            // شناسایی عدد مخلوط، کسرها، متن فارسی (\text)، فاصله‌ها و عملگرها
+            const tokenRegex = /([0-9۰-۹]+\s*\\frac\s*\{(?:[^{}]|\{[^{}]*\})+\}\s*\{(?:[^{}]|\{[^{}]*\})+\}|\\mixed\s*\{[^{}]*\}\s*\{(?:[^{}]|\{[^{}]*\})+\}\s*\{(?:[^{}]|\{[^{}]*\})+\}|\\frac\s*\{(?:[^{}]|\{[^{}]*\})+\}\s*\{(?:[^{}]|\{[^{}]*\})+\}|\\(?:text|mathrm|mbox)\s*\{(?:[^{}]|\{[^{}]*\})*\}|\\cancel\s*\{[^{}]*\}\s*\{[^{}]*\}|\\[;,! ]|\\quad|\\qquad|\\implies|\\times|\\div|\\cdot|\\square|\\approx|\\neq|\\leq|\\geq|\\le|\\ge|\\pm|[\?؟=><+−\-\(\)×÷·□≤≥≠≈±]|[0-9۰-۹]+(?:\.[0-9۰-۹]+)?|\S+)/g;
+            const parts = [];
+            let match;
+
+            while ((match = tokenRegex.exec(s)) !== null) {
+                const token = match[0];
+                const mixedMatch = /^([0-9۰-۹]+)\s*\\frac\s*\{((?:[^{}]|\{[^{}]*\})+)\}\s*\{((?:[^{}]|\{[^{}]*\})+)\}$/.exec(token);
+                const mixedCmdMatch = /^\\mixed\s*\{([^{}]+)\}\s*\{((?:[^{}]|\{[^{}]*\})+)\}\s*\{((?:[^{}]|\{[^{}]*\})+)\}$/.exec(token);
+                const fracMatch = /^\\frac\s*\{((?:[^{}]|\{[^{}]*\})+)\}\s*\{((?:[^{}]|\{[^{}]*\})+)\}$/.exec(token);
+                const textMatch = /^\\(?:text|mathrm|mbox)\s*\{([\s\S]*)\}$/.exec(token);
+                const cancelMatch = /^\\cancel\{([^{}]+)\}\{([^{}]+)\}$/.exec(token);
+
+                if (mixedMatch) {
+                    const whole = toFa(mixedMatch[1]);
+                    const numContent = formatSegment(mixedMatch[2]);
+                    const denContent = formatSegment(mixedMatch[3]);
+                    parts.push(`<span class="fa-mixed"><span class="fa-whole">${whole}</span><span class="fa-frac"><span class="fa-num">${numContent}</span><span class="fa-bar"></span><span class="fa-den">${denContent}</span></span></span>`);
+                } else if (mixedCmdMatch) {
+                    const whole = toFa(mixedCmdMatch[1]);
+                    const numContent = formatSegment(mixedCmdMatch[2]);
+                    const denContent = formatSegment(mixedCmdMatch[3]);
+                    parts.push(`<span class="fa-mixed"><span class="fa-whole">${whole}</span><span class="fa-frac"><span class="fa-num">${numContent}</span><span class="fa-bar"></span><span class="fa-den">${denContent}</span></span></span>`);
+                } else if (fracMatch) {
+                    const numContent = formatSegment(fracMatch[1]);
+                    const denContent = formatSegment(fracMatch[2]);
+                    parts.push(`<span class="fa-frac"><span class="fa-num">${numContent}</span><span class="fa-bar"></span><span class="fa-den">${denContent}</span></span>`);
+                } else if (textMatch) {
+                    const txt = textMatch[1].trim().replace(/[0-9]/g, d => toFa(d));
+                    if (txt) {
+                        parts.push(`<span class="fa-math-word" dir="rtl">${txt}</span>`);
+                    }
+                } else if (cancelMatch) {
+                    const oldV = toFa(cancelMatch[1]);
+                    const newV = toFa(cancelMatch[2]);
+                    parts.push(`<span class="fa-cancel-wrap"><span class="fa-strike">${oldV}</span><span class="fa-new-val">${newV}</span></span>`);
+                } else if (/^\\[;,! ]$|^\\quad$|^\\qquad$/.test(token)) {
+                    // فاصله‌های لاتک (بدون نمایش کد خام در خروجی)
+                    continue;
+                } else if (token === '\\implies') {
+                    parts.push(`<span class="fa-op fa-implies">➜</span>`);
+                } else if (token === '\\times' || token === '×') {
+                    parts.push(`<span class="fa-op">×</span>`);
+                } else if (token === '\\div' || token === '÷') {
+                    parts.push(`<span class="fa-op">÷</span>`);
+                } else if (token === '\\cdot' || token === '·') {
+                    parts.push(`<span class="fa-op">·</span>`);
+                } else if (token === '+') {
+                    parts.push(`<span class="fa-op">+</span>`);
+                } else if (token === '-' || token === '−') {
+                    parts.push(`<span class="fa-op">−</span>`);
+                } else if (token === '\\pm' || token === '±') {
+                    parts.push(`<span class="fa-op">±</span>`);
+                } else if (token === '=') {
+                    parts.push(`<span class="fa-op">=</span>`);
+                } else if (token === '>') {
+                    parts.push(`<span class="fa-op">&gt;</span>`);
+                } else if (token === '<') {
+                    parts.push(`<span class="fa-op">&lt;</span>`);
+                } else if (token === '\\ge' || token === '\\geq' || token === '≥') {
+                    parts.push(`<span class="fa-op">≥</span>`);
+                } else if (token === '\\le' || token === '\\leq' || token === '≤') {
+                    parts.push(`<span class="fa-op">≤</span>`);
+                } else if (token === '\\neq' || token === '≠') {
+                    parts.push(`<span class="fa-op">≠</span>`);
+                } else if (token === '\\approx' || token === '≈') {
+                    parts.push(`<span class="fa-op">≈</span>`);
+                } else if (token === '\\square' || token === '□') {
+                    parts.push(`<span class="fa-math-box"></span>`);
+                } else if (token === '?' || token === '؟') {
+                    parts.push(`<span class="fa-math-box fa-box-q">؟</span>`);
+                } else if (token === '(' || token === ')') {
+                    parts.push(`<span class="fa-op fa-paren">${token}</span>`);
+                } else if (/[\u0600-\u06FF]/.test(token)) {
+                    parts.push(`<span class="fa-math-word" dir="rtl">${toFa(token)}</span>`);
+                } else {
+                    parts.push(`<span class="fa-math-text">${toFa(token)}</span>`);
+                }
+            }
+
+            return `<span dir="${dir}" class="${cls}">${parts.join(' ')}</span>`;
+        }
+
+        function ktx(latex, large = false) {
+            return renderPersianMath(latex, large);
+        }
+
+        /* ==========================================================================
+           ۵. موتور گرافیک برداری (SVG) برای تمام مفاهیم سوم، چهارم و پنجم
+           ========================================================================== */
+
+        // ۵-۱: رسم یک دایره کسری
+        function createPieSVG(num, den, options = {}) {
+            const {
+                size = 115,
+                fillColor = '#6366f1',
+                emptyColor = '#f1f5f9',
+                strokeColor = '#334155',
+                subDivide = 1
+            } = options;
+
+            const cx = 100, cy = 100, r = 86;
+            let paths = '';
+
+            if (den === 1) {
+                paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${num >= 1 ? fillColor : emptyColor}" stroke="${strokeColor}" stroke-width="3"/>`;
+            } else {
+                for (let i = 0; i < den; i++) {
+                    const startAngle = (i * 360) / den - 90;
+                    const endAngle = ((i + 1) * 360) / den - 90;
+                    const startRad = (startAngle * Math.PI) / 180;
+                    const endRad = (endAngle * Math.PI) / 180;
+                    const x1 = cx + r * Math.cos(startRad);
+                    const y1 = cy + r * Math.sin(startRad);
+                    const x2 = cx + r * Math.cos(endRad);
+                    const y2 = cy + r * Math.sin(endRad);
+                    const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+                    const isColored = i < num;
+                    const d = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+                    paths += `<path d="${d}" fill="${isColored ? fillColor : emptyColor}" stroke="${strokeColor}" stroke-width="2.5" stroke-linejoin="round"/>`;
+                }
+            }
+
+            if (subDivide > 1) {
+                const totalSub = den * subDivide;
+                for (let j = 0; j < totalSub; j++) {
+                    const ang = ((j * 360) / totalSub - 90) * (Math.PI / 180);
+                    const xEnd = cx + r * Math.cos(ang);
+                    const yEnd = cy + r * Math.sin(ang);
+                    paths += `<line x1="${cx}" y1="${cy}" x2="${xEnd}" y2="${yEnd}" stroke="#0f172a" stroke-width="1.8" stroke-dasharray="4,3"/>`;
+                }
+            }
+
+            return `<svg viewBox="0 0 200 200" style="width:${size}px; height:${size}px;" class="mx-auto select-none drop-shadow-sm shrink-0">${paths}</svg>`;
+        }
+
+        // ۵-۲: رسم چند دایره کسری کنار هم برای کسرهای بزرگ‌تر از واحد و عدد مخلوط (راست‌چین)
+        function createMultiPieSVG(totalSlices, den, options = {}) {
+            const { size = 100, fillColor = '#6366f1', wholeColor = '#4f46e5' } = options;
+            const numPies = Math.max(1, Math.ceil(totalSlices / den));
+            let html = '<div class="flex flex-wrap items-center justify-center gap-3" dir="rtl">';
+            let rem = totalSlices;
+            for (let p = 0; p < numPies; p++) {
+                const take = Math.min(den, Math.max(0, rem));
+                rem -= take;
+                const col = take === den ? wholeColor : fillColor;
+                const label = take === den ? '۱ واحد کامل' : `${toFa(take)} از ${toFa(den)}`;
+                html += `<div class="flex flex-col items-center" dir="rtl">
+                    ${createPieSVG(take, den, { size, fillColor: col })}
+                    <span class="text-xs font-black text-slate-700 mt-1" dir="rtl" style="direction: rtl !important; unicode-bidi: isolate !important;">${label}</span>
+                </div>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        // ۵-۳: رسم نوار کسری
+        function createBarSVG(num, den, options = {}) {
+            const {
+                width = 220,
+                height = 46,
+                fillColor = '#10b981',
+                emptyColor = '#f1f5f9',
+                strokeColor = '#334155',
+                subDivide = 1
+            } = options;
+
+            let rects = '';
+            const pad = 5;
+            const totalW = 290;
+            const totalH = 60;
+            const cellW = totalW / den;
+
+            for (let i = 0; i < den; i++) {
+                const x = pad + i * cellW;
+                const isColored = i < num;
+                rects += `<rect x="${x}" y="${pad}" width="${cellW}" height="${totalH - pad * 2}" fill="${isColored ? fillColor : emptyColor}" stroke="${strokeColor}" stroke-width="2.5"/>`;
+            }
+
+            if (subDivide > 1) {
+                const subW = totalW / (den * subDivide);
+                for (let j = 1; j < den * subDivide; j++) {
+                    const x = pad + j * subW;
+                    rects += `<line x1="${x}" y1="${pad}" x2="${x}" y2="${totalH - pad}" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="4,3"/>`;
+                }
+            }
+
+            return `<svg viewBox="0 0 300 70" style="width:${width}px; height:${height}px;" class="mx-auto select-none drop-shadow-sm">${rects}</svg>`;
+        }
+
+        // ۵-۴: محور اعداد توسعه‌یافته (از ۰ تا maxWhole) برای عدد مخلوط، ضرب و تقسیم
+        function createExtendedNumberLineSVG(num, den, maxWhole = 3, options = {}) {
+            const { jumpSize = 0 } = options;
+            const startX = 28, endX = 432, y = 60;
+            const totalW = endX - startX;
+            const totalTicks = maxWhole * den;
+            const stepW = totalW / totalTicks;
+
+            let ticks = '';
+            let arcs = '';
+
+            // کمان‌های پرش (اگر jumpSize مشخص شده باشد برای ضرب یا تقسیم، وگرنه گام‌به‌گام)
+            const step = jumpSize > 0 ? jumpSize : 1;
+            for (let i = 0; i + step <= num; i += step) {
+                const x1 = startX + i * stepW;
+                const x2 = startX + (i + step) * stepW;
+                const midX = (x1 + x2) / 2;
+                const arcH = jumpSize > 1 ? 42 : 28;
+                arcs += `<path d="M ${x1} ${y - 4} Q ${midX} ${y - arcH} ${x2} ${y - 4}" fill="none" stroke="#10b981" stroke-width="2.4" stroke-dasharray="4,2"/>`;
+            }
+
+            const fillW = Math.min(totalTicks, num) * stepW;
+            const bar = `<rect x="${startX}" y="${y - 4}" width="${fillW}" height="8" rx="4" fill="#6366f1" opacity="0.75"/>`;
+
+            for (let i = 0; i <= totalTicks; i++) {
+                const x = startX + i * stepW;
+                const isWhole = i % den === 0;
+                const isTarget = i === num;
+                const tickH = isWhole ? 13 : 7;
+                ticks += `<line x1="${x}" y1="${y - tickH}" x2="${x}" y2="${y + tickH}" stroke="${isTarget ? '#4f46e5' : (isWhole ? '#0f172a' : '#64748b')}" stroke-width="${isWhole || isTarget ? '3' : '1.8'}"/>`;
+                if (isWhole) {
+                    const wVal = i / den;
+                    ticks += `<text x="${x}" y="${y + 29}" text-anchor="middle" font-size="14" font-weight="900" fill="#0f172a">${toFa(wVal)}</text>`;
+                } else if (isTarget) {
+                    ticks += `<circle cx="${x}" cy="${y}" r="5.5" fill="#4f46e5"/>`;
+                }
+            }
+
+            const markerX = startX + Math.min(totalTicks, num) * stepW;
+
+            return `
+                <svg viewBox="0 0 460 100" class="w-full max-w-[460px] h-auto mx-auto select-none" dir="ltr">
+                    <line x1="${startX - 10}" y1="${y}" x2="${endX + 10}" y2="${y}" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+                    ${bar}
+                    ${arcs}
+                    ${ticks}
+                    <text x="${markerX}" y="${y - 16}" text-anchor="middle" font-size="20">📍</text>
+                </svg>
+            `;
+        }
+
+        // ۵-۵: شبکه شطرنجی (مدل مساحتی) برای ضرب دو کسر (درس ۳ فصل ۲ پنجم)
+        function createAreaGridSVG(n1, d1, n2, d2, size = 155) {
+            const pad = 10;
+            const gridW = 180;
+            const gridH = 180;
+            const cellW = gridW / d1; // ستون‌ها: کسر اول
+            const cellH = gridH / d2; // سطرها: کسر دوم
+            let cells = '';
+
+            for (let r = 0; r < d2; r++) {
+                for (let c = 0; c < d1; c++) {
+                    const x = pad + c * cellW;
+                    const y = pad + r * cellH;
+                    const inFirst = c < n1;
+                    const inSecond = r < n2;
+                    let fill = '#f8fafc';
+                    if (inFirst && inSecond) fill = '#10b981'; // بخش مشترک (سبز پررنگ)
+                    else if (inFirst) fill = '#93c5fd'; // فقط کسر اول (آبی روشن)
+                    else if (inSecond) fill = '#fde047'; // فقط کسر دوم (زرد روشن)
+
+                    cells += `<rect x="${x}" y="${y}" width="${cellW}" height="${cellH}" fill="${fill}" stroke="#334155" stroke-width="2"/>`;
+                    if (inFirst && inSecond) {
+                        cells += `<circle cx="${x + cellW / 2}" cy="${y + cellH / 2}" r="4.5" fill="#ffffff"/>`;
+                    }
+                }
+            }
+
+            return `<svg viewBox="0 0 200 200" style="width:${size}px; height:${size}px;" class="mx-auto select-none drop-shadow-sm" dir="ltr">${cells}</svg>`;
+        }
+
+        // ۵-۶: نمایش کسر از یک دسته (مجموعه) برای پایه چهارم و پنجم
+        function createSetSVG(totalGroups, itemsPerGroup, selectedGroups) {
+            let html = '<div class="flex flex-wrap items-center justify-center gap-2 p-2">';
+            for (let g = 0; g < totalGroups; g++) {
+                const isSel = g < selectedGroups;
+                html += `<div class="px-2.5 py-1.5 rounded-xl border-2 transition-all flex items-center gap-1 ${isSel ? 'bg-indigo-100 border-indigo-500 shadow-sm' : 'bg-white border-slate-300 opacity-65'}">`;
+                for (let i = 0; i < itemsPerGroup; i++) {
+                    html += `<span class="text-base sm:text-lg">${isSel ? '🍎' : '🍏'}</span>`;
+                }
+                html += `</div>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        /* ==========================================================================
+           ۶. وضعیت کلی برنامه (State)
+           ========================================================================== */
+        const state = {
+            chapter: 0,
+            mode: 'learn',
+            stars: 0,
+            coins: 0,
+            completedQuizzes: {},
+            studentName: '',
+            reportFilter: 'all',
+
+            // فصل ۱: مفهوم، کسر بزرگ‌تر از واحد و عدد مخلوط
+            c1Slide: 0,
+            c1SetGroups: 4,
+            c1SetSel: 3,
+            c1SetPerGroup: 3,
+            c1ImpNum: 7,
+            c1ImpDen: 4,
+            c1ConvW: 2,
+            c1ConvN: 3,
+            c1ConvD: 4,
+            c1ExampleIdx: 0,
+            c1QuizIdx: 0,
+
+            // فصل ۲: تساوی، ساده‌کردن و مقایسه
+            c2Slide: 0,
+            c2SimpIdx: 0,
+            c2CompN1: 2,
+            c2CompD1: 3,
+            c2CompN2: 3,
+            c2CompD2: 4,
+            c2ExampleIdx: 0,
+            c2QuizIdx: 0,
+
+            // فصل ۳: جمع و تفریق کسرها
+            c3Slide: 0,
+            c3SameN1: 2,
+            c3SameN2: 3,
+            c3SameD: 7,
+            c3AddN1: 1,
+            c3AddD1: 3,
+            c3AddN2: 1,
+            c3AddD2: 4,
+            c3Op: '+',
+            c3ExampleIdx: 0,
+            c3QuizIdx: 0,
+
+            // فصل ۴: جمع و تفریق عددهای مخلوط و قرض گرفتن
+            c4Slide: 0,
+            c4MixW1: 1,
+            c4MixN1: 3,
+            c4MixW2: 2,
+            c4MixN2: 4,
+            c4MixD: 5,
+            c4BorrowStep: 0, // 0: قبل از قرض گرفتن، 1: بعد از باز کردن ۱ واحد
+            c4ExampleIdx: 0,
+            c4QuizIdx: 0,
+
+            // فصل ۵: ضرب کسرها و عددهای مخلوط
+            c5Slide: 0,
+            c5Whole: 3,
+            c5WNum: 2,
+            c5WDen: 7,
+            c5MulN1: 2,
+            c5MulD1: 3,
+            c5MulN2: 3,
+            c5MulD2: 4,
+            c5SimpStep: 0,
+            c5ExampleIdx: 0,
+            c5QuizIdx: 0,
+
+            // فصل ۶: تقسیم کسرها
+            c6Slide: 0,
+            c6DivWhole: 2,
+            c6DivUnitD: 3,
+            c6DivN1: 4,
+            c6DivD1: 5,
+            c6DivN2: 2,
+            c6DivD2: 5,
+            c6ExampleIdx: 0,
+            c6QuizIdx: 0
+        };
+
+        const totalQuizCount = 24;
+
+        function updateHUD() {
+            document.getElementById('score-stars').textContent = toFa(state.stars);
+            document.getElementById('score-coins').textContent = toFa(state.coins);
+
+            const solvedCount = Object.keys(state.completedQuizzes).length;
+            const pct = Math.min(100, Math.round((solvedCount / totalQuizCount) * 100));
+            document.getElementById('progress-text').textContent = toFa(pct) + '٪';
+            document.getElementById('progress-bar').style.width = pct + '%';
+
+            for (let i = 0; i < 6; i++) {
+                const btn = document.getElementById(`chap-btn-${i}`);
+                const badge = document.getElementById(`chap-badge-${i}`);
+                const chapDone = [0, 1, 2, 3].every(q => state.completedQuizzes[`${i}-${q}`]);
+                if (chapDone) badge.classList.remove('hidden');
+
+                if (state.chapter === i) {
+                    btn.className = 'chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-extrabold transition-all flex items-center justify-center gap-0.5 bg-indigo-600 text-white shadow-sm';
+                } else {
+                    btn.className = 'chap-btn flex-1 xl:flex-initial px-1.5 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-0.5 text-slate-600 hover:bg-white/70';
+                }
+            }
+
+            const modes = ['learn', 'examples', 'quiz'];
+            modes.forEach(m => {
+                const btn = document.getElementById(`mode-btn-${m}`);
+                if (state.mode === m) {
+                    btn.className = 'mode-btn flex-1 py-1 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 bg-white text-indigo-700 shadow-sm border border-indigo-200';
+                } else {
+                    btn.className = 'mode-btn flex-1 py-1 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:bg-white/50';
+                }
+            });
+        }
+
+        function selectChapter(chapIdx) {
+            playSound('click');
+            state.chapter = chapIdx;
+            state.mode = 'learn';
+            renderStage();
+        }
+
+        function selectMode(mode) {
+            playSound('click');
+            state.mode = mode;
+            renderStage();
+        }
+
+        function rewardAnswer(key, feedbackElId, msg) {
+            playSound('success');
+            launchConfetti();
+            if (!state.completedQuizzes[key]) {
+                state.completedQuizzes[key] = true;
+                state.stars += 1;
+                state.coins += 10;
+            }
+            updateHUD();
+
+            // در صورتی که آخرین سوال فصل ۶ پاسخ داده شد، پس از نمایش تبریک، کارنامه باز شود
+            if (key === '5-3') {
+                setTimeout(() => {
+                    showReportModal();
+                }, 1600);
+            }
+            const fb = document.getElementById(feedbackElId);
+            if (fb) {
+                fb.className = 'mt-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs sm:text-sm font-bold text-center animate-pop';
+                fb.innerHTML = `🌟 آفرین قهرمان! ${msg}`;
+            }
+            applyPersianDigits(fb);
+            convertSlashFractionsInDOM(fb);
+        }
+
+        function wrongAnswer(feedbackElId, hintMsg) {
+            playSound('wrong');
+            const fb = document.getElementById(feedbackElId);
+            if (fb) {
+                fb.className = 'mt-1.5 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-800 text-xs sm:text-sm font-bold text-center animate-pop';
+                fb.innerHTML = `💡 راهنمایی: ${hintMsg}`;
+            }
+            applyPersianDigits(fb);
+            convertSlashFractionsInDOM(fb);
+        }
+
+        /* ==========================================================================
+           ۷. توابع به‌روزرسانی زنده اسلایدرها (بدون بازسازی کل DOM)
+           ========================================================================== */
+        function updateC1Improper(numVal, denVal) {
+            if (numVal !== null) state.c1ImpNum = parseInt(numVal, 10);
+            if (denVal !== null) state.c1ImpDen = parseInt(denVal, 10);
+            playSound('click');
+
+            const n = state.c1ImpNum;
+            const d = state.c1ImpDen;
+            const w = Math.floor(n / d);
+            const r = n % d;
+
+            const pieBox = document.getElementById('c1-imp-pies');
+            if (pieBox) pieBox.innerHTML = createMultiPieSVG(n, d, { size: 88 });
+
+            const lineBox = document.getElementById('c1-imp-line');
+            if (lineBox) lineBox.innerHTML = createExtendedNumberLineSVG(n, d, 3);
+
+            const nVal = document.getElementById('c1-imp-n-val');
+            if (nVal) nVal.textContent = toFa(n);
+            const dVal = document.getElementById('c1-imp-d-val');
+            if (dVal) dVal.textContent = toFa(d);
+
+            let typeBadge = '';
+            let eqLatex = `\\frac{${n}}{${d}}`;
+            if (n < d) {
+                typeBadge = '<span class="px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 text-xs font-black">کسر کوچک‌تر از واحد (صورت &lt; مخرج)</span>';
+            } else if (n === d) {
+                typeBadge = '<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black">کسر مساوی با ۱ واحد کامل (صورت = مخرج)</span>';
+                eqLatex = `\\frac{${n}}{${d}} = 1`;
+            } else {
+                typeBadge = '<span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-black">کسر بزرگ‌تر از واحد (صورت &gt; مخرج) و عدد مخلوط</span>';
+                eqLatex = r === 0 ? `\\frac{${n}}{${d}} = ${w}` : `\\frac{${n}}{${d}} = ${w}\\frac{${r}}{${d}}`;
+            }
+
+            const badgeEl = document.getElementById('c1-imp-badge');
+            if (badgeEl) badgeEl.innerHTML = typeBadge;
+            const formEl = document.getElementById('c1-imp-formula');
+            if (formEl) formEl.innerHTML = ktx(eqLatex, true);
+        }
+
+        function updateC1Convert(wVal, nVal, dVal) {
+            if (wVal !== null) state.c1ConvW = parseInt(wVal, 10);
+            if (nVal !== null) state.c1ConvN = parseInt(nVal, 10);
+            if (dVal !== null) {
+                state.c1ConvD = parseInt(dVal, 10);
+                if (state.c1ConvN >= state.c1ConvD) {
+                    state.c1ConvN = state.c1ConvD - 1;
+                    const nInp = document.getElementById('c1-conv-n-inp');
+                    if (nInp) nInp.value = state.c1ConvN;
+                }
+                const nInp = document.getElementById('c1-conv-n-inp');
+                if (nInp) nInp.max = state.c1ConvD - 1;
+            }
+            playSound('click');
+
+            const w = state.c1ConvW, n = state.c1ConvN, d = state.c1ConvD;
+            const totalN = w * d + n;
+
+            document.getElementById('c1-conv-w-lbl').textContent = toFa(w);
+            document.getElementById('c1-conv-n-lbl').textContent = toFa(n);
+            document.getElementById('c1-conv-d-lbl').textContent = toFa(d);
+
+            const f1 = document.getElementById('c1-conv-f1');
+            if (f1) f1.innerHTML = ktx(`${w}\\frac{${n}}{${d}} = \\frac{(${w} \\times ${d}) + ${n}}{${d}} = \\frac{${totalN}}{${d}}`, true);
+
+            const f2 = document.getElementById('c1-conv-f2');
+            if (f2) f2.innerHTML = `برعکس (تقسیم صورت بر مخرج): ${toFa(totalN)} ÷ ${toFa(d)} = خارج‌قسمت <b>${toFa(w)}</b> (عدد صحیح) و باقیمانده <b>${toFa(n)}</b> (صورت کسر)`;
+        }
+
+        function updateC5AreaGrid(n1, d1, n2, d2) {
+            if (n1 !== null) state.c5MulN1 = parseInt(n1, 10);
+            if (d1 !== null) {
+                state.c5MulD1 = parseInt(d1, 10);
+                if (state.c5MulN1 > state.c5MulD1) state.c5MulN1 = state.c5MulD1;
+                const inp1 = document.getElementById('c5-n1-inp');
+                if (inp1) { inp1.max = state.c5MulD1; inp1.value = state.c5MulN1; }
+            }
+            if (n2 !== null) state.c5MulN2 = parseInt(n2, 10);
+            if (d2 !== null) {
+                state.c5MulD2 = parseInt(d2, 10);
+                if (state.c5MulN2 > state.c5MulD2) state.c5MulN2 = state.c5MulD2;
+                const inp2 = document.getElementById('c5-n2-inp');
+                if (inp2) { inp2.max = state.c5MulD2; inp2.value = state.c5MulN2; }
+            }
+            playSound('click');
+
+            const a = state.c5MulN1, b = state.c5MulD1, c = state.c5MulN2, d = state.c5MulD2;
+            const svgBox = document.getElementById('c5-grid-svg');
+            if (svgBox) svgBox.innerHTML = createAreaGridSVG(a, b, c, d, 145);
+
+            const formBox = document.getElementById('c5-grid-formula');
+            if (formBox) formBox.innerHTML = ktx(`\\frac{${a}}{${b}} \\times \\frac{${c}}{${d}} = \\frac{${a} \\times ${c}}{${b} \\times ${d}} = \\frac{${a * c}}{${b * d}}`, true);
+
+            const descBox = document.getElementById('c5-grid-desc');
+            if (descBox) descBox.innerHTML = `خانه سبز خال‌دار (مشترک): <b>${toFa(a * c)}</b> خانه از کل <b>${toFa(b * d)}</b> خانه مساوی!`;
+        }
+
+        /* ==========================================================================
+           ۸. رندر فصل ۱: مفهوم، کسر بزرگ‌تر از واحد و عدد مخلوط (سوم تا پنجم)
+           ========================================================================== */
+        function renderChapter1() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 3;
+                let slideHTML = '';
+
+                if (state.c1Slide === 0) {
+                    const totalItems = state.c1SetGroups * state.c1SetPerGroup;
+                    const selItems = state.c1SetSel * state.c1SetPerGroup;
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <span class="text-xs font-bold text-slate-600">نمایش کسر از یک دسته (پایه چهارم و پنجم):</span>
+                                ${createSetSVG(state.c1SetGroups, state.c1SetPerGroup, state.c1SetSel)}
+                                <div class="flex flex-wrap justify-center gap-1.5 pt-1">
+                                    <button onclick="state.c1SetGroups=4; state.c1SetSel=3; state.c1SetPerGroup=3; playSound('pop'); renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c1SetGroups === 4 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۳/۴ از ۱۲ سیب</button>
+                                    <button onclick="state.c1SetGroups=5; state.c1SetSel=2; state.c1SetPerGroup=3; playSound('pop'); renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c1SetGroups === 5 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۲/۵ از ۱۵ سیب</button>
+                                    <button onclick="state.c1SetGroups=3; state.c1SetSel=2; state.c1SetPerGroup=4; playSound('pop'); renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c1SetGroups === 3 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۲/۳ از ۱۲ سیب</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🍎 گام ۱: یادآوری مفهوم کسر و کسر از یک مجموعه</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">چگونه کسری از یک عدد یا مجموعه را پیدا کنیم؟</h3>
+                                <div class="p-3 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5 text-xs sm:text-sm leading-relaxed">
+                                    <p>می‌خواهیم <b>${ktx(`\\frac{${state.c1SetSel}}{${state.c1SetGroups}}`)} از ${toFa(totalItems)} سیب</b> را پیدا کنیم:</p>
+                                    <p>۱. ابتدا کل سیب‌ها (${toFa(totalItems)}) را بر <b>مخرج (${toFa(state.c1SetGroups)})</b> تقسیم می‌کنیم تا تعداد هر دسته معلوم شود: ${ktx(`${totalItems} \\div ${state.c1SetGroups} = ${state.c1SetPerGroup}`)}</p>
+                                    <p>۲. سپس در <b>صورت کسر (${toFa(state.c1SetSel)})</b> ضرب می‌کنیم: ${ktx(`${state.c1SetSel} \\times ${state.c1SetPerGroup} = ${selItems}`)} سیب قرمز!</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.c1Slide === 1) {
+                    const n = state.c1ImpNum, d = state.c1ImpDen;
+                    const w = Math.floor(n / d), r = n % d;
+                    const eqLatex = n < d ? `\\frac{${n}}{${d}}` : (n === d ? `\\frac{${n}}{${d}} = 1` : (r === 0 ? `\\frac{${n}}{${d}} = ${w}` : `\\frac{${n}}{${d}} = ${w}\\frac{${r}}{${d}}`));
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-around bg-slate-50 rounded-2xl p-2.5 border border-slate-200 h-full">
+                                <div id="c1-imp-pies">${createMultiPieSVG(n, d, { size: 88 })}</div>
+                                <div id="c1-imp-line" class="w-full">${createExtendedNumberLineSVG(n, d, 3)}</div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <div id="c1-imp-badge">
+                                    <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-black">کسر بزرگ‌تر از واحد (صورت &gt; مخرج) و عدد مخلوط</span>
+                                </div>
+                                <h3 class="text-xs sm:text-base font-black text-slate-800">اسلایدرها را حرکت بده و رابطه کسر بزرگ‌تر از واحد و عدد مخلوط را ببین:</h3>
+                                <div id="c1-imp-formula" class="text-center py-0.5">${ktx(eqLatex, true)}</div>
+                                <div class="space-y-1.5 bg-white p-2.5 rounded-xl border border-slate-200 text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-indigo-700 w-32">صورت کسر (<span id="c1-imp-n-val">${toFa(n)}</span>):</span>
+                                        <input type="range" min="1" max="11" value="${n}" oninput="updateC1Improper(this.value, null)" class="flex-1">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-emerald-700 w-32">مخرج کسر (<span id="c1-imp-d-val">${toFa(d)}</span>):</span>
+                                        <input type="range" min="2" max="6" value="${d}" oninput="updateC1Improper(null, this.value)" class="flex-1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const w = state.c1ConvW, n = state.c1ConvN, d = state.c1ConvD;
+                    const totalN = w * d + n;
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-indigo-50/60 rounded-2xl p-3 border border-indigo-200 h-full space-y-2.5 text-center">
+                                <span class="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-black">فرمول طلایی تبدیل عدد مخلوط به کسر</span>
+                                <div id="c1-conv-f1">${ktx(`${w}\\frac{${n}}{${d}} = \\frac{(${w} \\times ${d}) + ${n}}{${d}} = \\frac{${totalN}}{${d}}`, true)}</div>
+                                <div id="c1-conv-f2" class="p-2.5 rounded-xl bg-white border border-indigo-100 text-xs text-slate-700 leading-relaxed">
+                                    برعکس (تقسیم صورت بر مخرج): ${toFa(totalN)} ÷ ${toFa(d)} = خارج‌قسمت <b>${toFa(w)}</b> (عدد صحیح) و باقیمانده <b>${toFa(n)}</b> (صورت کسر)
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">کارگاه تعاملی تبدیل دوطرفه (درس ۱ پنجم):</h3>
+                                <p class="text-xs text-slate-600">برای تبدیل عدد مخلوط به کسر بزرگ‌تر از واحد، <b>عدد صحیح را در مخرج ضرب کن</b> و با صورت جمع ببند (مخرج هرگز تغییر نمی‌کند!):</p>
+                                <div class="space-y-2 bg-white p-3 rounded-xl border border-slate-200 text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-indigo-700 w-32">عدد صحیح (<span id="c1-conv-w-lbl">${toFa(w)}</span>):</span>
+                                        <input type="range" min="1" max="5" value="${w}" oninput="updateC1Convert(this.value, null, null)" class="flex-1">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-emerald-700 w-32">صورت کسر (<span id="c1-conv-n-lbl">${toFa(n)}</span>):</span>
+                                        <input id="c1-conv-n-inp" type="range" min="1" max="${d - 1}" value="${n}" oninput="updateC1Convert(null, this.value, null)" class="flex-1">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-amber-700 w-32">مخرج کسر (<span id="c1-conv-d-lbl">${toFa(d)}</span>):</span>
+                                        <input type="range" min="2" max="8" value="${d}" oninput="updateC1Convert(null, null, this.value)" class="flex-1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `
+                    ${slideHTML}
+                    ${renderSlideNav('c1Slide', slidesCount)}
+                `;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: تبدیل کسر بزرگ‌تر از واحد به عدد مخلوط',
+                        visual: createMultiPieSVG(11, 4, { size: 85 }),
+                        desc: `می‌خواهیم کسر ${ktx('\\frac{11}{4}')} را به عدد مخلوط تبدیل کنیم:
+                               <br>• ۱۱ را بر ۴ تقسیم می‌کنیم: ${ktx('11 \\div 4')} خارج‌قسمت <b>۲</b> و باقیمانده <b>۳</b> می‌شود.
+                               <br>• پس ۲ واحد کامل و ۳ ربع داریم: ${ktx('\\frac{11}{4} = 2\\frac{3}{4}', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: خواندن عدد مخلوط روی محور اعداد',
+                        visual: createExtendedNumberLineSVG(8, 3, 3),
+                        desc: `فاصله‌ی بین هر دو عدد صحیح روی محور به <b>۳ قسمت مساوی</b> تقسیم شده است (مخرج ۳).
+                               <br>• علامت 📍 بعد از عدد ۲، به اندازه ۲ قسمت جلو رفته است: ${ktx('2\\frac{2}{3} = \\frac{8}{3}', true)}`
+                    },
+                    {
+                        title: 'مثال ۳: پیدا کردن کسر از یک عدد در مسائل کلامی',
+                        visual: createSetSVG(5, 4, 3),
+                        desc: `علی ۲۰ هزار تومان پول داشت و با ${ktx('\\frac{3}{5}')} آن کتاب خرید. قیمت کتاب چقدر است؟
+                               <br>• یک‌پنجم پول: ${ktx('20 \\div 5 = 4')} هزار تومان
+                               <br>• سه‌پنجم پول: ${ktx('3 \\times 4 = 12')} هزار تومان`
+                    }
+                ];
+                renderExamplesView(container, 'c1ExampleIdx', examples);
+            } else {
+                const questions = [
+                    {
+                        title: 'سوال ۱: کسر بزرگ‌تر از واحد معادل با عدد مخلوط زیر کدام است؟',
+                        formula: '3\\frac{2}{5} = ?',
+                        visual: createMultiPieSVG(17, 5, { size: 75 }),
+                        options: [
+                            { label: '\\frac{17}{5}', isKtx: true, ok: true, msg: 'آفرین! (۳ × ۵) + ۲ برابر با ۱۷ است، پس ۱۷/۵ درست است.' },
+                            { label: '\\frac{10}{5}', isKtx: true, ok: false, hint: 'یادت نرود: (عدد صحیح × مخرج) + صورت = (۳ × ۵) + ۲' },
+                            { label: '\\frac{13}{5}', isKtx: true, ok: false, hint: '۳ ضربدر ۵ می‌شود ۱۵، و به علاوه ۲ برابر با ۱۷ است!' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۲: کسر نوزده ششم برابر با کدام عدد مخلوط است؟',
+                        formula: '\\frac{19}{6} = ?',
+                        visual: createExtendedNumberLineSVG(19, 6, 4),
+                        options: [
+                            { label: '2\\frac{5}{6}', isKtx: true, ok: false, hint: '۱۹ تقسیم بر ۶ برابر با ۳ می‌شود (۳×۶=۱۸) و ۱ باقیمانده می‌آورد.' },
+                            { label: '3\\frac{1}{6}', isKtx: true, ok: true, msg: 'فوق‌العاده! ۱۹ تقسیم بر ۶ خارج‌قسمت ۳ و باقیمانده ۱ دارد.' },
+                            { label: '3\\frac{5}{6}', isKtx: true, ok: false, hint: '۱۹ منهای ۱۸ برابر با ۱ است، پس صورت کسر ۱ می‌شود.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۳: سه چهارم از ۲۴ دانش‌آموز یک کلاس یعنی چند نفر؟',
+                        formula: '\\frac{3}{4} \\text{ از } 24 = ?',
+                        visual: createSetSVG(4, 6, 3),
+                        options: [
+                            { label: '۱۶ نفر', isKtx: false, ok: false, hint: 'ابتدا ۲۴ را بر ۴ تقسیم کن (می‌شود ۶) و بعد در ۳ ضرب کن!' },
+                            { label: '۱۸ نفر', isKtx: false, ok: true, msg: 'احسنت! ۲۴ تقسیم بر ۴ می‌شود ۶ و ۶ ضربدر ۳ برابر ۱۸ نفر است.' },
+                            { label: '۱۲ نفر', isKtx: false, ok: false, hint: '۱۲ نفر نصف (۲/۴) کلاس است، ما ۳/۴ را می‌خواهیم!' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۴: ساعت ۲ و ۴۵ دقیقه را به صورت عدد مخلوط چگونه می‌نویسیم؟',
+                        formula: '2 \\text{ ساعت و } 45 \\text{ دقیقه } = ?',
+                        visual: createPieSVG(3, 4, { size: 100, fillColor: '#0ea5e9' }),
+                        options: [
+                            { label: '2\\frac{3}{4}', isKtx: true, ok: true, msg: 'عالیه! ۴۵ دقیقه یعنی سه ربع (۳/۴) ساعت، پس ۲ و سه چهارم ساعت درست است.' },
+                            { label: '2\\frac{1}{4}', isKtx: true, ok: false, hint: '۴۵ دقیقه برابر با ۳ ربع ساعت (۳/۴) است، نه ۱ ربع!' }
+                        ]
+                    }
+                ];
+                renderQuizView(container, 0, 'c1QuizIdx', questions);
+            }
+        }
+
+        /* ==========================================================================
+           ۹. رندر فصل ۲: تساوی، ساده‌کردن و مقایسه کسرها
+           ========================================================================== */
+        function renderChapter2() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 3;
+                let slideHTML = '';
+
+                if (state.c2Slide === 0) {
+                    const simpCases = [
+                        { n: 6, d: 8, div: 2, sn: 3, sd: 4 },
+                        { n: 12, d: 18, div: 6, sn: 2, sd: 3 },
+                        { n: 15, d: 20, div: 5, sn: 3, sd: 4 },
+                        { n: 8, d: 12, div: 4, sn: 2, sd: 3 }
+                    ];
+                    const sc = simpCases[state.c2SimpIdx];
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-center">
+                                        ${createPieSVG(sc.n, sc.d, { size: 110, fillColor: '#8b5cf6' })}
+                                        <span class="text-xs font-bold text-slate-600">قبل از ساده‌کردن</span>
+                                    </div>
+                                    <span class="text-xl font-black text-indigo-600">=</span>
+                                    <div class="text-center">
+                                        ${createPieSVG(sc.sn, sc.sd, { size: 110, fillColor: '#10b981' })}
+                                        <span class="text-xs font-bold text-emerald-700">کسر ساده شده</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap justify-center gap-1.5">
+                                    ${simpCases.map((item, idx) => `
+                                        <button onclick="state.c2SimpIdx=${idx}; playSound('pop'); renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c2SimpIdx === idx ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">
+                                            ساده‌کردن ${toFa(item.n)}/${toFa(item.d)}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-violet-100 text-violet-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">✂️ گام ۱: ساده‌کردن کسرها (تقسیم صورت و مخرج)</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">اگر صورت و مخرج را بر یک عدد مشترک تقسیم کنیم، کسر ساده می‌شود:</h3>
+                                <div class="text-center py-1">
+                                    ${ktx(`\\frac{${sc.n} \\div ${sc.div}}{${sc.d} \\div ${sc.div}} = \\frac{\\cancel{${sc.n}}{${sc.sn}}}{\\cancel{${sc.d}}{${sc.sd}}} = \\frac{${sc.sn}}{${sc.sd}}`, true)}
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-600 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200">
+                                    💡 <b>کسر تحویل‌ناپذیر (ساده‌ترین حالت):</b> وقتی صورت و مخرج دیگر بر هیچ عددی غیر از ۱ بخش‌پذیر نباشند (مثل ${ktx(`\\frac{${sc.sn}}{${sc.sd}}`)}).
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.c2Slide === 1) {
+                    const n1 = state.c2CompN1, d1 = state.c2CompD1, n2 = state.c2CompN2, d2 = state.c2CompD2;
+                    const commonD = lcm(d1, d2);
+                    const m1 = commonD / d1, m2 = commonD / d2;
+                    const eqN1 = n1 * m1, eqN2 = n2 * m2;
+                    const sign = eqN1 > eqN2 ? '>' : (eqN1 < eqN2 ? '<' : '=');
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="flex items-center gap-4" dir="ltr">
+                                    <div class="text-center">
+                                        ${createPieSVG(n1, d1, { size: 105, fillColor: '#6366f1', subDivide: m1 })}
+                                        <div class="mt-1">${ktx(`\\frac{${n1}}{${d1}} = \\frac{${eqN1}}{${commonD}}`)}</div>
+                                    </div>
+                                    <span class="text-2xl font-black text-indigo-700">${sign}</span>
+                                    <div class="text-center">
+                                        ${createPieSVG(n2, d2, { size: 105, fillColor: '#10b981', subDivide: m2 })}
+                                        <div class="mt-1">${ktx(`\\frac{${n2}}{${d2}} = \\frac{${eqN2}}{${commonD}}`)}</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap justify-center gap-1.5">
+                                    <button onclick="state.c2CompN1=2;state.c2CompD1=3;state.c2CompN2=3;state.c2CompD2=4;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${n1 === 2 && d1 === 3 && n2 === 3 && d2 === 4 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">مقایسه ۲/۳ و ۳/۴</button>
+                                    <button onclick="state.c2CompN1=3;state.c2CompD1=5;state.c2CompN2=7;state.c2CompD2=10;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${n1 === 3 && d1 === 5 && n2 === 7 && d2 === 10 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">مقایسه ۳/۵ و ۷/۱۰</button>
+                                    <button onclick="state.c2CompN1=3;state.c2CompD1=4;state.c2CompN2=2;state.c2CompD2=5;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${n1 === 3 && d1 === 4 && n2 === 2 && d2 === 5 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">مقایسه ۳/۴ و ۲/۵</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">⚖️ گام ۲: مقایسه کسرها با مخرج نامساوی (هم‌مخرج کردن)</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">وقتی نه صورت‌ها برابرند و نه مخرج‌ها، ابتدا هم‌مخرج می‌کنیم!</h3>
+                                <div class="p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 text-xs sm:text-sm space-y-1">
+                                    <p>• مخرج مشترک ${toFa(d1)} و ${toFa(d2)} عدد <b>${toFa(commonD)}</b> است.</p>
+                                    <p>• کسر اول را در ${toFa(m1)} و کسر دوم را در ${toFa(m2)} ضرب می‌کنیم:</p>
+                                    <div class="text-center">${ktx(`\\frac{${eqN1}}{${commonD}} ${sign} \\frac{${eqN2}}{${commonD}} \\implies \\frac{${n1}}{${d1}} ${sign} \\frac{${n2}}{${d2}}`, true)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2 text-xs sm:text-sm">
+                                <div class="p-2 rounded-xl bg-white border flex items-center justify-between">
+                                    <span class="font-bold text-indigo-800">۱. مخرج‌ها مساوی:</span>
+                                    <span>صورت بزرگ‌تر یعنی کسر بزرگ‌تر ${ktx('\\frac{7}{9} > \\frac{4}{9}')}</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-white border flex items-center justify-between">
+                                    <span class="font-bold text-pink-700">۲. صورت‌ها مساوی:</span>
+                                    <span>مخرج کوچک‌تر یعنی کسر بزرگ‌تر ${ktx('\\frac{3}{4} > \\frac{3}{8}')}</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-white border flex items-center justify-between">
+                                    <span class="font-bold text-emerald-700">۳. مقایسه با عدد ۱:</span>
+                                    <span>کسر بزرگ‌تر از واحد &gt; کسر کوچک‌تر از واحد ${ktx('\\frac{5}{4} > \\frac{8}{9}')}</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-white border flex items-center justify-between">
+                                    <span class="font-bold text-amber-700">۴. مقایسه اعداد مخلوط:</span>
+                                    <span>ابتدا عددهای صحیح را مقایسه کن ${ktx('3\\frac{1}{5} > 2\\frac{7}{8}')}</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🧠 گام ۳: ۴ ترفند طلایی مقایسه سریع کسرها</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">همیشه قبل از هم‌مخرج کردن، این ۴ نکته را چک کن!</h3>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    همچنین می‌توانی کسرها را با <b>نصف (${ktx('\\frac{1}{2}')})</b> مقایسه کنی: مثلاً در مقایسه ${ktx('\\frac{5}{8}')} و ${ktx('\\frac{2}{6}')}، چون ۵ از نصف ۸ (یعنی ۴) بیشتر است ولی ۲ از نصف ۶ (یعنی ۳) کمتر است، بلافاصله می‌فهیم ${ktx('\\frac{5}{8} > \\frac{2}{6}')}!
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `${slideHTML} ${renderSlideNav('c2Slide', slidesCount)}`;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: ساده‌کردن کسر تا رسیدن به کسر تحویل‌ناپذیر',
+                        visual: `<div class="flex items-center gap-3">${createBarSVG(8, 12, { width: 180, height: 44, fillColor: '#6366f1' })} <span>=</span> ${createBarSVG(2, 3, { width: 180, height: 44, fillColor: '#10b981' })}</div>`,
+                        desc: `برای ساده‌کردن کسر ${ktx('\\frac{8}{12}')}، صورت و مخرج هر دو بر ۴ بخش‌پذیرند:
+                               <br>${ktx('\\frac{8 \\div 4}{12 \\div 4} = \\frac{2}{3}', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: مقایسه دو عدد مخلوط',
+                        visual: createMultiPieSVG(9, 4, { size: 78 }),
+                        desc: `می‌خواهیم ${ktx('2\\frac{1}{4}')} و ${ktx('2\\frac{2}{5}')} را مقایسه کنیم.
+                               <br>• عددهای صحیح برابرند (۲ = ۲)، پس کسرها را با مخرج مشترک ۲۰ مقایسه می‌کنیم:
+                               <br>${ktx('\\frac{1}{4} = \\frac{5}{20}')} و ${ktx('\\frac{2}{5} = \\frac{8}{20} \\implies 2\\frac{1}{4} < 2\\frac{2}{5}')}`
+                    },
+                    {
+                        title: 'مثال ۳: پیدا کردن عدد مجهول در تساوی کسرها با ساده‌کردن اول',
+                        visual: createPieSVG(3, 5, { size: 115, fillColor: '#ec4899', subDivide: 2 }),
+                        desc: `در تساوی ${ktx('\\frac{9}{15} = \\frac{?}{10}')}، پانزده مستقیم به ۱۰ تبدیل نمی‌شود!
+                               <br>• ابتدا ${ktx('\\frac{9}{15}')} را بر ۳ ساده می‌کنیم تا بشود ${ktx('\\frac{3}{5}')}، حالا در ۲ ضرب می‌کنیم: ${ktx('\\frac{3 \\times 2}{5 \\times 2} = \\frac{6}{10}')}`
+                    }
+                ];
+                renderExamplesView(container, 'c2ExampleIdx', examples);
+            } else {
+                const questions = [
+                    {
+                        title: 'سوال ۱: ساده‌ترین حالت کسر هجده بیست‌وچهارم کدام است؟',
+                        formula: '\\frac{18}{24} = ?',
+                        visual: createPieSVG(3, 4, { size: 105, fillColor: '#10b981', subDivide: 6 }),
+                        options: [
+                            { label: '\\frac{3}{4}', isKtx: true, ok: true, msg: 'آفرین! اگر صورت و مخرج ۱۸/۲۴ را بر ۶ تقسیم کنیم به ۳/۴ می‌رسیم.' },
+                            { label: '\\frac{9}{12}', isKtx: true, ok: false, hint: '۹/۱۲ درست است اما هنوز بر ۳ ساده می‌شود! ساده‌ترین حالت را می‌خواهیم.' },
+                            { label: '\\frac{2}{3}', isKtx: true, ok: false, hint: '۱۸ تقسیم بر ۶ می‌شود ۳ و ۲۴ تقسیم بر ۶ می‌شود ۴.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۲: در تساوی زیر چه عددی در مربع قرار می‌گیرد؟',
+                        formula: '\\frac{12}{16} = \\frac{\\square}{20}',
+                        visual: createBarSVG(3, 4, { width: 200, height: 42, fillColor: '#6366f1' }),
+                        options: [
+                            { label: '۱۴', isKtx: false, ok: false, hint: 'ابتدا ۱۲/۱۶ را بر ۴ ساده کن تا بشود ۳/۴، سپس صورت و مخرج را در ۵ ضرب کن!' },
+                            { label: '۱۵', isKtx: false, ok: true, msg: 'فوق‌العاده! ۱۲/۱۶ مساوی ۳/۴ است و ۳/۴ با ضرب در ۵ مساوی ۱۵/۲۰ می‌شود.' },
+                            { label: '۱۶', isKtx: false, ok: false, hint: '۳ ضربدر ۵ برابر با ۱۵ است.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۳: علامت مناسب برای مقایسه دو کسر زیر کدام است؟',
+                        formula: '\\frac{3}{4} \\; \\square \\; \\frac{5}{7}',
+                        visual: `<div class="flex items-center justify-center gap-4" dir="ltr">${createPieSVG(3, 4, { size: 95, fillColor: '#6366f1' })} ${createPieSVG(5, 7, { size: 95, fillColor: '#10b981' })}</div>`,
+                        options: [
+                            { label: '>', isKtx: true, ok: true, msg: 'احسنت! با مخرج مشترک ۲۸ داریم: ۲۱/۲۸ بزرگ‌تر از ۲۰/۲۸ است.' },
+                            { label: '<', isKtx: true, ok: false, hint: 'با مخرج مشترک ۲۸: کسر چپ ۲۱/۲۸ و کسر راست ۲۰/۲۸ می‌شود!' },
+                            { label: '=', isKtx: true, ok: false, hint: '۳×۷ می‌شود ۲۱ اما ۴×۵ می‌شود ۲۰، پس برابر نیستند.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۴: کدام گزینه از بقیه بزرگ‌تر است؟',
+                        formula: '?',
+                        visual: createMultiPieSVG(9, 4, { size: 75 }),
+                        options: [
+                            { label: '2\\frac{7}{8}', isKtx: true, ok: false, hint: 'به عددهای صحیح نگاه کن! یکی از گزینه‌ها عدد صحیح ۳ دارد.' },
+                            { label: '3\\frac{1}{10}', isKtx: true, ok: true, msg: 'آفرین! چون عدد صحیح ۳ از ۲ بزرگ‌تر است، ۳ و یک‌دهم از همه بزرگ‌تر است.' },
+                            { label: '\\frac{11}{4}', isKtx: true, ok: false, hint: '۱۱/۴ یعنی ۲ و سه‌چهارم که از ۳ کمتر است.' }
+                        ]
+                    }
+                ];
+                renderQuizView(container, 1, 'c2QuizIdx', questions);
+            }
+        }
+
+        /* ==========================================================================
+           ۱۰. رندر فصل ۳: جمع و تفریق کسرها (چهارم و پنجم)
+           ========================================================================== */
+        function renderChapter3() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 2;
+                let slideHTML = '';
+
+                if (state.c3Slide === 0) {
+                    const n1 = state.c3SameN1, n2 = state.c3SameN2, d = state.c3SameD;
+                    const sum = n1 + n2;
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                ${createExtendedNumberLineSVG(sum, d, 2)}
+                                <div class="flex gap-2">
+                                    <button onclick="state.c3SameN1=2;state.c3SameN2=3;state.c3SameD=7;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c3SameN1 === 2 && state.c3SameN2 === 3 && state.c3SameD === 7 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۲/۷ + ۳/۷</button>
+                                    <button onclick="state.c3SameN1=5;state.c3SameN2=4;state.c3SameD=6;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c3SameN1 === 5 && state.c3SameN2 === 4 && state.c3SameD === 6 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۵/۶ + ۴/۶ (بزرگ‌تر از واحد)</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">➕ گام ۱: جمع و تفریق با مخرج مساوی</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">مخرج را خودش می‌نویسیم و فقط صورت‌ها را جمع یا تفریق می‌کنیم!</h3>
+                                <div class="text-center py-1">
+                                    ${ktx(sum > d ? `\\frac{${n1}}{${d}} + \\frac{${n2}}{${d}} = \\frac{${sum}}{${d}} = 1\\frac{${sum - d}}{${d}}` : `\\frac{${n1}}{${d}} + \\frac{${n2}}{${d}} = \\frac{${sum}}{${d}}`, true)}
+                                </div>
+                                <p class="text-xs sm:text-sm text-rose-800 bg-rose-50 p-2 rounded-xl border border-rose-200">
+                                    ⚠️ <b>خطای رایج:</b> هرگز مخرج‌ها را با هم جمع یا تفریق نکنید! مخرج فقط اندازه قطعات را نشان می‌دهد.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const n1 = state.c3AddN1, d1 = state.c3AddD1, n2 = state.c3AddN2, d2 = state.c3AddD2, op = state.c3Op;
+                    const commonD = lcm(d1, d2);
+                    const m1 = commonD / d1, m2 = commonD / d2;
+                    const eq1 = n1 * m1, eq2 = n2 * m2;
+                    const resN = op === '+' ? eq1 + eq2 : eq1 - eq2;
+
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="flex items-center gap-2" dir="ltr">
+                                    <div class="text-center">
+                                        ${createPieSVG(n1, d1, { size: 95, fillColor: '#6366f1', subDivide: m1 })}
+                                        <div class="text-xs font-bold mt-1">${ktx(`\\frac{${eq1}}{${commonD}}`)}</div>
+                                    </div>
+                                    <span class="text-xl font-black text-indigo-700">${op === '+' ? '+' : '−'}</span>
+                                    <div class="text-center">
+                                        ${createPieSVG(n2, d2, { size: 95, fillColor: '#10b981', subDivide: m2 })}
+                                        <div class="text-xs font-bold mt-1">${ktx(`\\frac{${eq2}}{${commonD}}`)}</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap justify-center gap-1.5">
+                                    <button onclick="state.c3AddN1=1;state.c3AddD1=3;state.c3AddN2=1;state.c3AddD2=4;state.c3Op='+';playSound('pop');renderStage();" class="px-2 py-1 rounded-lg text-xs font-bold transition-all ${state.c3AddN1 === 1 && state.c3AddD1 === 3 && state.c3AddN2 === 1 && state.c3AddD2 === 4 && state.c3Op === '+' ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۱/۳ + ۱/۴</button>
+                                    <button onclick="state.c3AddN1=3;state.c3AddD1=4;state.c3AddN2=1;state.c3AddD2=6;state.c3Op='-';playSound('pop');renderStage();" class="px-2 py-1 rounded-lg text-xs font-bold transition-all ${state.c3AddN1 === 3 && state.c3AddD1 === 4 && state.c3AddN2 === 1 && state.c3AddD2 === 6 && state.c3Op === '-' ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۳/۴ − ۱/۶</button>
+                                    <button onclick="state.c3AddN1=2;state.c3AddD1=3;state.c3AddN2=3;state.c3AddD2=5;state.c3Op='+';playSound('pop');renderStage();" class="px-2 py-1 rounded-lg text-xs font-bold transition-all ${state.c3AddN1 === 2 && state.c3AddD1 === 3 && state.c3AddN2 === 3 && state.c3AddD2 === 5 && state.c3Op === '+' ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۲/۳ + ۳/۵</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🔧 گام ۲: جمع و تفریق با مخرج‌های نامساوی</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">ابتدا با پیدا کردن مخرج مشترک (${toFa(commonD)})، دو کسر را هم‌مخرج می‌کنیم:</h3>
+                                <div class="text-center py-1">
+                                    ${ktx(`\\frac{${n1}}{${d1}} ${op} \\frac{${n2}}{${d2}} = \\frac{${eq1}}{${commonD}} ${op} \\frac{${eq2}}{${commonD}} = \\frac{${resN}}{${commonD}}${resN > commonD ? ` = 1\\frac{${resN - commonD}}{${commonD}}` : ''}`, true)}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `${slideHTML} ${renderSlideNav('c3Slide', slidesCount)}`;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: جمع دو کسر که یک مخرج مضرب دیگری است',
+                        visual: createBarSVG(7, 8, { width: 210, height: 48, fillColor: '#6366f1' }),
+                        desc: `برای محاسبه ${ktx('\\frac{3}{4} + \\frac{1}{8}')}، چون ۸ مضرب ۴ است، فقط کسر اول را در ۲ ضرب می‌کنیم:
+                               <br>${ktx('\\frac{3 \\times 2}{4 \\times 2} + \\frac{1}{8} = \\frac{6}{8} + \\frac{1}{8} = \\frac{7}{8}', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: تفریق دو کسر با مخرج‌های نامساوی کلی',
+                        visual: createPieSVG(7, 15, { size: 115, fillColor: '#10b981' }),
+                        desc: `برای محاسبه ${ktx('\\frac{4}{5} - \\frac{1}{3}')}، مخرج مشترک ۵ و ۳ برابر با ۱۵ است:
+                               <br>${ktx('\\frac{12}{15} - \\frac{5}{15} = \\frac{7}{15}', true)}`
+                    },
+                    {
+                        title: 'مثال ۳: تفریق یک کسر از عدد ۱ کامل',
+                        visual: createPieSVG(3, 7, { size: 115, fillColor: '#f59e0b' }),
+                        desc: `وقتی می‌خواهیم ${ktx('1 - \\frac{4}{7}')} را حساب کنیم، عدد ۱ را به شکل ${ktx('\\frac{7}{7}')} می‌نویسیم:
+                               <br>${ktx('1 - \\frac{4}{7} = \\frac{7}{7} - \\frac{4}{7} = \\frac{3}{7}', true)}`
+                    }
+                ];
+                renderExamplesView(container, 'c3ExampleIdx', examples);
+            } else {
+                const questions = [
+                    {
+                        title: 'سوال ۱: حاصل جمع دو کسر زیر کدام است؟',
+                        formula: '\\frac{2}{5} + \\frac{3}{10} = ?',
+                        visual: createBarSVG(7, 10, { width: 210, height: 44, fillColor: '#6366f1' }),
+                        options: [
+                            { label: '\\frac{5}{15}', isKtx: true, ok: false, hint: 'هرگز مخرج‌ها را با هم جمع نکن! ابتدا ۲/۵ را با ضرب در ۲ به ۴/۱۰ تبدیل کن.' },
+                            { label: '\\frac{7}{10}', isKtx: true, ok: true, msg: 'آفرین! ۲/۵ مساوی ۴/۱۰ است و ۴/۱۰ + ۳/۱۰ برابر با ۷/۱۰ می‌شود.' },
+                            { label: '\\frac{5}{10}', isKtx: true, ok: false, hint: 'وقتی مخرج ۵ در ۲ ضرب می‌شود، صورت ۲ هم باید در ۲ ضرب شود (می‌شود ۴).' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۲: حاصل تفریق زیر برابر با کدام گزینه است؟',
+                        formula: '\\frac{5}{6} - \\frac{1}{4} = ?',
+                        visual: createPieSVG(7, 12, { size: 105, fillColor: '#10b981' }),
+                        options: [
+                            { label: '\\frac{7}{12}', isKtx: true, ok: true, msg: 'فوق‌العاده! با مخرج مشترک ۱۲ داریم: ۱۰/۱۲ منهای ۳/۱۲ مساوی ۷/۱۲ است.' },
+                            { label: '\\frac{4}{2}', isKtx: true, ok: false, hint: 'مخرج مشترک ۶ و ۴ عدد ۱۲ است!' },
+                            { label: '\\frac{9}{12}', isKtx: true, ok: false, hint: '۱۰/۱۲ منهای ۳/۱۲ برابر با ۷/۱۲ می‌شود.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۳: حاصل عبارت زیر به صورت عدد مخلوط کدام است؟',
+                        formula: '\\frac{3}{4} + \\frac{2}{3} = ?',
+                        visual: createMultiPieSVG(17, 12, { size: 80 }),
+                        options: [
+                            { label: '1\\frac{5}{12}', isKtx: true, ok: true, msg: 'احسنت! ۹/۱۲ + ۸/۱۲ می‌شود ۱۷/۱۲ که برابر با ۱ و پنج دوازدهم است.' },
+                            { label: '\\frac{5}{7}', isKtx: true, ok: false, hint: 'مخرج مشترک ۴ و ۳ برابر با ۱۲ است (۹/۱۲ + ۸/۱۲).' },
+                            { label: '1\\frac{1}{12}', isKtx: true, ok: false, hint: '۹ به علاوه ۸ برابر ۱۷ است، و ۱۷ منهای ۱۲ می‌شود ۵.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۴: کشاورز ۱/۳ زمینش را گندم و ۲/۵ آن را جو کاشته است. چه کسری از زمین خالی مانده است؟',
+                        formula: '1 - (\\frac{1}{3} + \\frac{2}{5}) = ?',
+                        visual: createBarSVG(4, 15, { width: 220, height: 44, fillColor: '#f59e0b' }),
+                        options: [
+                            { label: '\\frac{11}{15}', isKtx: true, ok: false, hint: '۱۱/۱۵ بخش کاشته‌شده است! سوال بخش خالی مانده (۱۵/۱۵ منهای ۱۱/۱۵) را خواسته.' },
+                            { label: '\\frac{4}{15}', isKtx: true, ok: true, msg: 'عالیه! مجموع کاشته‌شده ۱۱/۱۵ است، پس ۴/۱۵ از زمین خالی مانده است.' }
+                        ]
+                    }
+                ];
+                renderQuizView(container, 2, 'c3QuizIdx', questions);
+            }
+        }
+
+        /* ==========================================================================
+           ۱۱. رندر فصل ۴: جمع و تفریق عددهای مخلوط (درس ۲ فصل ۲ پنجم)
+           ========================================================================== */
+        function renderChapter4() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 2;
+                let slideHTML = '';
+
+                if (state.c4Slide === 0) {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                ${createMultiPieSVG(22, 5, { size: 75 })}
+                                <span class="text-xs font-bold text-indigo-800">تبدیل ۷/۵ به ۱ واحد کامل و ۲/۵ و اضافه شدن به ۳ واحد کامل</span>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">➕ گام ۱: جمع عددهای مخلوط</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">واحدهای کامل را با هم و کسرها را با هم جمع می‌کنیم!</h3>
+                                <div class="p-3 rounded-2xl bg-indigo-50 border border-indigo-200 text-xs sm:text-sm space-y-1.5">
+                                    <p>اگر حاصل جمع کسرها <b>بزرگ‌تر از واحد</b> شد، آن را به عدد مخلوط تبدیل کرده و به عدد صحیح اضافه می‌کنیم:</p>
+                                    <div class="text-center">${ktx('1\\frac{3}{5} + 2\\frac{4}{5} = 3\\frac{7}{5} = 3 + 1\\frac{2}{5} = 4\\frac{2}{5}', true)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const step = state.c4BorrowStep;
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="flex gap-2">
+                                    <button onclick="state.c4BorrowStep=0;playSound('pop');renderStage();" class="px-3 py-1 rounded-xl text-xs font-bold ${step === 0 ? 'bg-rose-600 text-white shadow' : 'bg-white border'}">۱. قبل از باز کردن واحد</button>
+                                    <button onclick="state.c4BorrowStep=1;playSound('success');renderStage();" class="px-3 py-1 rounded-xl text-xs font-bold ${step === 1 ? 'bg-emerald-600 text-white shadow' : 'bg-white border'}">۲. باز کردن ۱ واحد به ۴/۴ ✨</button>
+                                </div>
+                                ${step === 0 ? `
+                                    <div class="text-center space-y-1">
+                                        ${createMultiPieSVG(13, 4, { size: 78, wholeColor: '#4f46e5', fillColor: '#6366f1' })}
+                                        <p class="text-xs font-bold text-rose-700">۳ پیتزای کامل و ۱/۴ پیتزا داریم؛ چطور ۳/۴ از آن کم کنیم؟ (۱/۴ از ۳/۴ کوچک‌تر است!)</p>
+                                    </div>
+                                ` : `
+                                    <div class="text-center space-y-1 animate-pop">
+                                        <div class="flex items-center justify-center gap-2" dir="rtl">
+                                            ${createPieSVG(4, 4, { size: 78, fillColor: '#4f46e5' })}
+                                            ${createPieSVG(4, 4, { size: 78, fillColor: '#4f46e5' })}
+                                            ${createPieSVG(4, 4, { size: 78, fillColor: '#10b981' })}
+                                            ${createPieSVG(1, 4, { size: 78, fillColor: '#10b981' })}
+                                        </div>
+                                        <p class="text-xs font-bold text-emerald-700">یکی از ۳ واحد کامل را به ۴/۴ باز کردیم! حالا ۲ واحد کامل و ۵/۴ داریم!</p>
+                                    </div>
+                                `}
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🔑 گام ۲: تکنیک قرض گرفتن در تفریق عدد مخلوط</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">وقتی کسر اول از کسر دوم کوچک‌تر باشد چه کنیم؟</h3>
+                                <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs sm:text-sm space-y-1.5">
+                                    <p>در عبارت ${ktx('3\\frac{1}{4} - 1\\frac{3}{4}')} چون ${ktx('\\frac{1}{4} < \\frac{3}{4}')} است، <b>۱ واحد از ۳ برمی‌داریم</b> (می‌شود ۲) و آن ۱ واحد را به صورت ${ktx('\\frac{4}{4}')} به ${ktx('\\frac{1}{4}')} اضافه می‌کنیم:</p>
+                                    <div class="text-center">${ktx('3\\frac{1}{4} = 2 + \\frac{4}{4} + \\frac{1}{4} = 2\\frac{5}{4}')}</div>
+                                    <div class="text-center">${ktx('2\\frac{5}{4} - 1\\frac{3}{4} = 1\\frac{2}{4} = 1\\frac{1}{2}', true)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `${slideHTML} ${renderSlideNav('c4Slide', slidesCount)}`;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: جمع دو عدد مخلوط با مخرج‌های نامساوی',
+                        visual: createMultiPieSVG(25, 6, { size: 72 }),
+                        desc: `محاسبه ${ktx('2\\frac{1}{2} + 1\\frac{2}{3}')}:
+                               <br>• با مخرج مشترک ۶ هم‌مخرج می‌کنیم: ${ktx('2\\frac{3}{6} + 1\\frac{4}{6} = 3\\frac{7}{6}')}
+                               <br>• چون ${ktx('\\frac{7}{6} = 1\\frac{1}{6}')} است، حاصل نهایی برابر است با: ${ktx('4\\frac{1}{6}', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: تفریق عدد مخلوط از یک عدد صحیح کامل',
+                        visual: createMultiPieSVG(7, 3, { size: 80 }),
+                        desc: `محاسبه ${ktx('4 - 1\\frac{2}{3}')}:
+                               <br>• از عدد ۴ یک واحد باز می‌کنیم و به شکل ${ktx('3\\frac{3}{3}')} می‌نویسیم:
+                               <br>${ktx('4 - 1\\frac{2}{3} = 3\\frac{3}{3} - 1\\frac{2}{3} = 2\\frac{1}{3}', true)}`
+                    },
+                    {
+                        title: 'مثال ۳: تفریق دو عدد مخلوط با باز کردن واحد و هم‌مخرج کردن',
+                        visual: createPieSVG(5, 6, { size: 110, fillColor: '#8b5cf6' }),
+                        desc: `محاسبه ${ktx('3\\frac{1}{6} - 1\\frac{2}{3}')}:
+                               <br>• ابتدا هم‌مخرج می‌کنیم: ${ktx('3\\frac{1}{6} - 1\\frac{4}{6}')}
+                               <br>• یک واحد از ۳ قرض می‌گیریم (${ktx('2\\frac{7}{6}')}): ${ktx('2\\frac{7}{6} - 1\\frac{4}{6} = 1\\frac{3}{6} = 1\\frac{1}{2}', true)}`
+                    }
+                ];
+                renderExamplesView(container, 'c4ExampleIdx', examples);
+            } else {
+                const questions = [
+                    {
+                        title: 'سوال ۱: حاصل جمع دو عدد مخلوط زیر کدام است؟',
+                        formula: '2\\frac{3}{4} + 1\\frac{3}{4} = ?',
+                        visual: createMultiPieSVG(18, 4, { size: 72 }),
+                        options: [
+                            { label: '3\\frac{6}{8}', isKtx: true, ok: false, hint: 'مخرج‌ها با هم جمع نمی‌شوند!' },
+                            { label: '4\\frac{2}{4}', isKtx: true, ok: true, msg: 'آفرین! ۳ و ۶/۴ می‌شود که ۶/۴ برابر ۱ و ۲/۴ است، پس در مجموع ۴ و ۲/۴ می‌شود.' },
+                            { label: '3\\frac{2}{4}', isKtx: true, ok: false, hint: '۱ واحد کاملِ ۶/۴ را باید به عدد صحیح ۳ اضافه کنی تا بشود ۴!' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۲: اگر از عدد مخلوط زیر یک واحد کامل را باز کنیم، به چه شکلی نوشته می‌شود؟',
+                        formula: '5\\frac{2}{7} = 4\\frac{\\square}{7}',
+                        visual: createPieSVG(7, 7, { size: 100, fillColor: '#6366f1' }),
+                        options: [
+                            { label: '۹', isKtx: false, ok: true, msg: 'فوق‌العاده! یک واحد کامل یعنی ۷/۷ که با ۲/۷ جمع شود ۹/۷ می‌شود.' },
+                            { label: '۷', isKtx: false, ok: false, hint: '۷/۷ را باید با ۲/۷ قبلی جمع ببندی (۷ + ۲ = ۹).' },
+                            { label: '۱۲', isKtx: false, ok: false, hint: 'فقط ۱ واحد (یعنی ۷/۷) باز کرده‌ایم: ۷ به علاوه ۲ برابر با ۹ است.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۳: حاصل تفریق زیر کدام است؟',
+                        formula: '4\\frac{1}{5} - 2\\frac{3}{5} = ?',
+                        visual: createMultiPieSVG(8, 5, { size: 82 }),
+                        options: [
+                            { label: '2\\frac{2}{5}', isKtx: true, ok: false, hint: '۱/۵ از ۳/۵ کوچک‌تر است! اول ۴ و ۱/۵ را به ۳ و ۶/۵ تبدیل کن.' },
+                            { label: '1\\frac{3}{5}', isKtx: true, ok: true, msg: 'احسنت! ۳ و ۶/۵ منهای ۲ و ۳/۵ دقیقاً برابر با ۱ و ۳/۵ است.' },
+                            { label: '1\\frac{2}{5}', isKtx: true, ok: false, hint: '۶ منهای ۳ در صورت کسر برابر با ۳ می‌شود!' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۴: حاصل تفریق یک عدد مخلوط از عدد صحیح کدام است؟',
+                        formula: '3 - 1\\frac{1}{4} = ?',
+                        visual: createMultiPieSVG(7, 4, { size: 82 }),
+                        options: [
+                            { label: '2\\frac{1}{4}', isKtx: true, ok: false, hint: 'عدد ۳ را به صورت ۲ و ۴/۴ بنویس و سپس ۱ و ۱/۴ را از آن کم کن!' },
+                            { label: '1\\frac{3}{4}', isKtx: true, ok: true, msg: 'عالیه! ۲ و ۴/۴ منهای ۱ و ۱/۴ برابر با ۱ و ۳/۴ است.' }
+                        ]
+                    }
+                ];
+                renderQuizView(container, 3, 'c4QuizIdx', questions);
+            }
+        }
+
+        /* ==========================================================================
+           ۱۲. رندر فصل ۵: ضرب کسرها و عددهای مخلوط (درس ۳ و ۵ پنجم)
+           ========================================================================== */
+        function renderChapter5() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 3;
+                let slideHTML = '';
+
+                if (state.c5Slide === 0) {
+                    const a = state.c5MulN1, b = state.c5MulD1, c = state.c5MulN2, d = state.c5MulD2;
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-2.5 border border-slate-200 h-full space-y-1.5">
+                                <div id="c5-grid-svg">${createAreaGridSVG(a, b, c, d, 145)}</div>
+                                <div id="c5-grid-desc" class="text-xs font-bold text-emerald-800">
+                                    خانه سبز خال‌دار (مشترک): <b>${toFa(a * c)}</b> خانه از کل <b>${toFa(b * d)}</b> خانه مساوی!
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🟩 گام ۱: مدل مساحتی ضرب دو کسر</span>
+                                <h3 class="text-xs sm:text-base font-black text-slate-800">قانون ضرب کسرها: صورت در صورت، مخرج در مخرج!</h3>
+                                <div id="c5-grid-formula" class="text-center">${ktx(`\\frac{${a}}{${b}} \\times \\frac{${c}}{${d}} = \\frac{${a} \\times ${c}}{${b} \\times ${d}} = \\frac{${a * c}}{${b * d}}`, true)}</div>
+                                <div class="grid grid-cols-2 gap-2 bg-white p-2 rounded-xl border text-[11px]">
+                                    <div>
+                                        <label class="font-bold text-sky-700 block">صورت کسر اول (ستون):</label>
+                                        <input id="c5-n1-inp" type="range" min="1" max="${b}" value="${a}" oninput="updateC5AreaGrid(this.value,null,null,null)" class="w-full">
+                                    </div>
+                                    <div>
+                                        <label class="font-bold text-sky-900 block">مخرج کسر اول:</label>
+                                        <input type="range" min="2" max="5" value="${b}" oninput="updateC5AreaGrid(null,this.value,null,null)" class="w-full">
+                                    </div>
+                                    <div>
+                                        <label class="font-bold text-amber-600 block">صورت کسر دوم (سطر):</label>
+                                        <input id="c5-n2-inp" type="range" min="1" max="${d}" value="${c}" oninput="updateC5AreaGrid(null,null,this.value,null)" class="w-full">
+                                    </div>
+                                    <div>
+                                        <label class="font-bold text-amber-800 block">مخرج کسر دوم:</label>
+                                        <input type="range" min="2" max="5" value="${d}" oninput="updateC5AreaGrid(null,null,null,this.value)" class="w-full">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.c5Slide === 1) {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <div class="p-2.5 rounded-xl bg-white border w-full text-center space-y-1">
+                                    <span class="text-xs font-extrabold text-indigo-700">حالت اول: ضرب عدد در کسر (پرش روی محور)</span>
+                                    <div>${ktx('3 \\times \\frac{2}{7} = \\frac{3 \\times 2}{7} = \\frac{6}{7}')}</div>
+                                    ${createExtendedNumberLineSVG(6, 7, 1, { jumpSize: 2 })}
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🔍 گام ۲: تفاوت مفهومی «عدد × کسر» با «کسر × عدد»</span>
+                                <div class="p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 text-xs sm:text-sm space-y-1.5">
+                                    <p>• <b>ضرب عدد در کسر (${ktx('3 \\times \\frac{1}{2}')}):</b> یعنی <b>۳ تا یک‌دوم</b> (${ktx('\\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2}')}).</p>
+                                    <p>• <b>ضرب کسر در عدد (${ktx('\\frac{1}{2} \\times 3')}):</b> یعنی <b>یک‌دوم (نصف) از یک دسته ۳ تایی</b>!</p>
+                                    <p class="text-emerald-800 font-bold">📌 در محاسبه، به هر عدد طبیعی مخرج ۱ می‌دهیم: ${ktx('4 \\times \\frac{2}{9} = \\frac{4}{1} \\times \\frac{2}{9} = \\frac{8}{9}')}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-violet-50/70 rounded-2xl p-3 border border-violet-200 h-full space-y-2 text-center">
+                                <span class="bg-violet-600 text-white px-3 py-1 rounded-full text-xs font-black">۱. تکنیک ساده‌کردن قبل از ضرب</span>
+                                <div>${ktx('\\frac{\\cancel{4}{1}}{\\cancel{9}{3}} \\times \\frac{\\cancel{3}{1}}{\\cancel{8}{2}} = \\frac{1 \\times 1}{3 \\times 2} = \\frac{1}{6}', true)}</div>
+                                <p class="text-xs text-slate-600">۴ با ۸ (بر ۴) و ۳ با ۹ (بر ۳) ساده شدند!</p>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🚀 گام ۳: قانون طلایی ضرب عددهای مخلوط (درس ۵ پنجم)</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">در ضرب عددهای مخلوط، <span class="text-rose-600 underline">حتماً ابتدا آن‌ها را به کسر بزرگ‌تر از واحد تبدیل کن!</span></h3>
+                                <div class="text-center py-1">
+                                    ${ktx('1\\frac{1}{3} \\times 2\\frac{1}{4} = \\frac{\\cancel{4}{1}}{\\cancel{3}{1}} \\times \\frac{\\cancel{9}{3}}{\\cancel{4}{1}} = \\frac{3}{1} = 3', true)}
+                                </div>
+                                <p class="text-xs text-rose-800 bg-rose-50 p-2 rounded-xl border border-rose-200 font-bold">
+                                    ❌ هشدار مهم: در ضرب عدد مخلوط، هرگز عدد صحیح را جداگانه در عدد صحیح ضرب نکنید!
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `${slideHTML} ${renderSlideNav('c5Slide', slidesCount)}`;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: ضرب دو کسر با ساده‌کردن قبلی',
+                        visual: createAreaGridSVG(2, 3, 3, 5, 130),
+                        desc: `محاسبه ${ktx('\\frac{2}{3} \\times \\frac{3}{5}')}:
+                               <br>• عدد ۳ در صورت کسر دوم با عدد ۳ در مخرج کسر اول ساده می‌شود:
+                               <br>${ktx('\\frac{2}{\\cancel{3}{1}} \\times \\frac{\\cancel{3}{1}}{5} = \\frac{2}{5}', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: ضرب عدد مخلوط در کسر',
+                        visual: createMultiPieSVG(9, 4, { size: 80 }),
+                        desc: `محاسبه ${ktx('2\\frac{1}{4} \\times \\frac{2}{3}')}:
+                               <br>• ابتدا عدد مخلوط را به کسر تبدیل می‌کنیم (${ktx('2\\frac{1}{4} = \\frac{9}{4}')}):
+                               <br>${ktx('\\frac{\\cancel{9}{3}}{\\cancel{4}{2}} \\times \\frac{\\cancel{2}{1}}{\\cancel{3}{1}} = \\frac{3}{2} = 1\\frac{1}{2}', true)}`
+                    },
+                    {
+                        title: 'مثال ۳: مساحت مستطیل با ابعاد کسری',
+                        visual: createBarSVG(3, 4, { width: 200, height: 50, fillColor: '#10b981' }),
+                        desc: `مساحت باغچه‌ای به طول ${ktx('2\\frac{1}{2}')} متر و عرض ${ktx('1\\frac{1}{5}')} متر چقدر است؟
+                               <br>${ktx('2\\frac{1}{2} \\times 1\\frac{1}{5} = \\frac{\\cancel{5}{1}}{\\cancel{2}{1}} \\times \\frac{\\cancel{6}{3}}{\\cancel{5}{1}} = 3 \\text{ متر مربع}', true)}`
+                    }
+                ];
+                renderExamplesView(container, 'c5ExampleIdx', examples);
+            } else {
+                const questions = [
+                    {
+                        title: 'سوال ۱: شکل شطرنجی روبه‌رو کدام عبارت ضرب را نشان می‌دهد؟',
+                        formula: '? \\times ? = \\frac{6}{12}',
+                        visual: createAreaGridSVG(2, 3, 3, 4, 120),
+                        options: [
+                            { label: '\\frac{2}{3} \\times \\frac{3}{4}', isKtx: true, ok: true, msg: 'آفرین! ۲ ستون از ۳ ستون و ۳ سطر از ۴ سطر رنگ شده‌اند.' },
+                            { label: '\\frac{1}{3} \\times \\frac{3}{4}', isKtx: true, ok: false, hint: 'به تعداد ستون‌های رنگی دقت کن: ۲ ستون از ۳ ستون رنگ شده است.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۲: حاصل ضرب زیر پس از ساده‌کردن کدام است؟',
+                        formula: '\\frac{5}{8} \\times \\frac{4}{15} = ?',
+                        visual: createPieSVG(1, 6, { size: 105, fillColor: '#10b981' }),
+                        options: [
+                            { label: '\\frac{1}{6}', isKtx: true, ok: true, msg: 'فوق‌العاده! ۵ با ۱۵ (می‌شود ۳) و ۴ با ۸ (می‌شود ۲) ساده شده و ۱/۶ به دست می‌آید.' },
+                            { label: '\\frac{1}{12}', isKtx: true, ok: false, hint: '۵ با ۱۵ ساده شود ۳ می‌ماند و ۴ با ۸ ساده شود ۲ می‌ماند: ۲ ضربدر ۳ می‌شود ۶.' },
+                            { label: '\\frac{9}{23}', isKtx: true, ok: false, hint: 'در ضرب کسرها صورت در صورت و مخرج در مخرج ضرب می‌شود، نه جمع!' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۳: حاصل ضرب دو عدد مخلوط زیر کدام است؟',
+                        formula: '1\\frac{1}{2} \\times 1\\frac{1}{3} = ?',
+                        visual: createMultiPieSVG(6, 3, { size: 80 }),
+                        options: [
+                            { label: '1\\frac{1}{6}', isKtx: true, ok: false, hint: 'اشتباه رایج! هرگز صحیح را در صحیح ضرب نکن؛ اول به ۳/۲ و ۴/۳ تبدیل کن!' },
+                            { label: '2', isKtx: true, ok: true, msg: 'احسنت قهرمان! ۳/۲ ضربدر ۴/۳ برابر با ۱۲/۶ یعنی عدد ۲ کامل است.' },
+                            { label: '2\\frac{1}{6}', isKtx: true, ok: false, hint: '۳/۲ ضربدر ۴/۳ برابر با ۱۲/۶ یعنی دقیقاً ۲ است.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۴: حاصل عبارت زیر برابر با چند است؟',
+                        formula: '6 \\times \\frac{5}{12} = ?',
+                        visual: createMultiPieSVG(5, 2, { size: 75 }),
+                        options: [
+                            { label: '2\\frac{1}{2}', isKtx: true, ok: true, msg: 'عالیه! ۶ با مخرج ۱۲ ساده می‌شود (می‌ماند ۲) و ۵/۲ برابر با ۲ و یک‌دوم است.' },
+                            { label: '\\frac{5}{2}', isKtx: true, ok: false, hint: 'گزینه اول ۲ و ۱/۲ همان ۵/۲ به صورت عدد مخلوط است!' }
+                        ]
+                    }
+                ];
+                renderQuizView(container, 4, 'c5QuizIdx', questions);
+            }
+        }
+
+        /* ==========================================================================
+           ۱۳. رندر فصل ۶: تقسیم کسرها و عددهای مخلوط (درس ۴ پنجم + پل ششم)
+           ========================================================================== */
+        function renderChapter6() {
+            const container = document.getElementById('stage-container');
+
+            if (state.mode === 'learn') {
+                const slidesCount = 3;
+                let slideHTML = '';
+
+                if (state.c6Slide === 0) {
+                    const w = state.c6DivWhole, d = state.c6DivUnitD;
+                    const ans = w * d;
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-3 border border-slate-200 h-full space-y-2">
+                                <span class="text-xs font-bold text-slate-700">در ${toFa(w)} واحد کامل چند تا ${ktx(`\\frac{1}{${d}}`)} جا می‌شود؟</span>
+                                ${createExtendedNumberLineSVG(ans, d, w, { jumpSize: 1 })}
+                                <div class="flex gap-2">
+                                    <button onclick="state.c6DivWhole=2;state.c6DivUnitD=3;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c6DivWhole === 2 && state.c6DivUnitD === 3 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۲ ÷ ۱/۳</button>
+                                    <button onclick="state.c6DivWhole=3;state.c6DivUnitD=2;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c6DivWhole === 3 && state.c6DivUnitD === 2 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۳ ÷ ۱/۲</button>
+                                    <button onclick="state.c6DivWhole=2;state.c6DivUnitD=4;playSound('pop');renderStage();" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${state.c6DivWhole === 2 && state.c6DivUnitD === 4 ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600' : 'bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50'}">۲ ÷ ۱/۴</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">➗ گام ۱: مفهوم خط کسری و تقسیم عدد بر کسر</span>
+                                <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-200 text-xs sm:text-sm space-y-1.5">
+                                    <p>• <b>خط کسری همان علامت تقسیم است:</b> ${ktx('3 \\div 4 = \\frac{3}{4}')}</p>
+                                    <p>• <b>تقسیم کسر بر عدد طبیعی:</b> ${ktx('\\frac{4}{5} \\div 2 = \\frac{2}{5}')} (نصف کردن ۴ تکه می‌شود ۲ تکه)</p>
+                                    <p>• <b>تقسیم عدد بر کسر:</b> همان‌طور که روی محور می‌بینی، در ${toFa(w)} واحد کامل، دقیقاً <b>${toFa(ans)}</b> تا ${ktx(`\\frac{1}{${d}}`)} وجود دارد: ${ktx(`${w} \\div \\frac{1}{${d}} = ${ans}`, true)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.c6Slide === 1) {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-indigo-50/70 rounded-2xl p-3 border border-indigo-200 h-full space-y-2 text-center">
+                                <span class="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-black">روش کتاب پایه پنجم: هم‌مخرج کردن دو کسر</span>
+                                <div>${ktx('\\frac{3}{4} \\div \\frac{2}{5} = \\frac{15}{20} \\div \\frac{8}{20} = 15 \\div 8 = \\frac{15}{8} = 1\\frac{7}{8}', true)}</div>
+                                <p class="text-xs text-slate-600">وقتی مخرج‌ها یکسان شدند (۲۰)، کافی است صورت اول (۱۵) را بر صورت دوم (۸) تقسیم کنیم!</p>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">📘 گام ۲: تقسیم دو کسر به روش هم‌مخرج کردن</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">چرا وقتی مخرج‌ها برابرند فقط صورت‌ها را تقسیم می‌کنیم؟</h3>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    چون در ${ktx('\\frac{6}{7} \\div \\frac{2}{7}')} می‌پرسیم: «در ۶ تا یک‌هفتم، چند تا ۲ تا یک‌هفتم جا می‌شود؟» که همان ${ktx('6 \\div 2 = 3')} است!
+                                    <br>📌 در <b>تقسیم عددهای مخلوط</b> نیز ابتدا هر دو را به کسر بزرگ‌تر از واحد تبدیل می‌کنیم.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    slideHTML = `
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                            <div class="flex flex-col items-center justify-center bg-emerald-50/70 rounded-2xl p-3 border border-emerald-200 h-full space-y-2 text-center">
+                                <span class="bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-black">پل ارتباطی با پایه ششم: ضرب در معکوس کسر دوم!</span>
+                                <div>${ktx('\\frac{3}{4} \\div \\frac{2}{5} = \\frac{3}{4} \\times \\frac{5}{2} = \\frac{15}{8} = 1\\frac{7}{8}', true)}</div>
+                                <p class="text-xs text-emerald-900 font-bold">می‌بینی؟ هر دو روش (هم‌مخرج کردن و ضرب در معکوس) دقیقاً به یک جواب (${ktx('\\frac{15}{8}')}) می‌رسند!</p>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-2 px-2">
+                                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">🌟 گام ۳: معکوس کسر و تکنیک پایه ششم</span>
+                                <h3 class="text-sm sm:text-base font-black text-slate-800">کسر اول را بنویس، تقسیم را به ضرب تبدیل کن و کسر دوم را معکوس (وارونه) کن!</h3>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    • <b>معکوس یک کسر</b> یعنی جای صورت و مخرج آن را عوض کنیم (مثلاً معکوس ${ktx('\\frac{2}{5}')} می‌شود ${ktx('\\frac{5}{2}')}).
+                                    <br>• اگر عدد مخلوط داشتیم، <b>اول به کسر تبدیل می‌کنیم</b> و بعد کسر دوم را معکوس می‌کنیم.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `${slideHTML} ${renderSlideNav('c6Slide', slidesCount)}`;
+            } else if (state.mode === 'examples') {
+                const examples = [
+                    {
+                        title: 'مثال ۱: تقسیم دو کسر با مخرج مساوی',
+                        visual: createBarSVG(6, 7, { width: 210, height: 48, fillColor: '#6366f1' }),
+                        desc: `محاسبه ${ktx('\\frac{6}{7} \\div \\frac{2}{7}')}:
+                               <br>• چون مخرج‌ها برابرند، صورت اول را بر صورت دوم تقسیم می‌کنیم:
+                               <br>${ktx('\\frac{6}{7} \\div \\frac{2}{7} = 6 \\div 2 = 3', true)}`
+                    },
+                    {
+                        title: 'مثال ۲: تقسیم دو کسر با مخرج نامساوی',
+                        visual: createPieSVG(5, 6, { size: 110, fillColor: '#10b981' }),
+                        desc: `محاسبه ${ktx('\\frac{5}{6} \\div \\frac{1}{3}')}:
+                               <br>• روش اول (هم‌مخرج کردن): ${ktx('\\frac{5}{6} \\div \\frac{2}{6} = \\frac{5}{2} = 2\\frac{1}{2}')}
+                               <br>• روش دوم (ضرب در معکوس): ${ktx('\\frac{5}{6} \\times \\frac{3}{1} = \\frac{5}{2} = 2\\frac{1}{2}')}`
+                    },
+                    {
+                        title: 'مثال ۳: تقسیم عدد مخلوط بر کسر',
+                        visual: createMultiPieSVG(9, 4, { size: 80 }),
+                        desc: `در یک بطری ${ktx('2\\frac{1}{4}')} لیتر آب است. با آن چند لیوان ${ktx('\\frac{3}{4}')} لیتری پر می‌شود؟
+                               <br>${ktx('2\\frac{1}{4} \\div \\frac{3}{4} = \\frac{9}{4} \\div \\frac{3}{4} = 9 \\div 3 = 3 \\text{ لیوان}', true)}`
+                    }
+                ];
+                renderExamplesView(container, 'c6ExampleIdx', examples);
+            } else {
+                const questions = [
+                    {
+                        title: 'سوال ۱: در ۴ واحد کامل، چند تا یک‌سوم جا می‌شود؟',
+                        formula: '4 \\div \\frac{1}{3} = ?',
+                        visual: createExtendedNumberLineSVG(12, 3, 4, { jumpSize: 1 }),
+                        options: [
+                            { label: '۱۲', isKtx: false, ok: true, msg: 'آفرین! در هر ۱ واحد ۳ تا یک‌سوم هست، پس در ۴ واحد ۱۲ تا یک‌سوم جا می‌شود.' },
+                            { label: '\\frac{4}{3}', isKtx: true, ok: false, hint: '۴ ضربدر ۱/۳ می‌شود ۴/۳، اما اینجا ۴ تقسیم بر ۱/۳ است!' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۲: حاصل تقسیم زیر کدام است؟',
+                        formula: '\\frac{8}{9} \\div \\frac{2}{9} = ?',
+                        visual: createBarSVG(8, 9, { width: 220, height: 44, fillColor: '#6366f1' }),
+                        options: [
+                            { label: '\\frac{4}{9}', isKtx: true, ok: false, hint: 'وقتی دو کسر هم‌مخرج را بر هم تقسیم می‌کنیم، حاصل برابر با تقسیم صورت‌ها (۸ تقسیم بر ۲) است!' },
+                            { label: '۴', isKtx: false, ok: true, msg: 'فوق‌العاده! در ۸ نهم دقیقاً ۴ دسته ۲ نهمی وجود دارد (۸ ÷ ۲ = ۴).' },
+                            { label: '۶', isKtx: false, ok: false, hint: '۸ تقسیم بر ۲ برابر با ۴ است.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۳: حاصل تقسیم دو کسر زیر برابر با کدام گزینه است؟',
+                        formula: '\\frac{2}{3} \\div \\frac{3}{5} = ?',
+                        visual: createMultiPieSVG(10, 9, { size: 82 }),
+                        options: [
+                            { label: '\\frac{6}{15}', isKtx: true, ok: false, hint: 'این حاصل ضرب است! برای تقسیم، هم‌مخرج کن (۱۰/۱۵ ÷ ۹/۱۵) یا در معکوس (۵/۳) ضرب کن.' },
+                            { label: '1\\frac{1}{9}', isKtx: true, ok: true, msg: 'احسنت! ۱۰/۱۵ تقسیم بر ۹/۱۵ می‌شود ۱۰/۹ که برابر با ۱ و یک‌نهم است.' },
+                            { label: '\\frac{9}{10}', isKtx: true, ok: false, hint: 'صورت اول (۱۰) بر صورت دوم (۹) تقسیم می‌شود: ۱۰/۹.' }
+                        ]
+                    },
+                    {
+                        title: 'سوال ۴: طنابی به طول ۳ و یک‌دوم متر را به تکه‌های ۱/۲ متری تقسیم کرده‌ایم. چند تکه می‌شود؟',
+                        formula: '3\\frac{1}{2} \\div \\frac{1}{2} = ?',
+                        visual: createMultiPieSVG(7, 2, { size: 75 }),
+                        options: [
+                            { label: '۶ تکه', isKtx: false, ok: false, hint: '۳ و ۱/۲ برابر با ۷/۲ است!' },
+                            { label: '۷ تکه', isKtx: false, ok: true, msg: 'تبریک قهرمان! ۷/۲ تقسیم بر ۱/۲ می‌شود ۷ تکه؛ کل دوره جامع کسرها را با موفقیت فتح کردی!' }
+                        ]
+                    }
+                ];
+                renderQuizView(container, 5, 'c6QuizIdx', questions);
+            }
+        }
+
+        /* ==========================================================================
+           ۱۴. قالب‌های مشترک ناوبری اسلایدها، مثال‌ها و آزمون‌ها
+           ========================================================================== */
+        function renderSlideNav(slideKey, slidesCount) {
+            const cur = state[slideKey];
+            return `
+                <div class="shrink-0 pt-1.5 border-t border-slate-100 flex flex-col items-center gap-1">
+                    <div class="w-full flex items-center justify-between gap-2">
+                        <button onclick="if(state.${slideKey}>0){state.${slideKey}--; playSound('click'); renderStage();}" ${cur === 0 ? 'disabled' : ''} class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold ${cur === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'}">
+                            اسلاید قبلی ▶
+                        </button>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500">
+                            آموزش ${toFa(cur + 1)} از ${toFa(slidesCount)}
+                        </span>
+                        <button onclick="if(state.${slideKey}<${slidesCount - 1}){state.${slideKey}++; playSound('click'); renderStage();}else{selectMode('examples');}" class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm">
+                            ${cur < slidesCount - 1 ? '◀ اسلاید بعدی' : '◀ مشاهده مثال‌ها 💡'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderExamplesView(container, exKey, examples) {
+            const idx = state[exKey];
+            const ex = examples[idx];
+            container.innerHTML = `
+                <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 items-center overflow-y-auto custom-scroll pr-1">
+                    <div class="flex flex-col items-center justify-center bg-indigo-50/40 rounded-2xl p-3 border border-indigo-100 h-full">
+                        ${ex.visual}
+                    </div>
+                    <div class="flex flex-col justify-center space-y-2.5 px-2">
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold w-fit">💡 مثال ${toFa(idx + 1)} از ${toFa(examples.length)}</span>
+                        <h3 class="text-sm sm:text-lg font-black text-indigo-950">${ex.title}</h3>
+                        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-7 text-slate-700">
+                            ${ex.desc}
+                        </div>
+                    </div>
+                </div>
+                <div class="shrink-0 pt-1.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <button onclick="if(state.${exKey}>0){state.${exKey}--; playSound('click'); renderStage();}" ${idx === 0 ? 'disabled' : ''} class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold ${idx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                        مثال قبلی ▶
+                    </button>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-500">مثال ${toFa(idx + 1)} از ${toFa(examples.length)}</span>
+                    <button onclick="if(state.${exKey}<${examples.length - 1}){state.${exKey}++; playSound('click'); renderStage();}else{selectMode('quiz');}" class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm">
+                        ${idx < examples.length - 1 ? '◀ مثال بعدی' : '◀ ورود به آزمون 🎮'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderQuizView(container, chapIdx, qKey, questions) {
+            const qIdx = state[qKey];
+            const key = `${chapIdx}-${qIdx}`;
+            const q = questions[qIdx];
+            const fbId = `quiz-fb-${chapIdx}`;
+
+            container.innerHTML = `
+                <div class="flex-1 min-h-0 flex flex-col justify-center items-center text-center space-y-2">
+                    <h3 class="text-xs sm:text-base font-black text-slate-800">${q.title}</h3>
+                    <div>${ktx(q.formula, true)}</div>
+                    <div class="my-0.5">${q.visual}</div>
+                    <div class="flex flex-wrap justify-center gap-2.5 pt-1">
+                        ${q.options.map(opt => `
+                            <button onclick="${opt.ok ? `rewardAnswer('${key}','${fbId}','${opt.msg}')` : `wrongAnswer('${fbId}','${opt.hint}')`}" class="px-4 py-1.5 rounded-xl border-2 border-slate-200 hover:border-indigo-500 bg-white font-black text-xs sm:text-sm shadow-sm transition active:scale-95">
+                                ${(opt.isKtx || /\\(?:frac|mixed|text|times|div|cancel|[0-9۰-۹]+\\frac)/.test(opt.label)) ? ktx(opt.label) : toFa(opt.label)}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="${fbId}" class="mt-1 min-h-[32px] flex items-center justify-center text-xs text-slate-400">روی گزینه درست کلیک کن!</div>
+                </div>
+                <div class="shrink-0 pt-1.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <button onclick="if(state.${qKey}>0){state.${qKey}--; playSound('click'); renderStage();}" ${qIdx === 0 ? 'disabled' : ''} class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold ${qIdx === 0 ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-700'}">
+                        سوال قبلی ▶
+                    </button>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-500">تمرین ${toFa(qIdx + 1)} از ${toFa(questions.length)}</span>
+                    <button onclick="if(state.${qKey}<${questions.length - 1}){state.${qKey}++; playSound('click'); renderStage();}else if(${chapIdx}<5){selectChapter(${chapIdx + 1});}else{playSound('success'); showReportModal();}" class="px-3 py-1 rounded-xl text-xs sm:text-sm font-bold ${qIdx === questions.length - 1 && chapIdx === 5 ? 'bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white shadow-md animate-pulse' : 'bg-indigo-600 text-white'}">
+                        ${qIdx < questions.length - 1 ? '◀ سوال بعدی' : (chapIdx < 5 ? `◀ رفتن به بخش ${toFa(chapIdx + 2)} 🚀` : '◀ مشاهده کارنامه نهایی 🏆')}
+                    </button>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           ۱۵. مدیریت رندر صحنه، پنجره شروع و بارگذاری وابستگی‌ها
+           ========================================================================== */
+        function renderStage() {
+            updateHUD();
+            if (state.chapter === 0) renderChapter1();
+            else if (state.chapter === 1) renderChapter2();
+            else if (state.chapter === 2) renderChapter3();
+            else if (state.chapter === 3) renderChapter4();
+            else if (state.chapter === 4) renderChapter5();
+            else renderChapter6();
+
+            applyPersianDigits(document.getElementById('stage-container'));
+            convertSlashFractionsInDOM(document.getElementById('stage-container'));
+        }
+
+        
+        /* ==========================================================================
+           ۱۴-۲. موتور داده‌ها و رندر کارنامه نهایی دانش‌آموز (Report Card)
+           ========================================================================== */
+        function getCourseChaptersData() {
+            return [
+                {
+                    idx: 0,
+                    title: '۱. مفهوم کسر و عدد مخلوط',
+                    questions: [
+                        { id: 0, title: 'تبدیل عدد مخلوط ۳ و ۲/۵ به کسر بزرگ‌تر از واحد', formula: '3\\frac{2}{5} = ?' },
+                        { id: 1, title: 'تبدیل کسر نوزده ششم (۱۹/۶) به عدد مخلوط', formula: '\\frac{19}{6} = ?' },
+                        { id: 2, title: 'محاسبه کسر از یک مقدار کلامی (۳/۴ از ۲۴ دانش‌آموز)', formula: '\\frac{3}{4} \\text{ از } 24 = ?' },
+                        { id: 3, title: 'تبدیل زمان به عدد مخلوط (ساعت ۲ و ۴۵ دقیقه)', formula: '2 \\text{ ساعت و } 45 \\text{ دقیقه } = ?' }
+                    ]
+                },
+                {
+                    idx: 1,
+                    title: '۲. تساوی، ساده‌کردن و مقایسه کسرها',
+                    questions: [
+                        { id: 0, title: 'ساده‌کردن کسر هجده بیست‌وچهارم (۱۸/۲۴) به کسر تحویل‌ناپذیر', formula: '\\frac{18}{24} = ?' },
+                        { id: 1, title: 'پیدا کردن عدد مجهول در تساوی کسرها', formula: '\\frac{12}{16} = \\frac{\\square}{20}' },
+                        { id: 2, title: 'مقایسه دو کسر با مخرج نامساوی (هم‌مخرج کردن)', formula: '\\frac{3}{4} \\; \\square \\; \\frac{5}{7}' },
+                        { id: 3, title: 'تشخیص بزرگ‌ترین کسر از بین گزینه‌ها', formula: '?' }
+                    ]
+                },
+                {
+                    idx: 2,
+                    title: '۳. جمع و تفریق کسرها',
+                    questions: [
+                        { id: 0, title: 'جمع دو کسر با مخرج مساوی و تبدیل به کسر مساوی', formula: '\\frac{2}{5} + \\frac{3}{10} = ?' },
+                        { id: 1, title: 'تفریق دو کسر با مخرج نامساوی', formula: '\\frac{5}{6} - \\frac{1}{4} = ?' },
+                        { id: 2, title: 'جمع دو کسر با مخرج نامساوی و تبدیل به عدد مخلوط', formula: '\\frac{3}{4} + \\frac{2}{3} = ?' },
+                        { id: 3, title: 'مسئله کاربردی کسرهای زمین کشاورزی', formula: '1 - (\\frac{1}{3} + \\frac{2}{5}) = ?' }
+                    ]
+                },
+                {
+                    idx: 3,
+                    title: '۴. عملیات روی عددهای مخلوط',
+                    questions: [
+                        { id: 0, title: 'جمع دو عدد مخلوط و تبدیل کسر بزرگ‌تر از واحد', formula: '2\\frac{3}{4} + 1\\frac{3}{4} = ?' },
+                        { id: 1, title: 'باز کردن یک واحد کامل از عدد صحیح عدد مخلوط', formula: '5\\frac{2}{7} = 4\\frac{\\square}{7}' },
+                        { id: 2, title: 'تفریق دو عدد مخلوط با تکنیک قرض گرفتن از واحد کامل', formula: '4\\frac{1}{5} - 2\\frac{3}{5} = ?' },
+                        { id: 3, title: 'تفریق عدد مخلوط از یک عدد صحیح', formula: '3 - 1\\frac{1}{4} = ?' }
+                    ]
+                },
+                {
+                    idx: 4,
+                    title: '۵. ضرب کسرها و عددهای مخلوط',
+                    questions: [
+                        { id: 0, title: 'تشخیص عبارت ضرب از روی شکل شطرنجی (مدل مساحتی)', formula: '? \\times ? = \\frac{6}{12}' },
+                        { id: 1, title: 'ضرب دو کسر همراه با تکنیک ساده‌کردن قبل از ضرب', formula: '\\frac{5}{8} \\times \\frac{4}{15} = ?' },
+                        { id: 2, title: 'قانون طلایی ضرب عددهای مخلوط (تبدیل به کسر قبل از ضرب)', formula: '1\\frac{1}{2} \\times 1\\frac{1}{3} = ?' },
+                        { id: 3, title: 'ضرب عدد طبیعی در کسر', formula: '6 \\times \\frac{5}{12} = ?' }
+                    ]
+                },
+                {
+                    idx: 5,
+                    title: '۶. مفهوم تقسیم و محاسبات آن',
+                    questions: [
+                        { id: 0, title: 'مفهوم تقسیم عدد بر کسر واحد روی محور اعداد', formula: '4 \\div \\frac{1}{3} = ?' },
+                        { id: 1, title: 'تقسیم دو کسر با مخرج‌های مساوی', formula: '\\frac{8}{9} \\div \\frac{2}{9} = ?' },
+                        { id: 2, title: 'تقسیم دو کسر با تکنیک ضرب در معکوس کسر دوم', formula: '\\frac{2}{3} \\div \\frac{3}{5} = ?' },
+                        { id: 3, title: 'مسئله کلامی تقسیم طناب (عدد مخلوط بر کسر)', formula: '3\\frac{1}{2} \\div \\frac{1}{2} = ?' }
+                    ]
+                }
+            ];
+        }
+
+        function updateStudentNameDisplay() {
+            const name = (state.studentName && state.studentName.trim()) ? state.studentName.trim() : 'دانش‌آموز کوشا';
+            const pill = document.getElementById('hud-student-pill');
+            const disp = document.getElementById('student-display-name');
+            if (disp) disp.textContent = name;
+            if (pill) {
+                if (state.studentName && state.studentName.trim()) {
+                    pill.classList.remove('hidden');
+                }
+            }
+        }
+
+        function renderReportCardModal(filter = 'all') {
+            state.reportFilter = filter;
+            const container = document.getElementById('report-card-content');
+            if (!container) return;
+
+            const allChapters = getCourseChaptersData();
+            let totalQ = 0;
+            let solvedQ = 0;
+            let firstUnsolved = null;
+
+            allChapters.forEach(chap => {
+                chap.questions.forEach(q => {
+                    totalQ++;
+                    const key = `${chap.idx}-${q.id}`;
+                    const isOk = !!state.completedQuizzes[key];
+                    if (isOk) {
+                        solvedQ++;
+                    } else if (!firstUnsolved) {
+                        firstUnsolved = { chapIdx: chap.idx, qIdx: q.id, chapTitle: chap.title };
+                    }
+                });
+            });
+
+            const unsolvedQ = totalQ - solvedQ;
+            const pct = Math.min(100, Math.round((solvedQ / totalQ) * 100));
+
+            // سطح ارزیابی توصیفی کارنامه
+            let levelBadge = '';
+            let levelDesc = '';
+            let levelColor = '';
+            if (solvedQ === 24) {
+                levelBadge = '🏆 خیلی خوب و درخشان (عالی)';
+                levelDesc = 'آفرین قهرمان! تو به تمام ۲۴ مهارت کلیدی کسرها مسلط شدی و با آمادگی ۱۰۰٪ وارد پایه ششم می‌شوی!';
+                levelColor = 'from-amber-500 to-yellow-400 text-amber-950 border-amber-300';
+            } else if (solvedQ >= 18) {
+                levelBadge = '🥇 خیلی خوب (مسلط و آماده)';
+                levelDesc = 'عملکردت فوق‌العاده است! تسلط بسیار بالایی بر مباحث کسر داری و آماده یادگیری درس‌های جدید ششم هستی.';
+                levelColor = 'from-indigo-600 to-purple-600 text-white border-indigo-400';
+            } else if (solvedQ >= 12) {
+                levelBadge = '🥈 خوب (قابل قبول با اندکی تمرین)';
+                levelDesc = 'مفاهیم پایه را به خوبی درک کرده‌ای؛ با حل سوالات باقیمانده، به تسلط کامل خواهی رسید!';
+                levelColor = 'from-emerald-600 to-teal-600 text-white border-emerald-400';
+            } else {
+                levelBadge = '🥉 نیاز به تلاش و آموزش بیشتر';
+                levelDesc = 'توصیه می‌شود کارگاه‌های آموزش و مثال‌های حل‌شده را یک‌بار دیگر مرور کنی و به تمرین‌ها پاسخ دهی.';
+                levelColor = 'from-rose-600 to-orange-500 text-white border-rose-400';
+            }
+
+            let todayFa = '';
+            try {
+                todayFa = new Date().toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch(e) {
+                todayFa = 'سال تحصیلی ۱۴۰۵-۱۴۰۶';
+            }
+
+            const studentName = (state.studentName && state.studentName.trim()) ? state.studentName.trim() : 'دانش‌آموز گرامی';
+
+            let html = `
+                <!-- هدر کارنامه -->
+                <div class="shrink-0 border-b border-indigo-100 pb-3 mb-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl sm:text-3xl">📜</span>
+                            <div>
+                                <h2 class="text-sm sm:text-lg font-black text-indigo-950 leading-tight">کارنامه توصیفی دوره جامع یادآوری کسرها</h2>
+                                <p class="text-[10px] sm:text-xs font-bold text-slate-500">پایه ششم ابتدایی | مرور جامع مفاهیم پایه سوم، چهارم و پنجم</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 no-print">
+                            <button onclick="window.print()" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1 transition">
+                                <span>🖨️</span>
+                                <span>چاپ کارنامه</span>
+                            </button>
+                            <button onclick="hideReportModal()" class="w-7 h-7 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-black flex items-center justify-center transition">
+                                ✖
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- کارت مشخصات دانش‌آموز -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-[11px] sm:text-xs">
+                        <div>
+                            <span class="text-slate-500 block">نام دانش‌آموز:</span>
+                            <span class="font-black text-indigo-950 text-xs sm:text-sm">${studentName}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">تاریخ صدور:</span>
+                            <span class="font-extrabold text-slate-800">${todayFa}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">تعداد آزمون‌ها:</span>
+                            <span class="font-extrabold text-slate-800">${toFa(totalQ)} سوال استاندارد</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">امتیاز کل کسب‌شده:</span>
+                            <span class="font-black text-emerald-700">${toFa(solvedQ)} ستاره (${toFa(state.coins)} سکه)</span>
+                        </div>
+                    </div>
+
+                    <!-- ارزیابی نهایی -->
+                    <div class="mt-2.5 p-2.5 rounded-2xl bg-gradient-to-r ${levelColor} border shadow-sm flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-black block">${levelBadge}</span>
+                            <span class="text-[11px] font-bold opacity-90">${levelDesc}</span>
+                        </div>
+                        <div class="text-left font-black text-sm sm:text-base whitespace-nowrap">
+                            ${toFa(pct)}٪ موفقیت
+                        </div>
+                    </div>
+                </div>
+
+                <!-- کارت‌های خلاصه آماری -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                    <div class="bg-indigo-50/80 border border-indigo-200 rounded-xl p-2 text-center">
+                        <span class="text-[10px] font-bold text-indigo-800 block">کل سوالات دوره</span>
+                        <span class="text-base sm:text-lg font-black text-indigo-950">${toFa(totalQ)}</span>
+                    </div>
+                    <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl p-2 text-center">
+                        <span class="text-[10px] font-bold text-emerald-800 block">✅ پاسخ داده‌شده</span>
+                        <span class="text-base sm:text-lg font-black text-emerald-700">${toFa(solvedQ)} سوال</span>
+                    </div>
+                    <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-2 text-center">
+                        <span class="text-[10px] font-bold text-amber-800 block">⏳ باقی‌مانده و حل‌نشده</span>
+                        <span class="text-base sm:text-lg font-black text-amber-700">${toFa(unsolvedQ)} سوال</span>
+                    </div>
+                    <div class="bg-violet-50/80 border border-violet-200 rounded-xl p-2 text-center">
+                        <span class="text-[10px] font-bold text-violet-800 block">امتیاز از کل (درصد)</span>
+                        <span class="text-base sm:text-lg font-black text-violet-900">${toFa(pct)}٪</span>
+                    </div>
+                </div>
+
+                <!-- فیلتر نمایش سوالات (no-print) -->
+                <div class="flex items-center justify-between gap-1 mb-2.5 no-print">
+                    <span class="text-xs font-black text-slate-700">ریز عملکرد به تفکیک سوالات:</span>
+                    <div class="flex items-center gap-1 bg-slate-100 p-0.5 rounded-xl text-[10px] sm:text-xs">
+                        <button onclick="renderReportCardModal('all')" class="px-2 py-0.5 rounded-lg font-bold transition ${filter === 'all' ? 'bg-white text-indigo-700 shadow-sm font-extrabold' : 'text-slate-600'}">همه (${toFa(totalQ)})</button>
+                        <button onclick="renderReportCardModal('solved')" class="px-2 py-0.5 rounded-lg font-bold transition ${filter === 'solved' ? 'bg-emerald-600 text-white shadow-sm font-extrabold' : 'text-slate-600'}">حل‌شده (${toFa(solvedQ)})</button>
+                        <button onclick="renderReportCardModal('unsolved')" class="px-2 py-0.5 rounded-lg font-bold transition ${filter === 'unsolved' ? 'bg-amber-500 text-white shadow-sm font-extrabold' : 'text-slate-600'}">حل‌نشده (${toFa(unsolvedQ)})</button>
+                    </div>
+                </div>
+
+                <!-- لیست فصول و سوالات -->
+                <div class="flex-1 space-y-2.5 pr-0.5">
+            `;
+
+            allChapters.forEach(chap => {
+                const chapQuestions = chap.questions.filter(q => {
+                    const ok = !!state.completedQuizzes[`${chap.idx}-${q.id}`];
+                    if (filter === 'solved') return ok;
+                    if (filter === 'unsolved') return !ok;
+                    return true;
+                });
+
+                if (chapQuestions.length === 0) return;
+
+                const chapSolvedCount = chap.questions.filter(q => state.completedQuizzes[`${chap.idx}-${q.id}`]).length;
+                const isChapAllDone = chapSolvedCount === chap.questions.length;
+
+                html += `
+                    <div class="rounded-2xl border ${isChapAllDone ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200 bg-slate-50/50'} p-2.5">
+                        <div class="flex items-center justify-between pb-1.5 border-b border-slate-200/80 mb-2">
+                            <span class="text-xs sm:text-sm font-black text-indigo-950">${chap.title}</span>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${isChapAllDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200/80 text-slate-700'}">
+                                ${toFa(chapSolvedCount)} از ${toFa(chap.questions.length)} سوال
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                `;
+
+                chapQuestions.forEach(q => {
+                    const isOk = !!state.completedQuizzes[`${chap.idx}-${q.id}`];
+                    html += `
+                        <div class="flex items-center justify-between gap-1.5 p-2 rounded-xl border text-[11px] sm:text-xs transition ${isOk ? 'bg-emerald-50/80 border-emerald-200' : 'bg-white border-slate-200'}">
+                            <div class="flex items-center gap-1.5 overflow-hidden">
+                                <span class="text-sm shrink-0">${isOk ? '✅' : '⏳'}</span>
+                                <div class="truncate">
+                                    <span class="font-black ${isOk ? 'text-emerald-950' : 'text-slate-800'} block truncate" title="${q.title}">سوال ${toFa(q.id + 1)}: ${q.title}</span>
+                                    <span class="text-[10px] text-slate-500 font-bold block">${ktx(q.formula)}</span>
+                                </div>
+                            </div>
+                            <div class="shrink-0 no-print">
+                                ${isOk ? `
+                                    <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.5 rounded-md">پاسخ داده شد</span>
+                                ` : `
+                                    <button onclick="goToQuizQuestion(${chap.idx}, ${q.id})" class="px-2 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-black text-[10px] shadow-sm transition active:scale-95">
+                                        حل سوال ✏️
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                </div>
+
+                <!-- فوتر کارنامه (دکمه‌های اقدام) -->
+                <div class="shrink-0 pt-3 mt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 no-print">
+                    <button onclick="hideReportModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+                        بستن و ادامه تمرین
+                    </button>
+                    ${firstUnsolved ? `
+                        <button onclick="goToQuizQuestion(${firstUnsolved.chapIdx}, ${firstUnsolved.qIdx})" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white text-xs font-black shadow-md flex items-center gap-1 transition active:scale-95">
+                            <span>🚀</span>
+                            <span>ادامه حل سوالات حل‌نشده (${firstUnsolved.chapTitle})</span>
+                        </button>
+                    ` : `
+                        <div class="text-xs font-black text-emerald-700 flex items-center gap-1">
+                            <span>🌟</span>
+                            <span>تمام ۲۴ سوال دوره با موفقیت حل شده است!</span>
+                        </div>
+                    `}
+                </div>
+            `;
+
+            container.innerHTML = html;
+            applyPersianDigits(container);
+            convertSlashFractionsInDOM(container);
+        }
+
+        function showReportModal(filter = 'all') {
+            const modal = document.getElementById('report-modal');
+            if (!modal) return;
+            renderReportCardModal(filter);
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+            playSound('success');
+            launchConfetti();
+        }
+
+        function hideReportModal() {
+            const modal = document.getElementById('report-modal');
+            if (!modal) return;
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function goToQuizQuestion(chapIdx, qIdx) {
+            hideReportModal();
+            selectChapter(chapIdx);
+            selectMode('quiz');
+            const qKeys = ['c1QuizIdx', 'c2QuizIdx', 'c3QuizIdx', 'c4QuizIdx', 'c5QuizIdx', 'c6QuizIdx'];
+            state[qKeys[chapIdx]] = qIdx;
+            renderStage();
+            playSound('click');
+        }
+
+        async function initAppDependencies() {
+            const statusEl = document.getElementById('dep-status');
+            const spinnerEl = document.getElementById('dep-spinner');
+            const startBtn = document.getElementById('start-game-btn');
+
+            try {
+                if (document.fonts) {
+                    await document.fonts.ready;
+                }
+            } catch (e) { }
+
+            for (let i = 0; i < 6; i++) {
+                if (typeof window.katex !== 'undefined') break;
+                await new Promise(r => setTimeout(r, 50));
+            }
+
+            if (spinnerEl) spinnerEl.classList.add('hidden');
+            if (statusEl) {
+                statusEl.innerHTML = '✨ موتور ریاضی و شبیه‌سازهای ۶ فصل آماده شدند!';
+                statusEl.className = 'text-xs font-bold text-emerald-600 animate-pulse';
+            }
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+                startBtn.classList.add('btn-glow', 'hover:scale-[1.02]', 'active:scale-95');
+            }
+
+            // بازیابی نام ذخیره‌شده دانش‌آموز در صورت وجود
+            try {
+                const savedName = localStorage.getItem('fraction_student_name');
+                if (savedName && savedName.trim()) {
+                    const nameInp = document.getElementById('student-name-input');
+                    if (nameInp) nameInp.value = savedName.trim();
+                    state.studentName = savedName.trim();
+                    updateStudentNameDisplay();
+                }
+            } catch(e) {}
+        }
+
+        function enterGame() {
+            const nameInp = document.getElementById('student-name-input');
+            const nameVal = nameInp ? nameInp.value.trim() : '';
+            const errEl = document.getElementById('name-error-msg');
+
+            if (!nameVal) {
+                if (errEl) errEl.classList.remove('hidden');
+                if (nameInp) {
+                    nameInp.classList.add('border-rose-500', 'bg-rose-50');
+                    nameInp.focus();
+                }
+                playSound('wrong');
+                return;
+            }
+
+            if (errEl) errEl.classList.add('hidden');
+            if (nameInp) nameInp.classList.remove('border-rose-500', 'bg-rose-50');
+
+            state.studentName = nameVal;
+            try {
+                localStorage.setItem('fraction_student_name', nameVal);
+            } catch(e) {}
+
+            updateStudentNameDisplay();
+
+            initAudio();
+            playSound('success');
+            launchConfetti();
+            const modal = document.getElementById('intro-modal');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        function showIntroModal() {
+            const modal = document.getElementById('intro-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        window.onload = function () {
+            renderStage();
+            initAppDependencies();
+            applyPersianDigits(document.body);
+        };
+    </script>
+</body>
+
+</html>
