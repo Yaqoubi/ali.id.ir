@@ -1,906 +1,299 @@
-var KRAFT = KRAFT || {};
-
-(function($) {
-
-    // USE STRICT
-    "use strict";
-
-
-    KRAFT.header = {
-
-        init: function() {
-
-            KRAFT.header.menuItemTrigger();
-            KRAFT.header.hamburgerTrigger();
-            KRAFT.header.hamburgerMenuCloseTrigger();
-            KRAFT.header.dropdownInvert();
-            KRAFT.header.onePageScroll();
-            KRAFT.header.customPageScroll();
-            KRAFT.header.goToTop();
-            KRAFT.header.initHeadsUp();
-
-        },
-
-        menuItemTrigger: function() {
-
-            if (headerEl.hasClass('hamburger-side') || headerEl.hasClass('left-sidebar') || windowWidth < 991) {
-
-                $('#top-menu').find('li.has-children > a').off('click');
-
-                $('#top-menu').find('li.has-children > a').on('click', function(e) {
-
-                    $(this).closest('li').siblings().find('ul.sub-menu').slideUp();
-                    $(this).closest('li').siblings().removeClass('active');
-                    $(this).closest('li').children('ul.sub-menu').slideToggle();
-                    $(this).closest('li').toggleClass('active');
-
-                    return false;
-                });
-            }
-
-        },
-
-        initHeadsUp: function() {
-
-            if (headerEl.hasClass('sticky')) {
-
-                setTimeout(() => {
-
-                    headsup({
-                        duration: 0.3,
-                        easing: 'ease',
-                        delay: 0
-                    });
-
-                }, 500);
-
-            }
-
-        },
-
-        hamburgerTrigger: function() {
-
-            if (hamburger_trigger.length > 0) {
-
-                var page_overlay_capture = $('.page-click-capture');
-
-                hamburger_menu_animation = new TimelineMax({
-                    paused: true
-                });
-
-                hamburger_menu_animation.to(navigationEl, 0.8, {
-                    ease: Expo.easeInOut,
-                    right: "0%",
-                    strictUnits: true,
-                    onStart: function() {
-                        page_overlay_capture.addClass('page-overlay');
-                    },
-                    onReverseComplete: function() {
-                        page_overlay_capture.removeClass('page-overlay');
-                    }
-                });
-
-                hamburger_menu_animation.reversed(true);
-
-                hamburger_trigger.on('click', function() {
-
-                    if (headerEl.hasClass('hamburger-side')) {
-
-                        hamburger_menu_animation.restart();
-
-                        page_overlay_capture.addClass('page-overlay');
-
-                    } else {
-
-                        navigationEl.toggleClass('display-menu');
-                        $(this).toggleClass('open');
-                    }
-
-                    return false;
-
-                });
-            }
-        },
-
-        hamburgerMenuCloseTrigger: function() {
-
-            if (hamburger_menu_close_trigger.length > 0) {
-
-                var page_overlay_capture = $('.page-click-capture');
-
-                hamburger_menu_close_trigger.on('click', function() {
-
-                    page_overlay_capture.removeClass('page-overlay');
-
-                    $('ul.sub-menu').slideUp();
-
-                    hamburger_menu_animation.reverse();
-
-                });
-
-                $('.page-click-capture').on('click', function() {
-
-                    navigationEl.removeClass('display-menu');
-                    page_overlay_capture.removeClass('page-overlay');
-
-                    $('ul.sub-menu').slideUp();
-
-                    hamburger_menu_animation.reverse();
-
-                });
-            }
-        },
-
-        dropdownInvert: function() {
-
-            if (!headerEl.hasClass('hamburger-side') && windowWidth > 991) {
-
-                var standard_menu = $('#masthead.standard #top-menu');
-
-                standard_menu.find('ul[class*=invert-dropdown]').removeClass('invert-dropdown');
-
-                var subMenus = standard_menu.find('ul');
-
-                subMenus.css('display', 'block');
-
-                subMenus.each(function(index, element) {
-
-                    var menuDropdown = $(element);
-                    var windowWidth = $(window).width();
-
-                    var dropdownOffset = menuDropdown.offset();
-                    var dropdownWidth = menuDropdown.width();
-                    var dropdownLeft = dropdownOffset.left;
-
-                    if (windowWidth - (dropdownWidth + dropdownLeft) < 50) {
-                        menuDropdown.addClass('invert-dropdown');
-                    }
-
-                });
-
-                subMenus.css('display', '');
-
-            }
-
-        },
-
-        onePageScroll: function() {
-
-
-            $(navigationEl).find('ul').on('click', function(e) {
-
-                if ($(e.target).is('a') && $(e.target).attr('href').indexOf('#') != -1) {
-
-                    var element = $(navigationEl),
-                        divAnchor = $(e.target).attr('href'),
-                        divScrollToAnchor = divAnchor.substring(divAnchor.indexOf('#') + 1),
-                        divScrollSpeed = element.attr('data-speed'),
-                        divScrollEasing = element.attr('data-easing');
-
-                    if (!divScrollSpeed) {
-                        divScrollSpeed = 1250;
-                    }
-                    if (!divScrollEasing) {
-                        divScrollEasing = 'easeInOutExpo';
-                    }
-
-                    if (divScrollToAnchor != '') {
-
-                        element.find('li').removeClass('current');
-                        element.find('a[href$="' + divScrollToAnchor + '"]').parent('li').addClass('current');
-
-                        $('html,body').stop(true).animate({
-                            'scrollTop': $('#' + divScrollToAnchor).offset().top
-                        }, Number(divScrollSpeed), divScrollEasing);
-
-                        if (windowWidth < 991) {
-
-                            hamburger_trigger.toggleClass('open', false);
-                            navigationEl.toggleClass('display-menu', false);
-
-                        }
-                    }
-
-                    return false;
-
-                }
-
-            });
-
-        },
-
-        customPageScroll: function() {
-
-
-            $('.custom-scroll, .custom-scroll a').on('click', function() {
-
-                var divScrollToAnchor = $(this).attr('href'),
-                    divScrollSpeed = $(this).attr('data-speed'),
-                    divScrollEasing = $(this).attr('data-easing');
-
-                if (!divScrollSpeed) {
-                    divScrollSpeed = 1250;
-                }
-                if (!divScrollEasing) {
-                    divScrollEasing = 'easeInOutExpo';
-                }
-
-                if ($(divScrollToAnchor).length > 0) {
-
-                    $('html,body').stop(true).animate({
-                        'scrollTop': $(divScrollToAnchor).offset().top
-                    }, Number(divScrollSpeed), divScrollEasing);
-                }
-
-                return false;
-            });
-
-        },
-
-        goToTop: function() {
-
-            var elementScrollSpeed = goToTopBtn.attr('data-speed'),
-                elementScrollEasing = goToTopBtn.attr('data-easing');
-
-            if (!elementScrollSpeed) {
-                elementScrollSpeed = 700;
-            }
-            if (!elementScrollEasing) {
-                elementScrollEasing = 'easeOutQuad';
-            }
-
-            goToTopBtn.on('click', function() {
-                $('body,html').stop(true).animate({
-                    'scrollTop': 0
-                }, Number(elementScrollSpeed), elementScrollEasing);
-                return false;
-            });
-        },
-
-        onePageCurrentSection: function() {
-
-            var currentOnePageSection = '';
-            var headerHeight = navigationEl.outerHeight();
-
-            pageSection.each(function(index) {
-
-                var h = $(this).offset().top;
-                var y = $(window).scrollTop();
-                var offsetScroll = headerHeight;
-
-                if ($(this).attr('id') != undefined &&
-                    y + offsetScroll >= h && y < h + $(this).height() &&
-                    $(this).attr('id') != currentOnePageSection) {
-
-                    currentOnePageSection = $(this).attr('id');
-                }
-
-            });
-
-            return currentOnePageSection;
-        },
-
-        onepageScroller: function() {
-
-            var currentOnePageSection = KRAFT.header.onePageCurrentSection();
-
-            if (currentOnePageSection !== '') {
-
-                navigationEl.find('li').removeClass('current');
-                navigationEl.find('a[href$="#' + currentOnePageSection + '"]').parent('li').addClass('current');
-
-            }
-
-        },
-
-    };
-
-    KRAFT.slider = {
-
-        init: function() {
-
-            sliderContainer.each(function() {
-
-                KRAFT.slider.initializeSlider(this);
-
-            });
-
-        },
-
-        initializeSlider: function(sliderContainer) {
-
-            var kraftSwiperArgs = $(sliderContainer);
-
-            var kraftSwiper = new Swiper(sliderContainer, {
-
-                // Optional parameters                                      
-                init: false,
-
-                autoHeight: true,
-
-                slidesPerView: (kraftSwiperArgs.data('slides-per-view') == null) ? 1 : kraftSwiperArgs.data('slides-per-view'),
-                spaceBetween: (kraftSwiperArgs.data('space-between') == null) ? 0 : kraftSwiperArgs.data('space-between'),
-                centeredSlides: (kraftSwiperArgs.data('centered-slides') == null) ? false : kraftSwiperArgs.data('centered-slides'),
-                freeMode: (kraftSwiperArgs.data('free-mode') == null) ? false : kraftSwiperArgs.data('free-mode'),
-                grabCursor: (kraftSwiperArgs.data('grab-cursor') == null) ? false : kraftSwiperArgs.data('grab-cursor'),
-                mousewheel: (kraftSwiperArgs.data('mouse-wheel') == null) ? false : kraftSwiperArgs.data('mouse-wheel'),
-                loop: (kraftSwiperArgs.data('loop') == null) ? true : kraftSwiperArgs.data('loop'),
-                effect: (kraftSwiperArgs.data('effect') == null) ? 'slide' : kraftSwiperArgs.data('effect'),
-
-                autoplay: {
-                    delay: (kraftSwiperArgs.data('autoplay-delay') == null) ? 5000 : kraftSwiperArgs.data('autoplay-delay'),
-                    disableOnInteraction: (kraftSwiperArgs.data('disable-on-interaction') == null) ? true : kraftSwiperArgs.data('disable-on-interaction'),
-                },
-
-                // If we need pagination
-                pagination: {
-                    el: '.swiper-pagination',
-                    type: (kraftSwiperArgs.data('pagination-type') == null) ? 'bullets' : kraftSwiperArgs.data('pagination-type'),
-                    clickable: true,
-                },
-
-                // Navigation arrows
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-
-                breakpointsInverse: true,
-
-                // Responsive breakpoints
-                breakpoints: {
-
-                    // when window width is >= 0px
-                    1024: {
-                        slidesPerView: (kraftSwiperArgs.data('slides-per-view') == null) ? 1 : kraftSwiperArgs.data('slides-per-view'),
-                        spaceBetween: (kraftSwiperArgs.data('space-between') == null) ? 0 : kraftSwiperArgs.data('space-between'),
-                    },
-                    // when window width is >= 480px
-                    768: {
-                        slidesPerView: (kraftSwiperArgs.data('tablet-slide-per-view') == null) ? 1 : kraftSwiperArgs.data('tablet-slide-per-view'),
-                        spaceBetween: (kraftSwiperArgs.data('space-between') == null) ? 0 : kraftSwiperArgs.data('space-between'),
-                    },
-                    // when window width is >= 768px
-                    640: {
-                        slidesPerView: (kraftSwiperArgs.data('mobile-slide-per-view') == null) ? 1 : kraftSwiperArgs.data('mobile-slide-per-view'),
-                        spaceBetween: (kraftSwiperArgs.data('space-between') == null) ? 0 : kraftSwiperArgs.data('space-between'),
-                    },
-                    // when window width is >= 960px
-                    320: {
-                        slidesPerView: (kraftSwiperArgs.data('mobile-slide-per-view') == null) ? 1 : kraftSwiperArgs.data('mobile-slide-per-view'),
-                        spaceBetween: (kraftSwiperArgs.data('space-between') == null) ? 0 : kraftSwiperArgs.data('space-between'),
-                    }
-                },
-
-            });
-
-            kraftSwiper.on('init', function() {
-
-                //kraftSwiper.lazy.loadInSlide( 1 );            
-
-            });
-
-            // init Swiper
-            kraftSwiper.init();
-
-        },
-
-    };
-
-    KRAFT.portfolio = {
-
-        init: function() {
-
-            portfolioContainers.each(function() {
-
-                KRAFT.portfolio.initializePortfolio(this);
-
-            });
-
-            var portfolioContainerGrid = $('#portfolio-container-grid');
-
-            if (portfolioContainerGrid.length && portfolioContainerGrid.data('displaytype') == 'scroll-fadeIn') {
-
-                KRAFT.portfolio.portfolioItemDisplayTypeFadeIn(portfolioContainerGrid);
-
-            }
-
-            if (portfolioContainerGrid.length && portfolioContainerGrid.data('displaytype') == 'scroll-fadeInUp') {
-
-                KRAFT.portfolio.portfolioItemDisplayTypeFadeInUp(portfolioContainerGrid);
-
-            }
-
-            if (portfolioContainerGrid.length && portfolioContainerGrid.data('captionanimation') == 'tilt') {
-
-                KRAFT.portfolio.portfolioItemCaptionAnimateTilt(portfolioContainerGrid);
-            }
-
-
-            portfolioSliderContainers.each(function() {
-
-                KRAFT.portfolio.initializePortfolioSlider(this);
-
-            });
-
-        },
-
-        initializePortfolio: function(portfolioContainer) {
-
-            var portfolioGrid = $(portfolioContainer);
-
-            var cubeportfolio_options = {
-                filters: '#filters-container,[id^=filters-container-subcategory]',
-                layoutMode: (portfolioGrid.data('layoutmode') == null) ? 'grid' : portfolioGrid.data('layoutmode'),
-                sortToPreventGaps: true,
-                mediaQueries: [{
-                    width: 1150,
-                    cols: (portfolioGrid.data('large-desktop') == null) ? 4 : portfolioGrid.data('large-desktop')
-                }, {
-                    width: 800,
-                    cols: (portfolioGrid.data('tablet-landscape') == null) ? 3 : portfolioGrid.data('tablet-landscape')
-                }, {
-                    width: 750,
-                    cols: (portfolioGrid.data('tablet-portrait') == null) ? 2 : portfolioGrid.data('tablet-portrait')
-                }, {
-                    width: 700,
-                    cols: (portfolioGrid.data('mobile') == null) ? 1 : portfolioGrid.data('mobile')
-                }],
-                defaultFilter: portfolioGrid.data('defaultfilter'),
-                animationType: portfolioGrid.data('animationtype'),
-                gapHorizontal: (portfolioGrid.data('gaphorizontal') == null) ? 0 : portfolioGrid.data('gaphorizontal'),
-                gapVertical: (portfolioGrid.data('gapvertical') == null) ? 0 : portfolioGrid.data('gapvertical'),
-                gridAdjustment: 'responsive',
-                caption: (portfolioGrid.data('captionanimation') == null) ? 'fadeIn' : portfolioGrid.data('captionanimation'),
-                displayType: (portfolioGrid.data('displaytype') == null) ? 'fadeIn' : portfolioGrid.data('displaytype'),
-                displayTypeSpeed: 100,
-                // lightbox
-                lightboxDelegate: '.cbp-lightbox',
-                lightboxGallery: true,
-                lightboxTitleSrc: 'data-title',
-                lightboxCounter: '<div class="cbp-popup-lightbox-counter">{{current}} از {{total}}</div>',
-                plugins: {
-                    loadMore: {
-                        element: '#more-projects',
-                        action: portfolioGrid.data('loadmoreaction'),
-                        loadItems: portfolioGrid.data('loadnoofitems'),
-                    }
-                },
-            };
-
-            // Portfolio 
-            portfolioGrid.cubeportfolio(cubeportfolio_options);
-
-            portfolioGrid.on('lazyLoad.cbp', function(event, el) {
-
-                var dataSrcSet = el.getAttribute('data-cbp-srcset');
-                var dataSizes = el.getAttribute('data-sizes');
-
-                if (dataSrcSet != null) {
-                    el.srcset = dataSrcSet;
-                    el.removeAttribute('data-cbp-srcset');
-                }
-
-                if (dataSizes != null) {
-                    el.sizes = dataSizes;
-                    el.removeAttribute('data-sizes');
-                }
-
-            });
-
-            portfolioGrid.on('onAfterLoadMore.cbp', function() {
-
-                if ($('.cbp-l-loadMore-link').hasClass('cbp-l-loadMore-stop')) {
-                    $('.cbp-l-loadMore-noMoreLoading').html(portfolioGrid.data('button-text'));
-                }
-
-            });
-
-        },
-
-
-        initializePortfolioSlider: function(portfolioSliderContainer) {
-
-            var portfolioSlider = $(portfolioSliderContainer);
-
-            var cubeportfolio_options = {
-
-                layoutMode: 'slider',
-                drag: true,
-                auto: true,
-                autoTimeout: 5000,
-                autoPauseOnHover: true,
-                showNavigation: false,
-                showPagination: true,
-                rewindNav: false,
-                scrollByPage: false,
-                gridAdjustment: 'responsive',
-                mediaQueries: [{
-                    width: 960,
-                    cols: 3,
-                }, {
-                    width: 768,
-                    cols: 3,
-                }, {
-                    width: 480,
-                    cols: 2,
-                }, {
-                    width: 0,
-                    cols: 1,
-                }],
-                gapHorizontal: 30,
-                gapVertical: 30,
-                caption: '',
-                displayType: 'default',
-                displayTypeSpeed: 100,
-
-                // lightbox
-                lightboxDelegate: '.cbp-lightbox',
-                lightboxGallery: true,
-                lightboxTitleSrc: 'data-title',
-                lightboxCounter: '<div class="cbp-popup-lightbox-counter">{{current}} از {{total}}</div>',
-
-            };
-
-            // Portfolio Slider
-            portfolioSlider.cubeportfolio(cubeportfolio_options);
-
-        },
-
-
-        portfolioItemDisplayTypeFadeIn: function(portfolioContainer) {
-
-            var portfolioItems = portfolioContainer.find('.cbp-item');
-
-            var portfolioAnimationsController = new ScrollMagic.Controller();
-
-            portfolioItems.each(function() {
-
-                var portfolioItem = this;
-                var fadein_tween;
-
-                fadein_tween = TweenLite.from(portfolioItem, 0.5, {
-                    ease: Sine.easeOut,
-                    autoAlpha: 0,
-                    clearProps: "visibility,opacity,transform",
-                    onComplete: function() {
-                        fadein_tween.kill();
-                    }
-                });
-
-                new ScrollMagic.Scene({
-                        triggerElement: portfolioItem,
-                        triggerHook: "1",
-                    }).setTween(fadein_tween)
-                    .addTo(portfolioAnimationsController);
-            });
-
-        },
-
-        portfolioItemDisplayTypeFadeInUp: function(portfolioContainer) {
-
-            var portfolioItems = portfolioContainer.find('.cbp-item');
-
-            var portfolioAnimationsController = new ScrollMagic.Controller();
-
-            portfolioItems.each(function() {
-
-                var portfolioItem = this;
-                var fadein_tween;
-
-                fadein_tween = TweenLite.from(portfolioItem, 0.5, {
-                    ease: Sine.easeOut,
-                    autoAlpha: 0,
-                    y: 200,
-                    clearProps: "visibility,opacity,transform",
-                    onComplete: function() {
-                        fadein_tween.kill();
-                    }
-                });
-
-                new ScrollMagic.Scene({
-                        triggerElement: portfolioItem,
-                        triggerHook: "1",
-                    }).setTween(fadein_tween)
-                    .addTo(portfolioAnimationsController);
-            });
-
-        },
-
-        portfolioItemCaptionAnimateTilt: function(portfolioContainer) {
-
-            var portfolioItems = portfolioContainer.find('.cbp-item .cbp-caption-defaultWrap');
-
-            portfolioItems.each(function() {
-
-                $(this).tilt({
-                    glare: true,
-                    maxGlare: .3
-                })
-
-            });
-
-        },
-
-    };
-
-    KRAFT.widget = {
-
-        init: function() {
-
-            KRAFT.widget.stickySidebar();
-
-            KRAFT.widget.imageComparison();
-
-            KRAFT.widget.initializeContactForm();
-
-            KRAFT.widget.initializeMultiScroll();
-
-            if (typeof(google) !== 'undefined') {
-
-                googleMap.each(function() {
-                    KRAFT.widget.initializeMap(this);
-                });
-            }
-
-        },
-
-        stickySidebar: function() {
-
-            if ($('.single-portfolio .right-sidebar').length) {
-
-                var top_offset = 65;
-
-                $('.single-portfolio .right-sidebar .entry-header').stick_in_parent({
-                    offset_top: top_offset
-                });
-            }
-
-            if ($('.single-portfolio .left-sidebar').length) {
-
-                var top_offset = 65;
-
-                $('.single-portfolio .left-sidebar .entry-header').stick_in_parent({
-                    offset_top: top_offset
-                });
-            }
-
-        },
-
-        imageComparison: function() {
-
-            imageComparisonEl.each(function() {
-                new Cocoen(this);
-            });
-
-        },
-
-
-        initializeMap: function(google_map) {
-
-            var latitude = $(google_map).data('latitude');
-            var longitude = $(google_map).data('longitude');
-            var zoom = $(google_map).data('zoom');
-            var map_marker_img = $(google_map).data('mapmarker');
-
-            var map_style = '[{"featureType":"administrative","elementType":"all","stylers":[{"saturation":"-100"}]},{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","elementType":"all","stylers":[{"saturation":-100},{"lightness":"50"},{"visibility":"simplified"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":"-100"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"lightness":"30"}]},{"featureType":"road.local","elementType":"all","stylers":[{"lightness":"40"}]},{"featureType":"transit","elementType":"all","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]},{"featureType":"water","elementType":"labels","stylers":[{"lightness":-25},{"saturation":-100}]}]';
-
-            var map_options = {
-                center: new google.maps.LatLng(latitude, longitude),
-                zoom: zoom,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                scrollwheel: false,
-                mapTypeControl: false,
-                panControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                zoomControl: false
-            };
-
-            var map = new google.maps.Map(google_map, map_options);
-
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(latitude, longitude),
-                map: map,
-                icon: map_marker_img
-            });
-
-            map.setOptions({
-                styles: JSON.parse(map_style.toString())
-            });
-
-        },
-
-        initializeContactForm: function() {
-
-            var contactForm = $('#contact-form');
-
-            contactForm.on('submit', function(event) {
-
-                var action_url = contactForm.attr('action');
-                var form_process = contactForm.find('.form-process');
-
-                var name_error = contactForm.find('.kraftcf-form-control-wrap.name span.kraftcf-not-valid-tip');
-                var email_error = contactForm.find('.kraftcf-form-control-wrap.email span.kraftcf-not-valid-tip');
-                var message_error = contactForm.find('.kraftcf-form-control-wrap.message span.kraftcf-not-valid-tip');
-
-                var contact_success = contactForm.find('.kraftcf-response-output.kraftcf-mail-sent-ok');
-                var contact_failed = contactForm.find('.kraftcf-response-output.kraftcf-validation-errors');
-
-                form_process.fadeIn();
-
-                name_error.removeClass('validation-error');
-                email_error.removeClass('validation-error');
-                message_error.removeClass('validation-error');
-
-                contact_failed.removeClass('validation-error');
-                contact_success.removeClass('validated');
-
-                // get the form data            
-                var formData = {
-                    'name': contactForm.find('input[name=name]').val(),
-                    'email': contactForm.find('input[name=email]').val(),
-                    'subject': contactForm.find('input[name=subject]').val(),
-                    'message': contactForm.find('textarea[name=message]').val()
-                };
-
-                // process the form
-                $.ajax({
-                        type: 'POST',
-                        url: action_url,
-                        data: formData,
-                        dataType: 'json',
-                        encode: true
-                    })
-
-                    // using the done promise callback
-                    .done(function(data) {
-                        console.log(data);
-
-                        // here we will handle errors and validation messages
-                        if (!data.success) {
-
-                            // handle errors for name
-                            if (data.errors.name) {
-                                name_error.toggleClass('validation-error');
-                            }
-
-                            // handle errors for email
-                            if (data.errors.email) {
-                                email_error.toggleClass('validation-error');
-                            }
-
-                            // handle errors for message
-                            if (data.errors.message) {
-                                message_error.toggleClass('validation-error');
-                            }
-
-                            // mail
-                            if (data.errors.mail_error) {
-                                contact_failed.toggleClass('validation-error');
-                            }
-                        } else {
-                            contact_success.toggleClass('validated');
-                        }
-
-                        form_process.fadeOut();
-
-                    })
-                    .fail(function(data) {
-                        console.log(data);
-
-
-                        form_process.fadeOut();
-                        contact_failed.toggleClass('validation-error');
-
-                    });
-
-                event.preventDefault();
-
-            });
-
-        },
-
-        initializeMultiScroll: function() {
-
-            var portfolio_split_slider = $('#portfolio-split-slider');
-
-            if (portfolio_split_slider.length > 0) {
-
-                portfolio_split_slider.multiscroll({
-
-                    scrollingSpeed: 700,
-                    easing: "easeInOutQuart",
-                    navigation: true,
-                    useAnchorsOnLoad: false,
-
-                    // Custom selectors
-                    sectionSelector: '.kraft-ms-section',
-                    leftSelector: '.kraft-ms-left',
-                    rightSelector: '.kraft-ms-right',
-
-                });
-            }
-
-        },
-
-    };
-
-    KRAFT.documentOnResize = {
-
-        init: function() {
-
-            windowWidth = $(window).width();
-
-            KRAFT.header.menuItemTrigger();
-            KRAFT.header.initHeadsUp();
-            KRAFT.header.dropdownInvert();
-
-        }
-
-    };
-
-
-    KRAFT.documentOnReady = {
-
-        init: function() {
-
-            KRAFT.header.init();
-
-            KRAFT.slider.init();
-
-            KRAFT.widget.init();
-
-            KRAFT.documentOnReady.windowscroll();
-
-        },
-
-        windowscroll: function() {
-
-            $(window).on('scroll', function() {
-
-                if (headerEl.hasClass('sticky')) {
-                    KRAFT.header.onepageScroller();
-                }
-
-                if ($(window).scrollTop() > 0) {
-                    goToTopBtn.addClass('active');
-                } else {
-                    goToTopBtn.removeClass('active');
-                }
-
-            });
-        }
-
-    };
-
-    KRAFT.documentOnLoad = {
-
-        init: function() {
-
-            KRAFT.portfolio.init();
-        },
-    };
-
-
-    var headerEl = $('#masthead.site-header');
-    var navigationEl = $('#site-navigation');
-    var hamburger_trigger = $('#ham-trigger-wrap');
-    var hamburger_menu_close_trigger = $('#hamburger-menu-close-trigger');
-    var pageSection = $('.vc_row');
-    var goToTopBtn = $('#gotoTop');
-    var sliderContainer = $('.swiper-container');
-    var portfolioContainers = $('[id^=portfolio-container]');
-    var portfolioSliderContainers = $('[id^=portfolio-slider-container]');
-    var imageComparisonEl = $('.cocoen.image-comparison');
-    var windowWidth = $(window).width();
-    var googleMap = $('[id^=googleMap]');
-    var hamburger_menu_animation;
-
-
-    $(document).ready(KRAFT.documentOnReady.init);
-    $(window).load(KRAFT.documentOnLoad.init);
-    $(window).on('resize', KRAFT.documentOnResize.init);
-
-
-})(jQuery);
+/* علی یعقوبی — رفتار صفحه. بدون وابستگی؛ بدون JS هم همهٔ محتوا و پیوندها کار می‌کنند. */
+(function () {
+  'use strict';
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const FA = '۰۱۲۳۴۵۶۷۸۹';
+  const fa = (n) => String(n).replace(/\d/g, (d) => FA[d]);
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* حالت خصوصی */ } }
+  };
+
+  /* ── پیام کوتاه ─────────────────────────────────────────────────────── */
+  const toastEl = $('#toast');
+  let toastTimer;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;opacity:0;top:0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      ta.remove();
+      return ok;
+    }
+  }
+
+  /* ── تم ─────────────────────────────────────────────────────────────── */
+  const root = document.documentElement;
+  const themeBtn = $('#themeToggle');
+  function paintThemeBtn() {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    themeBtn.setAttribute('aria-pressed', String(dark));
+    themeBtn.setAttribute('aria-label', dark ? 'تغییر به تم روشن' : 'تغییر به تم تاریک');
+  }
+  themeBtn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    store.set('theme', next);
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  /* ── ناوبری و برجسته‌سازی بخش جاری ──────────────────────────────────── */
+  const nav = $('#nav');
+  const menuBtn = $('#menuBtn');
+  function setMenu(open) {
+    nav.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'بستن منو' : 'باز کردن منو');
+  }
+  menuBtn.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+  nav.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) { setMenu(false); menuBtn.focus(); }
+  });
+
+  const links = $$('a', nav);
+  const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      links.forEach((a) => a.removeAttribute('aria-current'));
+      const a = byId.get(en.target.id);
+      if (a) a.setAttribute('aria-current', 'true');
+    });
+  }, { rootMargin: '-35% 0px -60% 0px' });
+  byId.forEach((_, id) => { const s = document.getElementById(id); if (s) spy.observe(s); });
+  const heroEl = $('#top');
+  if (heroEl) new IntersectionObserver((en) => {
+    if (en[0].isIntersecting) links.forEach((a) => a.removeAttribute('aria-current'));
+  }, { rootMargin: '-35% 0px -60% 0px' }).observe(heroEl);
+
+  /* ── جستجو و فیلتر ──────────────────────────────────────────────────── */
+  const q = $('#q');
+  const qClear = $('#qClear');
+  const cards = $$('.tool');
+  const tabs = $$('.tab');
+  const chips = $$('.chip');
+  const countEl = $('#count');
+  const emptyEl = $('#empty');
+  const emptyTitle = $('#emptyTitle');
+  const state = { q: '', type: 'all', subject: null };
+
+  // یکسان‌سازی املا: ی/ک عربی، نیم‌فاصله، اعراب، ارقام فارسی و عربی
+  const norm = (s) => String(s).toLowerCase()
+    .replace(/[يى]/g, 'ی').replace(/ك/g, 'ک').replace(/[ۀة]/g, 'ه').replace(/[أإآ]/g, 'ا')
+    .replace(/[‌‍‏ً-ٟـ]/g, '')
+    .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/\s+/g, ' ').trim();
+  cards.forEach((c) => { c._hay = norm(c.dataset.search); });
+
+  function applyFilter() {
+    const nq = norm(state.q);
+    const words = nq.split(' ').filter(Boolean);
+    // عبارت چندکلمه‌ای (مثل «آی پی») ابتدا به‌صورت یک‌پارچه جستجو می‌شود؛ اگر چیزی نبود، تک‌تک کلمه‌ها
+    const compact = nq.replace(/ /g, '');
+    const phrase = words.length > 1 && cards.some((c) => c._hay.replace(/ /g, '').includes(compact));
+    let shown = 0;
+    cards.forEach((c) => {
+      const okType = state.type === 'all' || c.dataset.cats.split(' ').includes(state.type);
+      const okSub = !state.subject || c.dataset.subject === state.subject;
+      const okQ = phrase ? c._hay.replace(/ /g, '').includes(compact) : words.every((w) => c._hay.includes(w));
+      const ok = okType && okSub && okQ;
+      c.hidden = !ok;
+      if (ok) shown++;
+    });
+    const filtered = state.q.trim() || state.type !== 'all' || state.subject;
+    countEl.textContent = filtered ? `${fa(shown)} ابزار از ${fa(cards.length)}` : `${fa(cards.length)} ابزار`;
+    qClear.hidden = !state.q;
+    emptyEl.hidden = shown > 0;
+    if (!shown) emptyTitle.textContent = state.q.trim() ? `برای «${state.q.trim()}» ابزاری پیدا نشد` : 'با این فیلترها ابزاری پیدا نشد';
+  }
+  q.addEventListener('input', () => { state.q = q.value; applyFilter(); });
+  q.addEventListener('keydown', (e) => { if (e.key === 'Escape' && q.value) { q.value = ''; state.q = ''; applyFilter(); } });
+  qClear.addEventListener('click', () => { q.value = ''; state.q = ''; applyFilter(); q.focus(); });
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    state.type = t.dataset.type;
+    tabs.forEach((x) => x.setAttribute('aria-pressed', String(x === t)));
+    applyFilter();
+  }));
+  chips.forEach((c) => c.addEventListener('click', () => {
+    const on = c.getAttribute('aria-pressed') !== 'true';
+    chips.forEach((x) => x.setAttribute('aria-pressed', 'false'));
+    c.setAttribute('aria-pressed', String(on));
+    state.subject = on ? c.dataset.subject : null;
+    applyFilter();
+  }));
+  $('#emptyReset').addEventListener('click', () => {
+    q.value = ''; state.q = ''; state.type = 'all'; state.subject = null;
+    tabs.forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.type === 'all')));
+    chips.forEach((x) => x.setAttribute('aria-pressed', 'false'));
+    applyFilter(); q.focus();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    e.preventDefault();
+    q.focus(); q.select();
+  });
+
+  /* ── دموی زندهٔ کسر ─────────────────────────────────────────────────── */
+  const toy = $('#toy');
+  if (toy) {
+    const bar = $('#toyBar'), numEl = $('#toyNum'), denEl = $('#toyDen'), words = $('#toyWords'),
+          simple = $('#toySimple'), nOut = $('#toyN');
+    const CARD = ['صفر', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه', 'ده'];
+    const ORD = { 2: 'دوم', 3: 'سوم', 4: 'چهارم', 5: 'پنجم', 6: 'ششم', 7: 'هفتم', 8: 'هشتم', 9: 'نهم', 10: 'دهم' };
+    const MIN = 2, MAX = 10, START_N = 8, START_ON = 3;
+    let n = START_N;
+    let on = Array.from({ length: n }, (_, i) => i < START_ON);
+    const gcd = (a, b) => (b ? gcd(b, a % b) : a);
+    const fracHTML = (a, b) => `<span class="frac" aria-hidden="true"><span class="num">${fa(a)}</span><span class="den">${fa(b)}</span></span>`;
+
+    function drawCells() {
+      bar.textContent = '';
+      for (let i = 0; i < n; i++) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cell' + (on[i] ? ' on' : '');
+        b.setAttribute('aria-pressed', String(on[i]));
+        b.setAttribute('aria-label', `قسمت ${fa(i + 1)}`);
+        b.dataset.i = i;
+        bar.appendChild(b);
+      }
+    }
+    function readout() {
+      const k = on.filter(Boolean).length;
+      numEl.textContent = fa(k); denEl.textContent = fa(n); nOut.textContent = fa(n);
+      if (k === 0) words.textContent = 'هنوز قسمتی رنگ نشده';
+      else if (k === n) words.textContent = `${CARD[k]} ${ORD[n]}؛ یعنی یک کل`;
+      else words.textContent = `${CARD[k]} ${ORD[n]}`;
+      const g = gcd(k, n);
+      if (k > 0 && k < n && g > 1) simple.innerHTML = `ساده‌شده: ${fracHTML(k / g, n / g)}`;
+      else if (k > 0 && k < n) simple.textContent = 'این کسر ساده‌شده است.';
+      else simple.textContent = '';
+      $('#toyMinus').disabled = n <= MIN; $('#toyPlus').disabled = n >= MAX;
+    }
+    bar.addEventListener('click', (e) => {
+      const b = e.target.closest('.cell'); if (!b) return;
+      const i = +b.dataset.i;
+      on[i] = !on[i];
+      b.classList.toggle('on', on[i]); b.setAttribute('aria-pressed', String(on[i]));
+      readout();
+    });
+    $('#toyMinus').addEventListener('click', () => { if (n > MIN) { n--; on.length = n; drawCells(); readout(); } });
+    $('#toyPlus').addEventListener('click', () => { if (n < MAX) { n++; on.push(false); drawCells(); readout(); } });
+    $('#toyReset').addEventListener('click', () => {
+      n = START_N; on = Array.from({ length: n }, (_, i) => i < START_ON); drawCells(); readout();
+    });
+    drawCells(); readout();
+  }
+
+  /* ── اتاق نمایش ─────────────────────────────────────────────────────── */
+  const items = $$('.pl-item');
+  const media = $('#screenMedia');
+  if (items.length && media) {
+    const cat = $('#screenCat'), title = $('#screenTitle'), desc = $('#screenDesc');
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const playSvg = '<svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg>';
+
+    const posterHTML = (d, eager) =>
+      `<span class="poster" style="--h:${esc(d.hue)}"><span class="poster-t">${esc(d.short)}</span>` +
+      `<img class="poster-img${d.contain ? ' contain' : ''}" src="${esc(d.thumb)}" alt="" decoding="async"${eager ? '' : ' loading="lazy"'} onerror="this.remove()"></span>`;
+
+    function select(i, userInitiated) {
+      const el = items[i]; const d = el.dataset;
+      items.forEach((x) => x.removeAttribute('aria-current'));
+      el.setAttribute('aria-current', 'true');
+      cat.textContent = d.cat; title.textContent = d.title; desc.textContent = d.desc;
+      const data = { short: d.short, thumb: d.thumb, hue: d.hue, contain: d.contain };
+      if (d.type === 'image') {
+        media.innerHTML = `<a class="stage-open" href="${esc(d.src)}" target="_blank" rel="noopener noreferrer" aria-label="باز کردن تصویر در اندازهٔ کامل: ${esc(d.title)}">${posterHTML(data, true)}</a>`;
+      } else {
+        media.innerHTML = `<button type="button" class="stage-play" aria-label="پخش ویدیو: ${esc(d.title)}">${posterHTML(data, true)}<span class="play-big">${playSvg}</span></button>`;
+        $('.stage-play', media).addEventListener('click', () => play(d));
+      }
+      if (userInitiated && matchMedia('(max-width: 1079px)').matches && !reduceMotion) {
+        $('#screen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    function play(d) {
+      const v = document.createElement('video');
+      v.controls = true; v.autoplay = true; v.playsInline = true; v.preload = 'metadata';
+      v.setAttribute('aria-label', d.title);
+      v.src = d.src;
+      v.addEventListener('error', () => {
+        v.remove();
+        const f = document.createElement('div');
+        f.className = 'stage-fail';
+        f.innerHTML = `<p>این ویدیو بارگذاری نشد. اتصال را بررسی کنید یا فایل را مستقیم باز کنید.</p><a href="${esc(d.src)}" target="_blank" rel="noopener noreferrer">باز کردن فایل ویدیو</a>`;
+        media.appendChild(f);
+      });
+      media.appendChild(v);
+      v.play().catch(() => { /* کاربر با دکمه‌های خود پخش می‌کند */ });
+    }
+    items.forEach((el, i) => {
+      el.addEventListener('click', (e) => { e.preventDefault(); select(i, true); });
+      el.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+        e.preventDefault();
+        const t = items[i + (e.key === 'ArrowDown' ? 1 : -1)];
+        if (t) t.focus();
+      });
+    });
+    select(0, false);
+  }
+
+  /* ── آگهی با برگه‌های کندنی + کپی شماره ─────────────────────────────── */
+  const PHONE = '09334272616';
+  const strips = $$('.strip');
+  const hint = $('#flyerHint');
+  const restore = $('#flyerRestore');
+  const remaining = () => strips.filter((s) => !s.classList.contains('torn')).length;
+  function paintHint() {
+    const r = remaining();
+    if (r === strips.length) hint.textContent = 'برگه‌ای بکنید تا شماره کپی شود.';
+    else if (r > 0) hint.textContent = `${fa(r)} برگه مانده است.`;
+    else hint.textContent = 'همهٔ برگه‌ها کنده شد؛ شماره را همراه خودتان دارید.';
+    restore.hidden = r === strips.length;
+  }
+  strips.forEach((s) => {
+    s.addEventListener('click', async () => {
+      if (s.classList.contains('torn')) return;
+      const ok = await copyText(PHONE);
+      s.classList.add('torn');
+      if (reduceMotion) s.classList.add('gone');
+      s.addEventListener('animationend', () => s.classList.add('gone'), { once: true });
+      toast(ok ? 'شمارهٔ تماس کپی شد' : 'کپی نشد؛ شماره: ' + fa(PHONE));
+      paintHint();
+    });
+  });
+  restore.addEventListener('click', () => {
+    strips.forEach((s) => s.classList.remove('torn', 'gone'));
+    paintHint();
+  });
+  $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+    const ok = await copyText(b.dataset.copy);
+    toast(ok ? 'شمارهٔ تماس کپی شد' : 'کپی نشد؛ شماره: ' + fa(b.dataset.copy));
+  }));
+
+  applyFilter();
+})();
