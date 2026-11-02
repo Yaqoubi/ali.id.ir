@@ -13,7 +13,7 @@
   <script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})()</script>
   <link rel="preload" href="../../assets/fonts/vazirmatn-arabic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/playpen-sans-arabic-arabic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../style.css?v=3">
+  <link rel="stylesheet" href="../../style.css?v=4">
   <style>
     /* ── استایل‌های تکمیلی و اختصاصی کتابخانه ── */
     .books-page {
@@ -63,9 +63,15 @@
       font-weight: 800;
       color: var(--red);
       background: rgba(217, 45, 58, 0.08);
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: 99px;
       margin-bottom: 12px;
+    }
+    .page-head .eyebrow svg {
+      width: 16px;
+      height: 16px;
+      color: var(--red);
+      flex-shrink: 0;
     }
     .page-head h1 {
       font-size: clamp(1.8rem, 3.5vw, 2.5rem);
@@ -201,16 +207,30 @@
       backdrop-filter: blur(8px);
       color: #fff;
     }
+    .book-grade-badge svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+    }
     .book-icon-badge {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.22);
       backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      color: #fff;
+    }
+    .book-icon-badge svg {
+      width: 24px;
+      height: 24px;
+      stroke: #fff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
     }
     .book-body {
       padding: 22px;
@@ -242,7 +262,7 @@
     .book-meta {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       padding: 10px 14px;
       background: var(--paper);
       border-radius: 10px;
@@ -256,6 +276,17 @@
       align-items: center;
       gap: 6px;
     }
+    .book-meta svg {
+      width: 15px;
+      height: 15px;
+      color: var(--muted);
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
     .book-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -263,9 +294,26 @@
     }
     .book-actions .btn {
       width: 100%;
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
+      gap: 6px;
       padding: 10px 12px;
       font-size: 0.9rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .book-actions .btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
     }
     .book-actions .btn-solid {
       background: var(--c, var(--focus));
@@ -289,6 +337,15 @@
       border-radius: 16px;
       border: 1px dashed var(--line);
       grid-column: 1 / -1;
+    }
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
     }
     .empty-state h3 {
       font-size: 1.3rem;
@@ -337,7 +394,10 @@
 
     <!-- سربرگ صفحه -->
     <section class="page-head">
-      <span class="eyebrow">📚 تالیفات و منابع آموزشی تالیفی علی یعقوبی</span>
+      <span class="eyebrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>تالیفات و منابع آموزشی تالیفی علی یعقوبی</span>
+      </span>
       <h1>کتاب‌ها و کتابچه‌های آموزشی</h1>
       <p class="desc">مجموعه کتابچه‌های جامع، جزوات آموزشی درس‌به‌درس، کاربرگ‌های امتحانی و جدول بودجه‌بندی سالانه دروس؛ نگارش‌شده منطبق بر سرفصل‌های رسمی دوره ابتدایی با امکان مطالعه آنلاین و دانلود رایگان فایل PDF.</p>
     </section>
@@ -365,20 +425,38 @@
       <article class="book-card" data-cat="farsi" data-grade="6" data-c="var(--farsi)" style="--c: var(--farsi);" data-search="کتابچه فارسی ششم ابتدایی ادبیات معنی شعر آرایه های ادبی دستور زبان واژگان علی یعقوبی">
         <div class="book-banner">
           <div class="book-spine-decor"></div>
-          <span class="book-grade-badge">پایه ششم ابتدایی</span>
-          <div class="book-icon-badge">📖</div>
+          <span class="book-grade-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span>پایه ششم ابتدایی</span>
+          </span>
+          <div class="book-icon-badge">
+            <!-- SVG Open Book -->
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
         </div>
         <div class="book-body">
           <span class="book-subject">فارسی و نگارش</span>
           <h2 class="book-title">کتابچه جامع فارسی ششم ابتدایی</h2>
           <p class="book-desc">راهنمای کامل درس‌به‌درس کتاب فارسی ششم؛ شامل واژه‌نامه تخصصی، معنی روان کلیه اشعار و حکایت‌ها، دانش‌های زبانی و ادبی، واژگان متضاد و هم‌خانواده و درک مطلب.</p>
           <div class="book-meta">
-            <span>📄 فرمت PDF</span>
-            <span>💾 حجم: ۱۴.۱ مگابایت</span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              فرمت PDF
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              حجم: ۱۴.۱ مگابایت
+            </span>
           </div>
           <div class="book-actions">
-            <a href="کتابچه فارسی ششم.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
-            <a href="کتابچه فارسی ششم.pdf" download="کتابچه فارسی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+            <a href="کتابچه فارسی ششم.pdf" target="_blank" class="btn btn-line">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>مشاهده آنلاین</span>
+            </a>
+            <a href="کتابچه فارسی ششم.pdf" download="کتابچه فارسی ششم - علی یعقوبی.pdf" class="btn btn-solid">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>دانلود PDF</span>
+            </a>
           </div>
         </div>
       </article>
@@ -387,20 +465,38 @@
       <article class="book-card" data-cat="farsi" data-grade="4" data-c="var(--farsi)" style="--c: var(--farsi);" data-search="کتابچه فارسی چهارم ابتدایی واژه نامه دستور زبان درک مطلب معنی اشعار علی یعقوبی">
         <div class="book-banner">
           <div class="book-spine-decor"></div>
-          <span class="book-grade-badge">پایه چهارم ابتدایی</span>
-          <div class="book-icon-badge">📝</div>
+          <span class="book-grade-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span>پایه چهارم ابتدایی</span>
+          </span>
+          <div class="book-icon-badge">
+            <!-- SVG Quill/Pen -->
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
         </div>
         <div class="book-body">
           <span class="book-subject">فارسی و نگارش</span>
           <h2 class="book-title">کتابچه جامع فارسی چهارم ابتدایی</h2>
           <p class="book-desc">مجموعه کمک‌آموزشی مدون کتاب فارسی چهارم؛ شامل معنی اشعار و واژگان جدید درس‌ها، کلمات هم‌خانواده و مخالف، نکات نگارشی و دستوری، آماده جهت مطالعه و تدریس.</p>
           <div class="book-meta">
-            <span>📄 فرمت PDF</span>
-            <span>💾 حجم: ۹.۹ مگابایت</span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              فرمت PDF
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              حجم: ۹.۹ مگابایت
+            </span>
           </div>
           <div class="book-actions">
-            <a href="کتابچه فارسی چهارم.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
-            <a href="کتابچه فارسی چهارم.pdf" download="کتابچه فارسی چهارم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+            <a href="کتابچه فارسی چهارم.pdf" target="_blank" class="btn btn-line">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>مشاهده آنلاین</span>
+            </a>
+            <a href="کتابچه فارسی چهارم.pdf" download="کتابچه فارسی چهارم - علی یعقوبی.pdf" class="btn btn-solid">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>دانلود PDF</span>
+            </a>
           </div>
         </div>
       </article>
@@ -409,20 +505,38 @@
       <article class="book-card" data-cat="math" data-grade="6" data-c="var(--math)" style="--c: var(--math);" data-search="مجموعه جامع کاربرگ ها و آزمونک های ریاضی ششم فصل اول کسر الگوها تمرین نمونه سوال امتحان">
         <div class="book-banner">
           <div class="book-spine-decor"></div>
-          <span class="book-grade-badge">پایه ششم ابتدایی</span>
-          <div class="book-icon-badge">📐</div>
+          <span class="book-grade-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span>پایه ششم ابتدایی</span>
+          </span>
+          <div class="book-icon-badge">
+            <!-- SVG Triangle Ruler Math -->
+            <svg viewBox="0 0 24 24"><path d="M3 21h18L3 3v18z"/><path d="M7 17h6L7 11v6z"/></svg>
+          </div>
         </div>
         <div class="book-body">
           <span class="book-subject">ریاضیات</span>
           <h2 class="book-title">کاربرگ‌ها و آزمونک‌های ریاضی ششم (فصل اول)</h2>
           <p class="book-desc">مجموعه کامل و سطح‌بندی‌شده کاربرگ‌های هفتگی و آزمونک‌های مستمر فصل اول ریاضی ششم (کسرها و محاسبات)، تدوین‌شده بر پایه اهداف آموزشی کلاسی و تثبیت یادگیری.</p>
           <div class="book-meta">
-            <span>📄 فرمت PDF</span>
-            <span>💾 حجم: ۱.۶ مگابایت</span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              فرمت PDF
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              حجم: ۱.۶ مگابایت
+            </span>
           </div>
           <div class="book-actions">
-            <a href="مجموعه جامع کاربرگ_ها و آزمونک_های ریاضی ششم - فصل اول.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
-            <a href="مجموعه جامع کاربرگ_ها و آزمونک_های ریاضی ششم - فصل اول.pdf" download="کاربرگ و آزمونک ریاضی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+            <a href="مجموعه جامع کاربرگ_ها و آزمونک_های ریاضی ششم - فصل اول.pdf" target="_blank" class="btn btn-line">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>مشاهده آنلاین</span>
+            </a>
+            <a href="مجموعه جامع کاربرگ_ها و آزمونک_های ریاضی ششم - فصل اول.pdf" download="کاربرگ و آزمونک ریاضی ششم - علی یعقوبی.pdf" class="btn btn-solid">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>دانلود PDF</span>
+            </a>
           </div>
         </div>
       </article>
@@ -431,20 +545,38 @@
       <article class="book-card" data-cat="quran" data-grade="6" data-c="var(--school)" style="--c: var(--school);" data-search="کتابچه جامع پرسش و پاسخ هدیه های آسمانی ششم ابتدایی درس ۱ تا ۹ سوالات امتحانی پاسخ تشریحی">
         <div class="book-banner">
           <div class="book-spine-decor"></div>
-          <span class="book-grade-badge">پایه ششم ابتدایی</span>
-          <div class="book-icon-badge">✨</div>
+          <span class="book-grade-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span>پایه ششم ابتدایی</span>
+          </span>
+          <div class="book-icon-badge">
+            <!-- SVG Star / Sparks -->
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
         </div>
         <div class="book-body">
           <span class="book-subject">هدیه‌های آسمانی</span>
           <h2 class="book-title">پرسش و پاسخ هدیه‌های آسمانی ششم (درس ۱ تا ۹)</h2>
           <p class="book-desc">بانک جامع سوالات متن، تمرین‌های کتاب، سوالات صحیح/غلط، تستی و پاسخ‌های تشریحی و کامل دروس ۱ تا ۹ کتاب هدیه‌های آسمانی ششم دبستان.</p>
           <div class="book-meta">
-            <span>📄 فرمت PDF</span>
-            <span>💾 حجم: ۸.۴ مگابایت</span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              فرمت PDF
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              حجم: ۸.۴ مگابایت
+            </span>
           </div>
           <div class="book-actions">
-            <a href="کتابچه جامع پرسش و پاسخ هدیه_های آسمانی ششم ابتدایی-درس ۱ تا ۹.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
-            <a href="کتابچه جامع پرسش و پاسخ هدیه_های آسمانی ششم ابتدایی-درس ۱ تا ۹.pdf" download="پرسش و پاسخ هدیه های آسمانی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+            <a href="کتابچه جامع پرسش و پاسخ هدیه_های آسمانی ششم ابتدایی-درس ۱ تا ۹.pdf" target="_blank" class="btn btn-line">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>مشاهده آنلاین</span>
+            </a>
+            <a href="کتابچه جامع پرسش و پاسخ هدیه_های آسمانی ششم ابتدایی-درس ۱ تا ۹.pdf" download="پرسش و پاسخ هدیه های آسمانی ششم - علی یعقوبی.pdf" class="btn btn-solid">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>دانلود PDF</span>
+            </a>
           </div>
         </div>
       </article>
@@ -453,20 +585,38 @@
       <article class="book-card" data-cat="social" data-grade="6" data-c="var(--web)" style="--c: var(--web);" data-search="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی بخش اول سوالات متن پاسخ تشریحی نوبت اول">
         <div class="book-banner">
           <div class="book-spine-decor"></div>
-          <span class="book-grade-badge">پایه ششم ابتدایی</span>
-          <div class="book-icon-badge">🌍</div>
+          <span class="book-grade-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span>پایه ششم ابتدایی</span>
+          </span>
+          <div class="book-icon-badge">
+            <!-- SVG Globe -->
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
         </div>
         <div class="book-body">
           <span class="book-subject">مطالعات اجتماعی</span>
           <h2 class="book-title">سوال و جواب مطالعات اجتماعی ششم (بخش اول)</h2>
           <p class="book-desc">پوشش درس‌به‌درس تمامی مباحث و سوالات تالیفی بخش اول کتاب مطالعات اجتماعی ششم، همراه با جواب‌های دقیق و منظم برای آمادگی آزمون‌های کلاسی و نوبت اول.</p>
           <div class="book-meta">
-            <span>📄 فرمت PDF</span>
-            <span>💾 حجم: ۱.۴ مگابایت</span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              فرمت PDF
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              حجم: ۱.۴ مگابایت
+            </span>
           </div>
           <div class="book-actions">
-            <a href="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی-بخش اول.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
-            <a href="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی-بخش اول.pdf" download="سوال و جواب مطالعات اجتماعی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+            <a href="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی-بخش اول.pdf" target="_blank" class="btn btn-line">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>مشاهده آنلاین</span>
+            </a>
+            <a href="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی-بخش اول.pdf" download="سوال و جواب مطالعات اجتماعی ششم - علی یعقوبی.pdf" class="btn btn-solid">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>دانلود PDF</span>
+            </a>
           </div>
         </div>
       </article>
@@ -475,25 +625,44 @@
       <article class="book-card" data-cat="planning" data-grade="all" data-c="var(--red-ink)" style="--c: var(--red-ink);" data-search="جدول بودجه بندی سالانه دروس ابتدایی جویبار برنامه ریزی تدریس تقویم آموزشی معلمان">
         <div class="book-banner">
           <div class="book-spine-decor"></div>
-          <span class="book-grade-badge">دوره ابتدایی (عمومی)</span>
-          <div class="book-icon-badge">📅</div>
+          <span class="book-grade-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span>دوره ابتدایی (عمومی)</span>
+          </span>
+          <div class="book-icon-badge">
+            <!-- SVG Calendar -->
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+          </div>
         </div>
         <div class="book-body">
           <span class="book-subject">برنامه‌ریزی و تدریس</span>
           <h2 class="book-title">جدول بودجه‌بندی سالانه دروس ابتدایی</h2>
           <p class="book-desc">تقویم اجرایی و برنامه زمان‌بندی دقیق تدریس ماهانه و هفتگی کتب درسی دوره ابتدایی، تدوین‌شده به عنوان راهنمای استاندارد آموزشی معلمان و مدیران مدارس.</p>
           <div class="book-meta">
-            <span>📄 فرمت PDF</span>
-            <span>💾 حجم: ۱.۲ مگابایت</span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              فرمت PDF
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              حجم: ۱.۲ مگابایت
+            </span>
           </div>
           <div class="book-actions">
-            <a href="بودجه_بندی_ابتدایی-جویبار.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
-            <a href="بودجه_بندی_ابتدایی-جویبار.pdf" download="بودجه بندی سالانه ابتدایی - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+            <a href="بودجه_بندی_ابتدایی-جویبار.pdf" target="_blank" class="btn btn-line">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>مشاهده آنلاین</span>
+            </a>
+            <a href="بودجه_بندی_ابتدایی-جویبار.pdf" download="بودجه بندی سالانه ابتدایی - علی یعقوبی.pdf" class="btn btn-solid">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>دانلود PDF</span>
+            </a>
           </div>
         </div>
       </article>
 
       <div class="empty-state" id="emptyState" hidden>
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
         <h3>کتابی با این مشخصات یافت نشد</h3>
         <p>لطفاً عبارت جستجو را تغییر دهید یا فیلتر دسته‌بندی را روی «همه کتاب‌ها» بگذارید.</p>
       </div>

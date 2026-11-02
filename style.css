@@ -547,8 +547,23 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border: 1px solid var(--accent, var(--focus));
 }
 .book-mini-icon {
-  font-size: 2rem;
-  line-height: 1;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent, var(--focus)) 12%, var(--sheet));
+  color: var(--accent, var(--focus));
+}
+.book-mini-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .book-mini-card h3 {
   font-size: 1.15rem;
