@@ -18,7 +18,7 @@
   <script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})()</script>
   <link rel="preload" href="assets/fonts/vazirmatn-arabic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/playpen-sans-arabic-arabic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "علی یعقوبی", "alternateName": "Ali Yaqoubi", "url": "https://ali.id.ir/", "jobTitle": "معلم ابتدایی، توسعه‌دهنده وب و تولیدکننده محتوا", "telephone": "+989334272616", "sameAs": ["https://t.me/jeunehomme", "https://instagram.com/_aliyaqoubi", "https://github.com/yaqoubi"], "knowsAbout": ["ابزار آموزشی", "وب‌اپلیکیشن", "موشن‌گرافیک", "کاربرگ"]}</script>
 </head>
 <body>
@@ -34,6 +34,7 @@
     </a>
     <nav class="rail-nav" id="nav" aria-label="منوی اصلی">
       <a href="#apps">ابزارها</a>
+      <a href="#books">کتاب‌ها</a>
       <a href="#showcase">نمونه‌کارها</a>
       <a href="#about">دربارهٔ من</a>
       <a href="#contact">تماس</a>
@@ -105,13 +106,22 @@
           <button type="button" class="clear" id="qClear" aria-label="پاک کردن جستجو" hidden><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
         </label>
         <div class="facets">
-          <div class="tabs" id="tabs" role="group" aria-label="نوع ابزار"><button type="button" class="tab" data-type="all" aria-pressed="true">همه<b>۱۸</b></button><button type="button" class="tab" data-type="edu" aria-pressed="false">آموزش و مدارس<b>۱۴</b></button><button type="button" class="tab" data-type="game" aria-pressed="false">بازی و سرگرمی<b>۵</b></button><button type="button" class="tab" data-type="tech" aria-pressed="false">کاربردی و شبکه<b>۴</b></button></div>
-          <div class="chips" id="chips" role="group" aria-label="درس یا حوزه"><button type="button" class="chip" data-subject="math" data-subject-c="math" aria-pressed="false"><i aria-hidden="true"></i>ریاضی<b>۵</b></button><button type="button" class="chip" data-subject="farsi" data-subject-c="farsi" aria-pressed="false"><i aria-hidden="true"></i>فارسی<b>۴</b></button><button type="button" class="chip" data-subject="school" data-subject-c="school" aria-pressed="false"><i aria-hidden="true"></i>مدرسه و کلاس<b>۶</b></button><button type="button" class="chip" data-subject="web" data-subject-c="web" aria-pressed="false"><i aria-hidden="true"></i>وب و رسانه<b>۳</b></button></div>
-          <p class="count" id="count" role="status" aria-live="polite">۱۸ ابزار</p>
+          <div class="tabs" id="tabs" role="group" aria-label="نوع ابزار"><button type="button" class="tab" data-type="all" aria-pressed="true">همه<b>۱۹</b></button><button type="button" class="tab" data-type="edu" aria-pressed="false">آموزش و مدارس<b>۱۵</b></button><button type="button" class="tab" data-type="game" aria-pressed="false">بازی و سرگرمی<b>۵</b></button><button type="button" class="tab" data-type="tech" aria-pressed="false">کاربردی و شبکه<b>۴</b></button></div>
+          <div class="chips" id="chips" role="group" aria-label="درس یا حوزه"><button type="button" class="chip" data-subject="math" data-subject-c="math" aria-pressed="false"><i aria-hidden="true"></i>ریاضی<b>۵</b></button><button type="button" class="chip" data-subject="farsi" data-subject-c="farsi" aria-pressed="false"><i aria-hidden="true"></i>فارسی<b>۴</b></button><button type="button" class="chip" data-subject="school" data-subject-c="school" aria-pressed="false"><i aria-hidden="true"></i>مدرسه و کلاس<b>۷</b></button><button type="button" class="chip" data-subject="web" data-subject-c="web" aria-pressed="false"><i aria-hidden="true"></i>وب و رسانه<b>۳</b></button></div>
+          <p class="count" id="count" role="status" aria-live="polite">۱۹ ابزار</p>
         </div>
       </div>
 
       <div class="tools" id="tools">
+          <a class="tool" href="./apps/books/index.html" target="_blank" rel="noopener noreferrer" data-subject-c="school" data-cats="edu" data-subject="school" data-search="کتاب‌ها و جزوه‌های آموزشی دوره ابتدایی تالیف علی یعقوبی دانلود رایگان PDF فارسی چهارم ششم ریاضی مطالعات هدیه های آسمانی بودجه بندی کتاب جزوه آزمون کاربرگ">
+            <span class="tool-tab">مدرسه و کلاس</span>
+            <span class="stamp" aria-label="ابزار جدید">جدید</span>
+            <span class="tool-art"><svg class="ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path class="a" d="M8 8h10a4 4 0 0 1 4 4v20a4 4 0 0 0-4-4H8z"/><path d="M32 8H22a4 4 0 0 0-4 4v20a4 4 0 0 1 4-4h10z"/><path d="M12 14h6M12 20h6M22 14h6M22 20h6"/></svg></span>
+            <h3 class="tool-title">کتاب‌ها و جزوه‌های آموزشی</h3>
+            <p class="tool-desc">مجموعه ۶ عنوان کتابچه و جزوه آموزشی تالیفی (فارسی، ریاضی، هدیه‌ها، مطالعات و بودجه‌بندی) با دانلود رایگان.</p>
+            <ul class="tool-meta"><li>کتاب و جزوه</li><li>پایه‌های ۴ تا ۶</li></ul>
+            <span class="tool-go"><span>ورود به کتابخانه</span><svg class="i go-i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+          </a>
           <a class="tool" href="./apps/fraction/index.html" target="_blank" rel="noopener noreferrer" data-subject-c="math" data-cats="edu" data-subject="math" data-search="سرزمین کسرها بازی و تمرین کسر برای ریاضی سوم، با فرمول‌های درست‌نوشته و محیطی کودکانه. سرزمین کسرها آموزش کسر ریاضی سوم دبستان سامانه تعاملی یادگیری تمرین بازی مفاهیم کسر فرمول‌نویسی KaTeX کسر سوم ابتدایی ریاضی بازی کسرها فرمول شکل بازی و تمرین ریاضی">
             <span class="tool-tab">ریاضی</span>
             <span class="stamp" aria-label="ابزار جدید">جدید</span>
@@ -280,6 +290,91 @@
         <p class="empty-title" id="emptyTitle">ابزاری پیدا نشد</p>
         <p>عبارت کوتاه‌تری بنویسید یا فیلترها را بردارید.</p>
         <button type="button" class="btn btn-line" id="emptyReset"><span>پاک کردن جستجو و فیلترها</span></button>
+      </div>
+    </section>
+
+    <!-- ░░ کتاب‌ها و تالیفات آموزشی ░░ -->
+    <section class="block books-section" id="books" aria-labelledby="booksTitle">
+      <header class="block-head">
+        <div>
+          <span class="eyebrow"><i aria-hidden="true"></i>تالیفات و منابع مکتوب</span>
+          <h2 id="booksTitle">کتاب‌ها و جزوه‌های آموزشی تالیف علی یعقوبی</h2>
+          <p class="lead">گزیده‌ای از کتابچه‌های راهنمای درس‌به‌درس، کاربرگ‌های استاندارد امتحانی و جدول زمان‌بندی بودجه‌بندی سالانه دوره ابتدایی؛ همراه با امکان مطالعه آنلاین و دریافت رایگان در قالب فایل PDF.</p>
+        </div>
+        <div class="block-actions">
+          <a class="btn btn-solid" href="./apps/books/index.html">
+            <span>ورود به کتابخانه و دانلود همه (۶ عنوان)</span>
+            <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+          </a>
+        </div>
+      </header>
+
+      <div class="books-showcase-grid">
+        <div class="book-mini-card" style="--accent: var(--farsi);">
+          <div class="book-mini-badge">پایه ششم</div>
+          <div class="book-mini-icon">📖</div>
+          <h3>کتابچه جامع فارسی ششم</h3>
+          <p>واژه‌نامه تخصصی، معنی روان اشعار و عبارات، آرایه‌های ادبی، نکات دستوری و درک مطلب درس‌به‌درس.</p>
+          <div class="book-mini-footer">
+            <span class="file-size">۱۴.۱ مگابایت</span>
+            <a href="./apps/books/index.html" class="mini-link">دانلود و جزئیات ←</a>
+          </div>
+        </div>
+
+        <div class="book-mini-card" style="--accent: var(--farsi);">
+          <div class="book-mini-badge">پایه چهارم</div>
+          <div class="book-mini-icon">📝</div>
+          <h3>کتابچه جامع فارسی چهارم</h3>
+          <p>معنی واژگان، اشعار، کلمات هم‌خانواده، مخالف، نکات نگارشی و دستوری منطبق با کتاب درسی.</p>
+          <div class="book-mini-footer">
+            <span class="file-size">۹.۹ مگابایت</span>
+            <a href="./apps/books/index.html" class="mini-link">دانلود و جزئیات ←</a>
+          </div>
+        </div>
+
+        <div class="book-mini-card" style="--accent: var(--math);">
+          <div class="book-mini-badge">پایه ششم</div>
+          <div class="book-mini-icon">📐</div>
+          <h3>کاربرگ و آزمونک ریاضی ششم</h3>
+          <p>مجموعه سوالات استاندارد فصل اول (کسر و محاسبات)، نمونه آزمونک‌های کلاسی و تثبیت مفاهیم.</p>
+          <div class="book-mini-footer">
+            <span class="file-size">۱.۶ مگابایت</span>
+            <a href="./apps/books/index.html" class="mini-link">دانلود و جزئیات ←</a>
+          </div>
+        </div>
+
+        <div class="book-mini-card" style="--accent: var(--school);">
+          <div class="book-mini-badge">پایه ششم</div>
+          <div class="book-mini-icon">✨</div>
+          <h3>پرسش و پاسخ هدیه‌ها ششم</h3>
+          <p>بانک جامع سوالات متن و تمرین‌های درس ۱ تا ۹ هدیه‌های آسمانی با پاسخ‌های تشریحی و کامل.</p>
+          <div class="book-mini-footer">
+            <span class="file-size">۸.۴ مگابایت</span>
+            <a href="./apps/books/index.html" class="mini-link">دانلود و جزئیات ←</a>
+          </div>
+        </div>
+
+        <div class="book-mini-card" style="--accent: var(--web);">
+          <div class="book-mini-badge">پایه ششم</div>
+          <div class="book-mini-icon">🌍</div>
+          <h3>سوال و جواب مطالعات ششم</h3>
+          <p>پوشش درس‌به‌درس تمامی مباحث و سوالات تالیفی بخش اول کتاب برای آمادگی آزمون‌های کلاسی.</p>
+          <div class="book-mini-footer">
+            <span class="file-size">۱.۴ مگابایت</span>
+            <a href="./apps/books/index.html" class="mini-link">دانلود و جزئیات ←</a>
+          </div>
+        </div>
+
+        <div class="book-mini-card" style="--accent: var(--red);">
+          <div class="book-mini-badge">عمومی ابتدایی</div>
+          <div class="book-mini-icon">📅</div>
+          <h3>جدول بودجه‌بندی سالانه دروس</h3>
+          <p>تقویم زمانی تدریس ماهانه و هفتگی کتب درسی دوره ابتدایی ویژه معلمان و مدیران مدارس.</p>
+          <div class="book-mini-footer">
+            <span class="file-size">۱.۲ مگابایت</span>
+            <a href="./apps/books/index.html" class="mini-link">دانلود و جزئیات ←</a>
+          </div>
+        </div>
       </div>
     </section>
 

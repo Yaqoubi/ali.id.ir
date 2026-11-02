@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>کتاب‌ها و جزوه‌های آموزشی | علی یعقوبی</title>
+  <meta name="description" content="مجموعه کتابچه‌های جامع، جزوات درس‌به‌درس، کاربرگ‌ها و منابع تالیفی دوره ابتدایی تالیف علی یعقوبی، آمادهٔ مطالعه آنلاین و دانلود رایگان PDF.">
+  <meta name="author" content="علی یعقوبی (Ali Yaqoubi)">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#edf1f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1230" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/webp" href="../../assets/uploads/images/logo.webp">
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})()</script>
+  <link rel="preload" href="../../assets/fonts/vazirmatn-arabic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/playpen-sans-arabic-arabic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../style.css?v=3">
+  <style>
+    /* ── استایل‌های تکمیلی و اختصاصی کتابخانه ── */
+    .books-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 48px) var(--gut);
+    }
+    .page-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      margin-bottom: clamp(24px, 4vw, 40px);
+      background: var(--sheet);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(17, 27, 87, 0.04);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .back-link:hover {
+      color: var(--focus);
+      transform: translateX(4px);
+    }
+    .back-link svg {
+      width: 20px;
+      height: 20px;
+      transform: rotate(180deg);
+    }
+    .page-head {
+      margin-bottom: 32px;
+    }
+    .page-head .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--red);
+      background: rgba(217, 45, 58, 0.08);
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+    }
+    .page-head h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .page-head .desc {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.8;
+    }
+
+    /* فیلترها و جستجو */
+    .books-toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+      background: var(--sheet);
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+    }
+    .search-box {
+      position: relative;
+      width: 100%;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 14px 44px 14px 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-box input:focus {
+      border-color: var(--focus);
+      box-shadow: 0 0 0 3px rgba(39, 81, 224, 0.15);
+    }
+    .search-box svg {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .f-chip {
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .f-chip:hover {
+      border-color: var(--focus);
+      color: var(--focus);
+    }
+    .f-chip.active {
+      background: var(--focus);
+      color: #fff;
+      border-color: var(--focus);
+    }
+
+    /* شبکه نمایش کتاب‌ها */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .book-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--sheet);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(17, 27, 87, 0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+    }
+    .book-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(17, 27, 87, 0.09);
+      border-color: var(--c, var(--line-2));
+    }
+    .book-banner {
+      height: 140px;
+      background: linear-gradient(135deg, var(--c, var(--focus)), color-mix(in srgb, var(--c, var(--focus)) 70%, #000));
+      padding: 20px;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      color: #fff;
+    }
+    .book-spine-decor {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: rgba(0, 0, 0, 0.22);
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .book-grade-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(8px);
+      color: #fff;
+    }
+    .book-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .book-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .book-subject {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--c, var(--focus));
+      margin-bottom: 6px;
+    }
+    .book-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+    .book-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+    .book-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--paper);
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      color: var(--ink-2);
+      font-weight: 700;
+    }
+    .book-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .book-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .book-actions .btn {
+      width: 100%;
+      justify-content: center;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+    }
+    .book-actions .btn-solid {
+      background: var(--c, var(--focus));
+      color: #fff;
+    }
+    .book-actions .btn-solid:hover {
+      filter: brightness(1.1);
+    }
+    .book-actions .btn-line {
+      border: 1.5px solid var(--line-2);
+      color: var(--ink);
+    }
+    .book-actions .btn-line:hover {
+      border-color: var(--c, var(--focus));
+      color: var(--c, var(--focus));
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--sheet);
+      border-radius: 16px;
+      border: 1px dashed var(--line);
+      grid-column: 1 / -1;
+    }
+    .empty-state h3 {
+      font-size: 1.3rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .empty-state p {
+      color: var(--muted);
+    }
+    .page-footer {
+      margin-top: clamp(48px, 6vw, 80px);
+      padding: 32px 0 16px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .page-footer a {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="books-page">
+    
+    <!-- نوار ناوبری بالای صفحه -->
+    <header class="page-nav-bar">
+      <a href="../../index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        <span>بازگشت به صفحهٔ اصلی وب‌سایت</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="تغییر به تم تاریک" aria-pressed="false" style="width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--paper); display: flex; align-items: center; justify-content: center; color: var(--ink);">
+          <span class="ico-sun"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></span>
+          <span class="ico-moon" style="display:none;"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- سربرگ صفحه -->
+    <section class="page-head">
+      <span class="eyebrow">📚 تالیفات و منابع آموزشی تالیفی علی یعقوبی</span>
+      <h1>کتاب‌ها و کتابچه‌های آموزشی</h1>
+      <p class="desc">مجموعه کتابچه‌های جامع، جزوات آموزشی درس‌به‌درس، کاربرگ‌های امتحانی و جدول بودجه‌بندی سالانه دروس؛ نگارش‌شده منطبق بر سرفصل‌های رسمی دوره ابتدایی با امکان مطالعه آنلاین و دانلود رایگان فایل PDF.</p>
+    </section>
+
+    <!-- جعبه جستجو و فیلترها -->
+    <div class="books-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></svg>
+        <input type="search" id="bookSearch" placeholder="جستجو در عنوان کتاب، درس، پایه یا موضوع..." autocomplete="off">
+      </div>
+      <div class="filter-chips">
+        <button type="button" class="f-chip active" data-filter="all">همه کتاب‌ها (۶)</button>
+        <button type="button" class="f-chip" data-filter="farsi">ادبیات و فارسی (۲)</button>
+        <button type="button" class="f-chip" data-filter="math">ریاضی (۱)</button>
+        <button type="button" class="f-chip" data-filter="quran">هدیه‌های آسمانی (۱)</button>
+        <button type="button" class="f-chip" data-filter="social">مطالعات اجتماعی (۱)</button>
+        <button type="button" class="f-chip" data-filter="planning">بودجه‌بندی و برنامه (۱)</button>
+      </div>
+    </div>
+
+    <!-- فهرست کتاب‌ها -->
+    <div class="books-grid" id="booksGrid">
+
+      <!-- ۱. کتابچه فارسی ششم -->
+      <article class="book-card" data-cat="farsi" data-grade="6" data-c="var(--farsi)" style="--c: var(--farsi);" data-search="کتابچه فارسی ششم ابتدایی ادبیات معنی شعر آرایه های ادبی دستور زبان واژگان علی یعقوبی">
+        <div class="book-banner">
+          <div class="book-spine-decor"></div>
+          <span class="book-grade-badge">پایه ششم ابتدایی</span>
+          <div class="book-icon-badge">📖</div>
+        </div>
+        <div class="book-body">
+          <span class="book-subject">فارسی و نگارش</span>
+          <h2 class="book-title">کتابچه جامع فارسی ششم ابتدایی</h2>
+          <p class="book-desc">راهنمای کامل درس‌به‌درس کتاب فارسی ششم؛ شامل واژه‌نامه تخصصی، معنی روان کلیه اشعار و حکایت‌ها، دانش‌های زبانی و ادبی، واژگان متضاد و هم‌خانواده و درک مطلب.</p>
+          <div class="book-meta">
+            <span>📄 فرمت PDF</span>
+            <span>💾 حجم: ۱۴.۱ مگابایت</span>
+          </div>
+          <div class="book-actions">
+            <a href="کتابچه فارسی ششم.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
+            <a href="کتابچه فارسی ششم.pdf" download="کتابچه فارسی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ۲. کتابچه فارسی چهارم -->
+      <article class="book-card" data-cat="farsi" data-grade="4" data-c="var(--farsi)" style="--c: var(--farsi);" data-search="کتابچه فارسی چهارم ابتدایی واژه نامه دستور زبان درک مطلب معنی اشعار علی یعقوبی">
+        <div class="book-banner">
+          <div class="book-spine-decor"></div>
+          <span class="book-grade-badge">پایه چهارم ابتدایی</span>
+          <div class="book-icon-badge">📝</div>
+        </div>
+        <div class="book-body">
+          <span class="book-subject">فارسی و نگارش</span>
+          <h2 class="book-title">کتابچه جامع فارسی چهارم ابتدایی</h2>
+          <p class="book-desc">مجموعه کمک‌آموزشی مدون کتاب فارسی چهارم؛ شامل معنی اشعار و واژگان جدید درس‌ها، کلمات هم‌خانواده و مخالف، نکات نگارشی و دستوری، آماده جهت مطالعه و تدریس.</p>
+          <div class="book-meta">
+            <span>📄 فرمت PDF</span>
+            <span>💾 حجم: ۹.۹ مگابایت</span>
+          </div>
+          <div class="book-actions">
+            <a href="کتابچه فارسی چهارم.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
+            <a href="کتابچه فارسی چهارم.pdf" download="کتابچه فارسی چهارم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ۳. کاربرگ‌ها و آزمونک‌های ریاضی ششم -->
+      <article class="book-card" data-cat="math" data-grade="6" data-c="var(--math)" style="--c: var(--math);" data-search="مجموعه جامع کاربرگ ها و آزمونک های ریاضی ششم فصل اول کسر الگوها تمرین نمونه سوال امتحان">
+        <div class="book-banner">
+          <div class="book-spine-decor"></div>
+          <span class="book-grade-badge">پایه ششم ابتدایی</span>
+          <div class="book-icon-badge">📐</div>
+        </div>
+        <div class="book-body">
+          <span class="book-subject">ریاضیات</span>
+          <h2 class="book-title">کاربرگ‌ها و آزمونک‌های ریاضی ششم (فصل اول)</h2>
+          <p class="book-desc">مجموعه کامل و سطح‌بندی‌شده کاربرگ‌های هفتگی و آزمونک‌های مستمر فصل اول ریاضی ششم (کسرها و محاسبات)، تدوین‌شده بر پایه اهداف آموزشی کلاسی و تثبیت یادگیری.</p>
+          <div class="book-meta">
+            <span>📄 فرمت PDF</span>
+            <span>💾 حجم: ۱.۶ مگابایت</span>
+          </div>
+          <div class="book-actions">
+            <a href="مجموعه جامع کاربرگ_ها و آزمونک_های ریاضی ششم - فصل اول.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
+            <a href="مجموعه جامع کاربرگ_ها و آزمونک_های ریاضی ششم - فصل اول.pdf" download="کاربرگ و آزمونک ریاضی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ۴. پرسش و پاسخ هدیه‌های آسمانی ششم -->
+      <article class="book-card" data-cat="quran" data-grade="6" data-c="var(--school)" style="--c: var(--school);" data-search="کتابچه جامع پرسش و پاسخ هدیه های آسمانی ششم ابتدایی درس ۱ تا ۹ سوالات امتحانی پاسخ تشریحی">
+        <div class="book-banner">
+          <div class="book-spine-decor"></div>
+          <span class="book-grade-badge">پایه ششم ابتدایی</span>
+          <div class="book-icon-badge">✨</div>
+        </div>
+        <div class="book-body">
+          <span class="book-subject">هدیه‌های آسمانی</span>
+          <h2 class="book-title">پرسش و پاسخ هدیه‌های آسمانی ششم (درس ۱ تا ۹)</h2>
+          <p class="book-desc">بانک جامع سوالات متن، تمرین‌های کتاب، سوالات صحیح/غلط، تستی و پاسخ‌های تشریحی و کامل دروس ۱ تا ۹ کتاب هدیه‌های آسمانی ششم دبستان.</p>
+          <div class="book-meta">
+            <span>📄 فرمت PDF</span>
+            <span>💾 حجم: ۸.۴ مگابایت</span>
+          </div>
+          <div class="book-actions">
+            <a href="کتابچه جامع پرسش و پاسخ هدیه_های آسمانی ششم ابتدایی-درس ۱ تا ۹.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
+            <a href="کتابچه جامع پرسش و پاسخ هدیه_های آسمانی ششم ابتدایی-درس ۱ تا ۹.pdf" download="پرسش و پاسخ هدیه های آسمانی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ۵. سوال و جواب مطالعات اجتماعی ششم -->
+      <article class="book-card" data-cat="social" data-grade="6" data-c="var(--web)" style="--c: var(--web);" data-search="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی بخش اول سوالات متن پاسخ تشریحی نوبت اول">
+        <div class="book-banner">
+          <div class="book-spine-decor"></div>
+          <span class="book-grade-badge">پایه ششم ابتدایی</span>
+          <div class="book-icon-badge">🌍</div>
+        </div>
+        <div class="book-body">
+          <span class="book-subject">مطالعات اجتماعی</span>
+          <h2 class="book-title">سوال و جواب مطالعات اجتماعی ششم (بخش اول)</h2>
+          <p class="book-desc">پوشش درس‌به‌درس تمامی مباحث و سوالات تالیفی بخش اول کتاب مطالعات اجتماعی ششم، همراه با جواب‌های دقیق و منظم برای آمادگی آزمون‌های کلاسی و نوبت اول.</p>
+          <div class="book-meta">
+            <span>📄 فرمت PDF</span>
+            <span>💾 حجم: ۱.۴ مگابایت</span>
+          </div>
+          <div class="book-actions">
+            <a href="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی-بخش اول.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
+            <a href="کتابچه جامع سوال و جواب مطالعات اجتماعی ششم ابتدایی-بخش اول.pdf" download="سوال و جواب مطالعات اجتماعی ششم - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ۶. جدول بودجه‌بندی ابتدایی -->
+      <article class="book-card" data-cat="planning" data-grade="all" data-c="var(--red-ink)" style="--c: var(--red-ink);" data-search="جدول بودجه بندی سالانه دروس ابتدایی جویبار برنامه ریزی تدریس تقویم آموزشی معلمان">
+        <div class="book-banner">
+          <div class="book-spine-decor"></div>
+          <span class="book-grade-badge">دوره ابتدایی (عمومی)</span>
+          <div class="book-icon-badge">📅</div>
+        </div>
+        <div class="book-body">
+          <span class="book-subject">برنامه‌ریزی و تدریس</span>
+          <h2 class="book-title">جدول بودجه‌بندی سالانه دروس ابتدایی</h2>
+          <p class="book-desc">تقویم اجرایی و برنامه زمان‌بندی دقیق تدریس ماهانه و هفتگی کتب درسی دوره ابتدایی، تدوین‌شده به عنوان راهنمای استاندارد آموزشی معلمان و مدیران مدارس.</p>
+          <div class="book-meta">
+            <span>📄 فرمت PDF</span>
+            <span>💾 حجم: ۱.۲ مگابایت</span>
+          </div>
+          <div class="book-actions">
+            <a href="بودجه_بندی_ابتدایی-جویبار.pdf" target="_blank" class="btn btn-line">مشاهده آنلاین</a>
+            <a href="بودجه_بندی_ابتدایی-جویبار.pdf" download="بودجه بندی سالانه ابتدایی - علی یعقوبی.pdf" class="btn btn-solid">دانلود PDF</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <h3>کتابی با این مشخصات یافت نشد</h3>
+        <p>لطفاً عبارت جستجو را تغییر دهید یا فیلتر دسته‌بندی را روی «همه کتاب‌ها» بگذارید.</p>
+      </div>
+
+    </div>
+
+    <!-- پانویس صفحه -->
+    <footer class="page-footer">
+      <p>طراحی، تالیف و توسعه: <a href="https://ali.id.ir">علی یعقوبی</a></p>
+      <p>کلیه فایل‌های فوق به صورت رایگان در اختیار همکاران فرهنگی و دانش‌آموزان عزیز قرار دارد.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // هماهنگی تم تاریک و روشن با سایت اصلی
+    const themeBtn = document.getElementById('themeToggle');
+    const sunIco = themeBtn.querySelector('.ico-sun');
+    const moonIco = themeBtn.querySelector('.ico-moon');
+
+    function syncThemeUI(theme) {
+      if (theme === 'dark') {
+        sunIco.style.display = 'none';
+        moonIco.style.display = 'inline-block';
+        themeBtn.setAttribute('aria-label', 'تغییر به تم روشن');
+      } else {
+        sunIco.style.display = 'inline-block';
+        moonIco.style.display = 'none';
+        themeBtn.setAttribute('aria-label', 'تغییر به تم تاریک');
+      }
+    }
+    syncThemeUI(document.documentElement.getAttribute('data-theme'));
+
+    themeBtn.addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const nxt = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nxt);
+      localStorage.setItem('theme', nxt);
+      syncThemeUI(nxt);
+    });
+
+    // جستجو و فیلتر کتاب‌ها
+    const searchInput = document.getElementById('bookSearch');
+    const chips = document.querySelectorAll('.f-chip');
+    const cards = document.querySelectorAll('.book-card');
+    const emptyState = document.getElementById('emptyState');
+    let currentFilter = 'all';
+
+    function filterBooks() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const matchesFilter = currentFilter === 'all' || card.dataset.cat === currentFilter;
+        const searchCorpus = (card.dataset.search + ' ' + card.querySelector('.book-title').textContent + ' ' + card.querySelector('.book-desc').textContent).toLowerCase();
+        const matchesSearch = !query || searchCorpus.includes(query);
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      emptyState.hidden = visibleCount > 0;
+    }
+
+    searchInput.addEventListener('input', filterBooks);
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentFilter = chip.dataset.filter;
+        filterBooks();
+      });
+    });
+  </script>
+</body>
+</html>

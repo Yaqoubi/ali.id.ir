@@ -513,7 +513,76 @@ button { font: inherit; color: inherit; cursor: pointer; }
   30% { transform: translateY(4px) rotate(-3deg); }
   100% { transform: translateY(190px) rotate(16deg); opacity: 0; }
 }
-.flyer-hint { font-size: .92rem; color: var(--muted); }
+/* ── بخش کتاب‌ها در صفحه اصلی ────────────────────────────────────────── */
+.books-section { padding-block: 48px; }
+.books-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr));
+  gap: 22px;
+  margin-top: 28px;
+}
+.book-mini-card {
+  position: relative;
+  background: var(--sheet);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.book-mini-card:hover {
+  transform: translate(2px, -3px);
+  box-shadow: -6px 6px 0 var(--accent, var(--focus));
+}
+.book-mini-badge {
+  align-self: flex-start;
+  font-size: .78rem;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--accent, var(--focus)) 14%, var(--sheet));
+  color: var(--accent, var(--focus));
+  border: 1px solid var(--accent, var(--focus));
+}
+.book-mini-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+.book-mini-card h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.book-mini-card p {
+  font-size: .92rem;
+  color: var(--ink-2);
+  line-height: 1.7;
+  flex: 1;
+}
+.book-mini-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 2px dashed var(--line-2);
+  font-size: .88rem;
+}
+.book-mini-footer .file-size {
+  color: var(--muted);
+  font-weight: 700;
+}
+.book-mini-footer .mini-link {
+  font-weight: 800;
+  color: var(--accent, var(--focus));
+  text-decoration: none;
+}
+.book-mini-footer .mini-link:hover {
+  text-decoration: underline;
+}
 
 /* ── پانوشت و پیام ──────────────────────────────────────────────────────── */
 .footer {
