@@ -516,7 +516,7 @@ async function dnsBash() {
 }
 async function dnsEdns() {
   const rand = () => Math.random().toString(36).slice(2, 12);
-  const res = await Promise.allSettled([1, 2, 3].map(() => fetchJSON(`http://${rand()}.edns.ip-api.com/json`, 8000)));
+  const res = await Promise.allSettled([1, 2, 3].map(() => fetchJSON(`https://${rand()}.edns.ip-api.com/json`, 8000)));
   const map = new Map();
   res.forEach(r => {
     if (r.status !== 'fulfilled' || !r.value || !r.value.dns) return;
